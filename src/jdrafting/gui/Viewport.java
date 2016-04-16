@@ -1,5 +1,7 @@
 package jdrafting.gui;
 
+import static java.lang.String.format;
+
 import java.awt.geom.Rectangle2D;
 
 public class Viewport
@@ -66,23 +68,17 @@ public class Viewport
 		return new double[] { nx, ny };
 	}
 	
-	public Rectangle2D.Double getRectangle()
+	public Rectangle2D getAsRectangle()
 	{
-		return new Rectangle2D.Double( getMinX(), getMaxY(), getWidth(),
-															 getHeight() );
+		return new Rectangle2D.Double( 
+								getMinX(), getMaxY(), getWidth(), getHeight() );
 	}
-	
 	
 	@Override
 	public String toString()
 	{
-		return "["
-			   + "xmin:" + getMinX()
-			   + ",xmax:" + getMaxX()
-			   + ",ymin:" + getMinY()
-			   + ",ymax:" + getMaxY()
-			   + ",width:" + getWidth()
-			   + ",height:" + getHeight()
-			   + "]";
+		return format( "[xmin:%s,xmax:%s,ymin:%s,ymax:%s,width:%s,height:%s]",
+					   getMinX(), getMaxX(), getMinY(), getMaxY(), 
+					   getWidth(), getHeight() );
 	}
 }

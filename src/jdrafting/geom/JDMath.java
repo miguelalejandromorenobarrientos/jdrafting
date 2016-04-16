@@ -149,7 +149,7 @@ public class JDMath
 	}
 	
 	/**
-	 * Get angle between two segments
+	 * Get angle between two segments or two vectors
 	 * @param l1 segment
 	 * @param l2 segment
 	 * @return angle in 0 to pi range

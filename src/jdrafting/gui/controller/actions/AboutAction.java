@@ -51,6 +51,12 @@ public class AboutAction extends AbstractAction
 				+ Application.getLocaleText( "app_des" )
 			+ "</p>"
 			+ "<p>"
+			+ "GPLv3 license " 
+			+ "<a href='http://www.gnu.org/licenses/gpl-3.0.html'>"
+			+ "http://www.gnu.org/licenses/gpl-3.0.html"
+			+ "</a>"
+			+ "</p>"
+			+ "<p>"
 				+ "<br/>SVG export: " 
 				+ "<a href='https://xmlgraphics.apache.org/batik/'>" 
 				+ "Apache Batik</a>"

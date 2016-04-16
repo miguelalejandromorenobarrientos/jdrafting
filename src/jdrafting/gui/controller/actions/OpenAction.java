@@ -91,24 +91,9 @@ public class OpenAction extends AbstractAction
 					(PreviewPanel) fileChooser.getAccessory().getComponent( 0 ); 
 		prev.exercise = null;
 		
-		// open dialog
+		// Open dialog
 		if ( fileChooser.showOpenDialog( app ) == JFileChooser.APPROVE_OPTION )
-		{
-			File file = fileChooser.getSelectedFile();
-
-			// load exercise
-			try ( FileInputStream is = new FileInputStream( file ) )
-			{
-				ObjectInputStream ois = new ObjectInputStream( is );
-				app.setExercise( (Exercise) ois.readObject(), 
-								 file.getAbsolutePath() );
-			}
-			catch ( IOException | ClassNotFoundException ex )
-			{
-				JOptionPane.showMessageDialog( app, ex, "Error", 
-											   JOptionPane.ERROR_MESSAGE );
-			}
-		}
+			app.openFile( fileChooser.getSelectedFile() );
 	}
 	
 	private class PreviewPanel extends JPanel implements PropertyChangeListener

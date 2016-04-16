@@ -12,15 +12,20 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
+import java.util.stream.Stream;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import jdrafting.gui.Application;
 
+/**
+ * Save exercise to media in JDrafting format 
+ */
 @SuppressWarnings("serial")
 public class SaveAction extends AbstractAction
 {
@@ -48,7 +53,7 @@ public class SaveAction extends AbstractAction
 		// create static file chooser dialog
 		fileChooser = new JFileChooser();
 	}
-		
+	
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
@@ -62,8 +67,13 @@ public class SaveAction extends AbstractAction
 										"JDrafting exercise (.jd)", "jd" ) );
 		
 		// update file name
-		fileChooser.setSelectedFile( 
-								new File( "jd_" + ( counter++ ) + ".jd" ) );		
+		if ( app.getExercise().getTitle().trim().isEmpty() )
+			fileChooser.setSelectedFile( 
+									new File( "jd_" + ( counter++ ) + ".jd" ) );
+		else
+			fileChooser.setSelectedFile( 
+				new File( camelCase( app.getExercise().getTitle() ) +".jd" ) );
+			
 
 		String saveFilename = app.getSaveFilename();
 
@@ -87,6 +97,28 @@ public class SaveAction extends AbstractAction
 			app.setSaveFilename( saveFilename );
 			app.initializeUndoRedoSystem();
 		}
-		catch ( IOException ex ) {}
+		catch ( IOException ex )
+		{
+			JOptionPane.showMessageDialog( 
+					app, ex, "Error while saving", JOptionPane.ERROR_MESSAGE );
+		}
+	}
+	
+	/**
+	 * Converts a name to a CamelCase string only with alphanumeric characters
+	 * @param name a name
+	 * @return CamelCase representation
+	 */
+	public static String camelCase( String name )
+	{
+		String[] array = name.split( "[^a-zA-Z0-9]" );
+		array =	Stream.of( array )
+			.filter( s -> !s.trim().isEmpty() )
+			.map( 
+				s -> Character.toUpperCase( s.charAt( 0 ) ) + s.substring( 1 ) )
+			.toArray( String[]::new );
+		name = String.join( "", array );
+		
+		return name;
 	}
 }

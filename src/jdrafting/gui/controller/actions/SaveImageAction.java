@@ -97,8 +97,12 @@ public class SaveImageAction extends AbstractAction
 		fileChooser.addChoosableFileFilter( pngFilter );
 
 		// update file name
-		fileChooser.setSelectedFile( new File( "jd_" + ( counter++ ) ) );
-
+		if ( app.getExercise().getTitle().trim().isEmpty() )
+			fileChooser.setSelectedFile( new File( "jd_" + ( counter++ ) ) );
+		else
+			fileChooser.setSelectedFile( new File( 
+					SaveAction.camelCase( app.getExercise().getTitle() ) ) );
+		// set fields
 		fileChooser.textHeight.setText( 
 				 				String.valueOf( getAutomaticHeight( 1000 ) ) );	
 		fileChooser.labelImage.setIcon(	new ImageIcon( 

@@ -14,21 +14,28 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.PathIterator;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.Set;
 
 import javax.swing.AbstractAction;
+import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
@@ -128,6 +135,7 @@ import jdrafting.gui.controller.actions.SegmentAction;
 import jdrafting.gui.controller.actions.SelectAllAction;
 import jdrafting.gui.controller.actions.SelectionAction;
 import jdrafting.gui.controller.actions.ShapeColorAction;
+import jdrafting.gui.controller.actions.SplineAction;
 import jdrafting.gui.controller.actions.TextVisibleAction;
 import jdrafting.gui.controller.actions.TranslationAction;
 import jdrafting.gui.controller.actions.UndoAction;
@@ -148,7 +156,7 @@ public class Application extends JFrame
 	//////////////////////
 	// metainfo
 	public static final String APPNAME = "JDrafting";
-	public static final String VERSION = "0.1.6";
+	public static final String VERSION = "0.1.7";  // spline, load file from console, camelcase in save actions, color dialogs improved, show/hide all
 	public static final String AUTHOR = "Miguel Alejandro Moreno Barrientos";
 	public static final String COPYLEFT = "2016";
 	public static final String PROJECT_PAGE = 
@@ -272,8 +280,8 @@ public class Application extends JFrame
 		// config frame
 		setIconImage( getSmallIcon( "jdrafting.png" ).getImage() );
 		Dimension size = Toolkit.getDefaultToolkit().getScreenSize(); 
-		setPreferredSize( new Dimension ( (int) ( size.getWidth() * 0.8 ), 
-										  (int) ( size.getHeight() * 0.9 ) ) );
+		setPreferredSize( new Dimension( (int) ( size.getWidth() * 0.8 ), 
+										 (int) ( size.getHeight() * 0.9 ) ) );
 
 		// --- MENUBAR
 		setJMenuBar( menubar = new JMenuBar() );
@@ -574,6 +582,7 @@ public class Application extends JFrame
 		actionMap.put( action.getValue( Action.NAME ), action );
 		menuView.addSeparator();
 		// See/Hide toolbars
+		List<AbstractButton> buttonList = new LinkedList<>();
 		JCheckBoxMenuItem checkMenuItemStatusBar = new JCheckBoxMenuItem( 
 					getLocaleText( "item_status" ), statusPanel.isVisible() );
 		checkMenuItemStatusBar.addActionListener( new AbstractAction() {
@@ -584,6 +593,7 @@ public class Application extends JFrame
 			}
 		});
 		menuView.add( checkMenuItemStatusBar );
+		buttonList.add( checkMenuItemStatusBar );
 		JCheckBoxMenuItem checkMenuItemActionBar = new JCheckBoxMenuItem( 
 						getLocaleText( "item_action" ), actionbar.isVisible() );
 		checkMenuItemActionBar.addActionListener( new AbstractAction() {
@@ -594,6 +604,7 @@ public class Application extends JFrame
 			}
 		});
 		menuView.add( checkMenuItemActionBar );
+		buttonList.add( checkMenuItemActionBar );
 		JCheckBoxMenuItem checkMenuItemShapebar = new JCheckBoxMenuItem( 
 												getLocaleText( "item_shape" ),
 												shapebar.isVisible() );
@@ -605,6 +616,7 @@ public class Application extends JFrame
 			}
 		});
 		menuView.add( checkMenuItemShapebar );
+		buttonList.add( checkMenuItemShapebar );
 		JCheckBoxMenuItem checkMenuItemToolbar = new JCheckBoxMenuItem( 
 												getLocaleText( "item_tool" ),
 												toolbar.isVisible() );
@@ -616,6 +628,45 @@ public class Application extends JFrame
 			}
 		});
 		menuView.add( checkMenuItemToolbar );
+		buttonList.add( checkMenuItemToolbar );
+		// Show/Hide all
+		menuView.add( new AbstractAction() {
+			{
+				putValue( Action.NAME, getLocaleText( "hide_all" ) );
+				putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( 
+									KeyEvent.VK_E, InputEvent.SHIFT_MASK ) );
+			}
+			
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				for ( AbstractButton b : buttonList )
+					if ( b.isSelected() )
+					{
+						b.doClick();
+						b.setSelected( false );
+					}
+			}
+		});
+		menuView.add( new AbstractAction() {
+			{
+				putValue( Action.NAME, getLocaleText( "show_all" ) );
+				putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( 
+									KeyEvent.VK_S, InputEvent.SHIFT_MASK ) );
+			}
+			
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				for ( AbstractButton b : buttonList )
+					if ( !b.isSelected() )
+					{
+						b.doClick();
+						b.setSelected( true );
+					}
+			}
+		});
+		
 		// Point shape
 		menuShapes.add( action = new PointAction( this ) );
 		actionMap.put( action.getValue( Action.NAME ), action );
@@ -646,6 +697,10 @@ public class Application extends JFrame
 		actionMap.put( action.getValue( Action.NAME ), action );
 		// Polyline shape
 		menuShapes.add( action = new PolyLineAction( this ) );
+		actionMap.put( action.getValue( Action.NAME ), action );
+		menuShapes.addSeparator();
+		// Spline shape
+		menuShapes.add( action = new SplineAction( this ) );
 		actionMap.put( action.getValue( Action.NAME ), action );
 		// Free hand shape
 		menuShapes.add( action = new FreeHandAction( this ) );
@@ -921,6 +976,7 @@ public class Application extends JFrame
 		shapebar.add( actionMap.get( getLocaleText( "polygon" ) ) );
 		shapebar.add( actionMap.get( getLocaleText( "polyline" ) ) );
 		shapebar.addSeparator( VSEP );
+		shapebar.add( actionMap.get( getLocaleText( "spline" ) ) );
 		shapebar.add( actionMap.get( getLocaleText( "free_hand" ) ) );
 		// toolbar
 		toolbar.add( actionMap.get(	getLocaleText( "perp" ) ) );
@@ -1116,6 +1172,24 @@ public class Application extends JFrame
 	/////////////
 	// HELPERS //
 	/////////////
+	
+	public void openFile( File file )
+	{
+		// load exercise
+		try ( FileInputStream is = new FileInputStream( file ) )
+		{
+			ObjectInputStream ois = new ObjectInputStream( is );
+			setExercise( (Exercise) ois.readObject(), file.getAbsolutePath() );
+		}
+		catch ( IOException | ClassNotFoundException ex )
+		{
+			JOptionPane.showMessageDialog( this, 
+				"<html>Can't open " + file.getName() 
+				+ ":<br/><font color='red'>" + ex + "</font></html>", 
+				"Error while open " + file.getAbsolutePath(), 
+				JOptionPane.ERROR_MESSAGE );
+		}
+	}
 	
 	/**
 	 * Get a text value in current language
@@ -1425,6 +1499,11 @@ public class Application extends JFrame
 	 */
 	public static void main( String[] args )
 	{
-		SwingUtilities.invokeLater( () -> new Application().setVisible(true) );
+		SwingUtilities.invokeLater( () -> {
+			Application app = new Application();
+			app.setVisible( true );
+			if ( args.length > 0 )
+				app.openFile( new File( args[0] ) );
+		} );
 	}
 }

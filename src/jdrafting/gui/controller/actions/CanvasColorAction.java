@@ -4,13 +4,13 @@ import static jdrafting.gui.Application.getLargeIcon;
 import static jdrafting.gui.Application.getLocaleText;
 import static jdrafting.gui.Application.getSmallIcon;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JColorChooser;
+import javax.swing.JDialog;
 import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
@@ -19,6 +19,8 @@ import jdrafting.gui.Application;
 public class CanvasColorAction extends AbstractAction
 {
 	private Application app;
+	private JDialog colorChooser;
+	private JColorChooser jcc;
 	
 	public CanvasColorAction( Application app )
 	{
@@ -31,17 +33,18 @@ public class CanvasColorAction extends AbstractAction
 			KeyStroke.getKeyStroke( KeyEvent.VK_B, InputEvent.CTRL_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "backcolor.png" ) );
 		putValue( LARGE_ICON_KEY, getLargeIcon( "backcolor.png" ) );
+
+		jcc = new JColorChooser();
+		colorChooser = JColorChooser.createDialog( 
+					app, getLocaleText( "background_color_des" ), false, jcc, 
+					(evt) -> app.setBackColor( jcc.getColor() ), // ok
+					null ); // cancel 
 	}
 	
 	@Override
 	public void actionPerformed( ActionEvent e )
 	{
-		Color backColor = JColorChooser.showDialog(
-			app, getLocaleText( "background_color_des" ), app.getBackColor() );
-		if ( backColor != null )
-		{
-			app.setBackColor( backColor );
-			app.scrollList.repaint();
-		}
+		jcc.setColor( app.getBackColor() );
+		colorChooser.setVisible( true );
 	}
 }
