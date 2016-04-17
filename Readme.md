@@ -4,4 +4,4 @@ This application is inspired by the 'Classical Construction', also known as 'Rul
 
 Youtube example: https://youtu.be/H4ZuJF91zuI
 
-![screenshot](https://github.com/miguelalejandromorenobarrientos/jdrafting/blob/screenshots/screenshot1.png)
+[screenshot](jdrafting/blob/screenshots/screenshot1.png)
