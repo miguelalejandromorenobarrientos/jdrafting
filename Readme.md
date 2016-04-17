@@ -5,8 +5,13 @@ This application is inspired by the 'Classical Construction', also known as 'Rul
 Youtube example: https://youtu.be/H4ZuJF91zuI
 
 ![screenshot](../screenshots/screenshot1.png)
+
 ![screenshot](../screenshots/screenshot2.png)
+
 ![screenshot](../screenshots/screenshot3.png)
+
 ![screenshot](../screenshots/screenshot4.png)
+
 ![screenshot](../screenshots/screenshot5.png)
+
 ![screenshot](../screenshots/screenshot6.png)
