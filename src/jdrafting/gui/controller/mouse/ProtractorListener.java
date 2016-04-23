@@ -1,6 +1,7 @@
 package jdrafting.gui.controller.mouse;
 
 import static jdrafting.geom.JDMath.lineAng;
+import static jdrafting.gui.JDUtils.getLocaleText;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -15,6 +16,7 @@ import java.awt.geom.Point2D;
 
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
+import jdrafting.gui.JDUtils;
 
 /**
  * Capture an angle using mouse control 
@@ -22,7 +24,7 @@ import jdrafting.gui.CanvasPanel;
 public class ProtractorListener extends AbstractCanvasMouseListener
 {
 	private static final Cursor CURSOR = 
-						CanvasPanel.getCustomCursor( "protractor_cursor.png" );
+						JDUtils.getCustomCursor( "protractor_cursor.png" );
 	private CanvasPanel canvas;
 	private Application app;
 
@@ -37,7 +39,7 @@ public class ProtractorListener extends AbstractCanvasMouseListener
 		
 		canvas.setCursor( CURSOR );
 		
-		app.setStatusText( Application.getLocaleText( "txt_prot1" ) );
+		app.setStatusText( getLocaleText( "txt_prot1" ) );
 	}
 
 	@Override
@@ -61,13 +63,13 @@ public class ProtractorListener extends AbstractCanvasMouseListener
 		if ( vertex == null )
 		{
 			vertex = logicMouse;
-			app.setStatusText( Application.getLocaleText( "txt_prot2" ) );
+			app.setStatusText( getLocaleText( "txt_prot2" ) );
 		}
 		// put first angle side
 		else if ( p1 == null )
 		{
 			p1 = logicMouse;
-			app.setStatusText( Application.getLocaleText( "txt_prot3" ) );
+			app.setStatusText( getLocaleText( "txt_prot3" ) );
 		}
 		// put second angle side
 		else

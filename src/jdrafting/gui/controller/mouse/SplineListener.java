@@ -20,6 +20,7 @@ import java.util.List;
 
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
+import jdrafting.gui.JDUtils;
 
 /**
  * Creates a cubic spline using mouse control
@@ -27,7 +28,7 @@ import jdrafting.gui.CanvasPanel;
 public class SplineListener extends AbstractCanvasMouseListener
 {
 	private static final Cursor CURSOR =
-							CanvasPanel.getCustomCursor( "spline_cursor.png" ); 
+								JDUtils.getCustomCursor( "spline_cursor.png" ); 
 	private CanvasPanel canvas;
 	private Application app;
 
@@ -42,7 +43,7 @@ public class SplineListener extends AbstractCanvasMouseListener
 		
 		canvas.setCursor( CURSOR );
 		
-		app.setStatusText( Application.getLocaleText( "txt_poly" ) );
+		app.setStatusText( JDUtils.getLocaleText( "txt_poly" ) );
 	}
 
 	@Override

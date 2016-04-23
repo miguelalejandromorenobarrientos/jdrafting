@@ -5,7 +5,7 @@ import static jdrafting.geom.JDMath.pointRelativeToCenter;
 import static jdrafting.geom.JDMath.sumVectors;
 import static jdrafting.geom.JDMath.vector;
 import static jdrafting.geom.JDMath.vectorArg;
-import static jdrafting.gui.Application.getLocaleText;
+import static jdrafting.gui.JDUtils.getLocaleText;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -21,6 +21,7 @@ import java.awt.geom.Point2D;
 
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
+import jdrafting.gui.JDUtils;
 
 /**
  * Creates an arc using mouse control 
@@ -28,7 +29,7 @@ import jdrafting.gui.CanvasPanel;
 public class ArcListener extends AbstractCanvasMouseListener
 {
 	private static final Cursor CURSOR =
-								CanvasPanel.getCustomCursor( "arc_cursor.png" );
+									JDUtils.getCustomCursor( "arc_cursor.png" );
 	private CanvasPanel canvas;
 	private Application app;
 

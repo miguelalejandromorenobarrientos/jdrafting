@@ -1,7 +1,7 @@
 package jdrafting.gui.controller.mouse;
 
 import static jdrafting.geom.JDMath.nearInt;
-import static jdrafting.gui.Application.getLocaleText;
+import static jdrafting.gui.JDUtils.getLocaleText;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -23,6 +23,7 @@ import com.sun.istack.internal.NotNull;
 import jdrafting.geom.JDraftingShape;
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
+import jdrafting.gui.JDUtils;
 
 /**
  * Central symmety on selected shapes using mouse control 
@@ -30,7 +31,7 @@ import jdrafting.gui.CanvasPanel;
 public class CentralSymmetryListener extends AbstractCanvasMouseListener
 {
 	private static final Cursor CURSOR = 
-				CanvasPanel.getCustomCursor( "central_symmetry_cursor.png" );
+					JDUtils.getCustomCursor( "central_symmetry_cursor.png" );
 	private CanvasPanel canvas;
 	private Application app;
 

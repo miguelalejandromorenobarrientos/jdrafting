@@ -6,7 +6,7 @@ import static jdrafting.geom.JDMath.pointRelativeToCenter;
 import static jdrafting.geom.JDMath.sumVectors;
 import static jdrafting.geom.JDMath.vector;
 import static jdrafting.geom.JDMath.vectorArg;
-import static jdrafting.gui.Application.getLocaleText;
+import static jdrafting.gui.JDUtils.getLocaleText;
 
 import java.awt.BasicStroke;
 import java.awt.Cursor;
@@ -17,6 +17,7 @@ import java.awt.geom.Point2D;
 
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
+import jdrafting.gui.JDUtils;
 
 /**
  * Create an arrow using mouse control 
@@ -24,7 +25,7 @@ import jdrafting.gui.CanvasPanel;
 public class ArrowListener extends AbstractCanvasMouseListener
 {
 	private static final Cursor CURSOR =
-							CanvasPanel.getCustomCursor( "arrow_cursor.png" );
+								JDUtils.getCustomCursor( "arrow_cursor.png" );
 	private static final double ANGLE_INTERVAL = PI / 4.;
 	private CanvasPanel canvas;
 	private Application app;

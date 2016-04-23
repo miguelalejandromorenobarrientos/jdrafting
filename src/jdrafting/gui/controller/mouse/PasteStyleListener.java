@@ -13,11 +13,12 @@ import jdrafting.geom.JDStrokes;
 import jdrafting.geom.JDraftingShape;
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
+import jdrafting.gui.JDUtils;
 
 public class PasteStyleListener extends AbstractCanvasMouseListener
 {
 	private static final Cursor CURSOR =
-						CanvasPanel.getCustomCursor( "paste_style_cursor.png" );
+						JDUtils.getCustomCursor( "paste_style_cursor.png" );
 	private Application app;
 	private CanvasPanel canvas;
 	
@@ -28,7 +29,7 @@ public class PasteStyleListener extends AbstractCanvasMouseListener
 		this.canvas = canvas;
 		app = canvas.getApplication();
 
-		app.setStatusText( Application.getLocaleText( "txt_paste_style1" ) );
+		app.setStatusText( JDUtils.getLocaleText( "txt_paste_style1" ) );
 	}
 	
 	@Override

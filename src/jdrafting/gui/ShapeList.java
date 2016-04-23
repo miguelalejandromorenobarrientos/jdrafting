@@ -21,7 +21,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
-import javax.swing.border.EtchedBorder;
+import javax.swing.border.BevelBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -124,8 +124,7 @@ public class ShapeList extends JList<JDraftingShape>
 			removeAll();
 			setLayout( new BoxLayout( this, BoxLayout.LINE_AXIS ) );
 			setOpaque( true );
-			setBorder( BorderFactory.createEtchedBorder( 
-													EtchedBorder.LOWERED ) );		
+			setBorder( BorderFactory.createBevelBorder( BevelBorder.RAISED ) );
 			// index
 			JLabel shapeIndex = new JLabel( index + 1 + ":" );
 			add( shapeIndex );

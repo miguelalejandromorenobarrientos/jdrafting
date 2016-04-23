@@ -1,6 +1,6 @@
 package jdrafting.gui.controller.mouse;
 
-import static jdrafting.gui.Application.getLocaleText;
+import static jdrafting.gui.JDUtils.getLocaleText;
 
 import java.awt.BasicStroke;
 import java.awt.Cursor;
@@ -11,6 +11,7 @@ import java.awt.geom.Rectangle2D;
 
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
+import jdrafting.gui.JDUtils;
 
 /**
  * Create a rectangle by mouse control 
@@ -18,7 +19,7 @@ import jdrafting.gui.CanvasPanel;
 public class RectangleListener extends AbstractCanvasMouseListener
 {
 	private static final Cursor CURSOR = 
-						CanvasPanel.getCustomCursor( "rectangle_cursor.png" );
+							JDUtils.getCustomCursor( "rectangle_cursor.png" );
 	private CanvasPanel canvas;
 	private Application app;
 	

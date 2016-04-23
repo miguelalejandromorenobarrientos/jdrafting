@@ -1,6 +1,6 @@
 package jdrafting.gui.controller.mouse;
 
-import static jdrafting.gui.Application.getLocaleText;
+import static jdrafting.gui.JDUtils.getLocaleText;
 
 import java.awt.BasicStroke;
 import java.awt.Cursor;
@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import jdrafting.geom.JDraftingShape;
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
+import jdrafting.gui.JDUtils;
 
 /**
  * Create a rectangle bounds for a shape by mouse control 
@@ -17,7 +18,7 @@ import jdrafting.gui.CanvasPanel;
 public class BoundsListener extends AbstractCanvasMouseListener
 {
 	private static final Cursor CURSOR =
-						CanvasPanel.getCustomCursor( "bounds_cursor.png" );
+								JDUtils.getCustomCursor( "bounds_cursor.png" );
 	private CanvasPanel canvas;
 	private Application app;
 

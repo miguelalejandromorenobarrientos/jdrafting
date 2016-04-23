@@ -7,6 +7,7 @@ import static jdrafting.geom.JDMath.pointRelativeToCenter;
 import static jdrafting.geom.JDMath.sumVectors;
 import static jdrafting.geom.JDMath.vector;
 import static jdrafting.geom.JDMath.vectorArg;
+import static jdrafting.gui.JDUtils.getLocaleText;
 
 import java.awt.BasicStroke;
 import java.awt.Cursor;
@@ -21,6 +22,7 @@ import java.util.List;
 import jdrafting.geom.JDraftingShape;
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
+import jdrafting.gui.JDUtils;
 
 /**
  * Create capable arc of a segment using mouse control 
@@ -28,7 +30,7 @@ import jdrafting.gui.CanvasPanel;
 public class CapableArcListener extends AbstractCanvasMouseListener
 {
 	private static final Cursor CURSOR = 
-						CanvasPanel.getCustomCursor( "capable_arc_cursor.png" );
+							JDUtils.getCustomCursor( "capable_arc_cursor.png" );
 	private CanvasPanel canvas;
 	private Application app;
 
@@ -43,7 +45,7 @@ public class CapableArcListener extends AbstractCanvasMouseListener
 		
 		canvas.setCursor( CURSOR );
 		
-		app.setStatusText( Application.getLocaleText( "txt_cap1" ) );
+		app.setStatusText( getLocaleText( "txt_cap1" ) );
 	}
 
 	@Override
@@ -82,7 +84,7 @@ public class CapableArcListener extends AbstractCanvasMouseListener
 			{
 				segment = jdshape;
 				canvas.setCursor( CURSOR );
-				app.setStatusText( Application.getLocaleText( "txt_cap2" ) );
+				app.setStatusText( getLocaleText( "txt_cap2" ) );
 				canvas.repaint();
 			}
 		}
@@ -94,7 +96,7 @@ public class CapableArcListener extends AbstractCanvasMouseListener
 			double flatness = arc.getWidth() / app.getFlatnessValue();
 			
 			app.addShapeFromIterator( arc.getPathIterator( null, flatness ), "", 
-					"> " + Application.getLocaleText( "new_capable_arc" )
+					"> " + getLocaleText( "new_capable_arc" )
 					+ " [" + segment.getName() + "]", 
 					app.getColor(), app.getStroke() );			
 			

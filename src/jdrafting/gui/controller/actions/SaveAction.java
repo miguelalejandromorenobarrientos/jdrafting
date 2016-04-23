@@ -1,8 +1,8 @@
 package jdrafting.gui.controller.actions;
 
-import static jdrafting.gui.Application.getLargeIcon;
-import static jdrafting.gui.Application.getLocaleText;
-import static jdrafting.gui.Application.getSmallIcon;
+import static jdrafting.gui.JDUtils.getLargeIcon;
+import static jdrafting.gui.JDUtils.getLocaleText;
+import static jdrafting.gui.JDUtils.getSmallIcon;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
@@ -12,7 +12,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
-import java.util.stream.Stream;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
@@ -22,6 +21,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 
 /**
  * Save exercise to media in JDrafting format 
@@ -71,8 +71,8 @@ public class SaveAction extends AbstractAction
 			fileChooser.setSelectedFile( 
 									new File( "jd_" + ( counter++ ) + ".jd" ) );
 		else
-			fileChooser.setSelectedFile( 
-				new File( camelCase( app.getExercise().getTitle() ) +".jd" ) );
+			fileChooser.setSelectedFile( new File( 
+				JDUtils.camelCase( app.getExercise().getTitle() ) +".jd" ) );
 			
 
 		String saveFilename = app.getSaveFilename();
@@ -102,23 +102,5 @@ public class SaveAction extends AbstractAction
 			JOptionPane.showMessageDialog( 
 					app, ex, "Error while saving", JOptionPane.ERROR_MESSAGE );
 		}
-	}
-	
-	/**
-	 * Converts a name to a CamelCase string only with alphanumeric characters
-	 * @param name a name
-	 * @return CamelCase representation
-	 */
-	public static String camelCase( String name )
-	{
-		String[] array = name.split( "[^a-zA-Z0-9]" );
-		array =	Stream.of( array )
-			.filter( s -> !s.trim().isEmpty() )
-			.map( 
-				s -> Character.toUpperCase( s.charAt( 0 ) ) + s.substring( 1 ) )
-			.toArray( String[]::new );
-		name = String.join( "", array );
-		
-		return name;
 	}
 }

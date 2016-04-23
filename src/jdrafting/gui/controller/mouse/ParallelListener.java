@@ -6,7 +6,7 @@ import static jdrafting.geom.JDMath.midpoint;
 import static jdrafting.geom.JDMath.normal;
 import static jdrafting.geom.JDMath.sumVectors;
 import static jdrafting.geom.JDMath.vector;
-import static jdrafting.gui.Application.getLocaleText;
+import static jdrafting.gui.JDUtils.getLocaleText;
 
 import java.awt.BasicStroke;
 import java.awt.Cursor;
@@ -19,11 +19,12 @@ import java.util.List;
 import jdrafting.geom.JDraftingShape;
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
+import jdrafting.gui.JDUtils;
 
 public class ParallelListener extends AbstractCanvasMouseListener
 {
 	private static final Cursor CURSOR = 
-						CanvasPanel.getCustomCursor( "parallel_cursor.png" );
+							JDUtils.getCustomCursor( "parallel_cursor.png" );
 	private CanvasPanel canvas;
 	private Application app;
 	

@@ -3,9 +3,9 @@ package jdrafting.gui.controller.actions;
 import static jdrafting.gui.Application.APPNAME;
 import static jdrafting.gui.Application.PROJECT_PAGE;
 import static jdrafting.gui.Application.VERSION;
-import static jdrafting.gui.Application.getLargeIcon;
-import static jdrafting.gui.Application.getLocaleText;
-import static jdrafting.gui.Application.getSmallIcon;
+import static jdrafting.gui.JDUtils.getLargeIcon;
+import static jdrafting.gui.JDUtils.getLocaleText;
+import static jdrafting.gui.JDUtils.getSmallIcon;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -49,6 +49,7 @@ import org.w3c.dom.Document;
 
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
+import jdrafting.gui.JDUtils;
 import jdrafting.gui.Viewport;
 
 @SuppressWarnings("serial")
@@ -75,6 +76,7 @@ public class SaveImageAction extends AbstractAction
 
 		// create static file chooser dialog
 		fileChooser = new ImageChooser();
+		fileChooser.setPreferredSize( JDUtils.getScreenSize( 0.8f, 0.8f ) );
 	}
 		
 	@Override
@@ -101,7 +103,7 @@ public class SaveImageAction extends AbstractAction
 			fileChooser.setSelectedFile( new File( "jd_" + ( counter++ ) ) );
 		else
 			fileChooser.setSelectedFile( new File( 
-					SaveAction.camelCase( app.getExercise().getTitle() ) ) );
+						JDUtils.camelCase( app.getExercise().getTitle() ) ) );
 		// set fields
 		fileChooser.textHeight.setText( 
 				 				String.valueOf( getAutomaticHeight( 1000 ) ) );	

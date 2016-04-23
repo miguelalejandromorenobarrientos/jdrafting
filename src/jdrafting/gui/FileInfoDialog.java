@@ -1,5 +1,7 @@
 package jdrafting.gui;
 
+import static jdrafting.gui.JDUtils.getLocaleText;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -14,7 +16,6 @@ import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
@@ -26,13 +27,9 @@ import javax.swing.KeyStroke;
 @SuppressWarnings("serial")
 public class FileInfoDialog extends JDialog
 {
-	public FileInfoDialog( JFrame parent )
+	public FileInfoDialog( Application parent )
 	{
-		super( parent, Application.getLocaleText( "exer_prop" ), true );
-		
-		if ( !( getParent() instanceof Application ) )
-			return;			
-		Application app = (Application) getParent();
+		super( parent, getLocaleText( "exer_prop" ), true );
 		
 		JPanel panel = new JPanel( new BorderLayout() );
 		panel.setBorder( BorderFactory.createEmptyBorder( 6, 6, 6, 6 ) );
@@ -41,12 +38,12 @@ public class FileInfoDialog extends JDialog
 		Box box = Box.createVerticalBox();
 		panel.add( box );
 		
-		JLabel ltitle = new JLabel( Application.getLocaleText( "title" ) );
+		JLabel ltitle = new JLabel( getLocaleText( "title" ) );
 		ltitle.setAlignmentX( LEFT_ALIGNMENT );
 		box.add( ltitle );
 		
 		final JTextField textTitle =
-								new JTextField( app.getExercise().getTitle() );
+							new JTextField( parent.getExercise().getTitle() );
 		textTitle.setAlignmentX( LEFT_ALIGNMENT );
 		textTitle.setMaximumSize( new Dimension( 
 					Integer.MAX_VALUE, textTitle.getPreferredSize().height ) );
@@ -54,12 +51,12 @@ public class FileInfoDialog extends JDialog
 		
 		box.add( Box.createRigidArea( new Dimension( 0, 10 ) ) );
 		
-		JLabel lDesc = new JLabel( Application.getLocaleText( "exer_desc" ) );
+		JLabel lDesc = new JLabel( getLocaleText( "exer_desc" ) );
 		lDesc.setAlignmentX( LEFT_ALIGNMENT );
 		box.add( lDesc );
 		
 		final JTextArea textArea = 
-				new JTextArea( app.getExercise().getDescription(), 8, 50 );
+				new JTextArea( parent.getExercise().getDescription(), 8, 50 );
 		JScrollPane scrollArea = new JScrollPane( textArea );
 		scrollArea.setAlignmentX( LEFT_ALIGNMENT );
 		box.add( scrollArea );
@@ -73,21 +70,19 @@ public class FileInfoDialog extends JDialog
 		
 	    box.add( btnPanel );
 	    
-	    JButton btnOk =
-	    			new JButton( Application.getLocaleText( "save_close" ) );
+	    JButton btnOk = new JButton( getLocaleText( "save_close" ) );
 	    btnPanel.add( btnOk );
 		btnOk.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed( ActionEvent e )
 			{
-				app.getExercise().setTitle( textTitle.getText() );
-				app.getExercise().setDescription( textArea.getText() );
+				parent.getExercise().setTitle( textTitle.getText() );
+				parent.getExercise().setDescription( textArea.getText() );
 				setVisible( false );
 				dispose();
 			}
 		} );
-	    JButton btnCancel =
-	    				new JButton( Application.getLocaleText( "cancel" ) );
+	    JButton btnCancel =new JButton( getLocaleText( "cancel" ) );
 	    btnPanel.add( btnCancel );
 		btnCancel.addActionListener( new ActionListener() {
 			@Override
@@ -100,7 +95,7 @@ public class FileInfoDialog extends JDialog
 		
 		setDefaultCloseOperation( DISPOSE_ON_CLOSE );
 		pack();
-		setLocationRelativeTo( null );
+		setLocationRelativeTo( parent );
 	}
 		
 	@Override

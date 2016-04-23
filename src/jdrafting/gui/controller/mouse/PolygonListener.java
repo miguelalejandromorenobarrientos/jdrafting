@@ -12,6 +12,7 @@ import java.awt.geom.Point2D;
 
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
+import jdrafting.gui.JDUtils;
 
 /**
  * Creates a polygon or polyline using mouse control
@@ -19,9 +20,9 @@ import jdrafting.gui.CanvasPanel;
 public class PolygonListener extends AbstractCanvasMouseListener
 {
 	private static final Cursor CURSOR_POLYGON =
-						CanvasPanel.getCustomCursor( "polygon_cursor.png" ); 
+							JDUtils.getCustomCursor( "polygon_cursor.png" ); 
 	private static final Cursor CURSOR_POLYLINE =
-						CanvasPanel.getCustomCursor( "polyline_cursor.png" ); 
+							JDUtils.getCustomCursor( "polyline_cursor.png" ); 
 	private final Cursor CURSOR;
 	private CanvasPanel canvas;
 	private Application app;
@@ -41,7 +42,7 @@ public class PolygonListener extends AbstractCanvasMouseListener
 		CURSOR = closed ? CURSOR_POLYGON : CURSOR_POLYLINE;
 		canvas.setCursor( CURSOR );
 		
-		app.setStatusText( Application.getLocaleText( "txt_poly" ) );
+		app.setStatusText( JDUtils.getLocaleText( "txt_poly" ) );
 	}
 
 	@Override

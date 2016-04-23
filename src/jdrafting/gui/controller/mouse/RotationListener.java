@@ -5,7 +5,7 @@ import static java.lang.Math.rint;
 import static java.lang.Math.toDegrees;
 import static java.lang.Math.toRadians;
 import static jdrafting.geom.JDMath.nearInt;
-import static jdrafting.gui.Application.getLocaleText;
+import static jdrafting.gui.JDUtils.getLocaleText;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -28,6 +28,7 @@ import com.sun.istack.internal.NotNull;
 import jdrafting.geom.JDraftingShape;
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
+import jdrafting.gui.JDUtils;
 
 /**
  * Rotate selected shapes using mouse control 
@@ -35,7 +36,7 @@ import jdrafting.gui.CanvasPanel;
 public class RotationListener extends AbstractCanvasMouseListener
 {
 	private static final Cursor CURSOR = 
-						CanvasPanel.getCustomCursor( "rotation_cursor.png" );
+							JDUtils.getCustomCursor( "rotation_cursor.png" );
 	private CanvasPanel canvas;
 	private Application app;
 

@@ -1,8 +1,8 @@
 package jdrafting.gui.controller.actions;
 
-import static jdrafting.gui.Application.getLargeIcon;
-import static jdrafting.gui.Application.getLocaleText;
-import static jdrafting.gui.Application.getSmallIcon;
+import static jdrafting.gui.JDUtils.getLargeIcon;
+import static jdrafting.gui.JDUtils.getLocaleText;
+import static jdrafting.gui.JDUtils.getSmallIcon;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
@@ -36,7 +36,7 @@ public class PointColorAction extends AbstractAction
 	
 		jcc = new JColorChooser();
 		colorChooser = JColorChooser.createDialog( 
-					app, getLocaleText( "point_color_des" ), false, jcc, 
+					app, getLocaleText( "point_color_des" ), true, jcc, 
 					(evt) -> app.setPointColor( jcc.getColor() ), // ok
 					null ); // cancel 
 	}

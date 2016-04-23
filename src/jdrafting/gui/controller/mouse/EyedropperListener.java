@@ -9,11 +9,12 @@ import jdrafting.geom.JDStrokes;
 import jdrafting.geom.JDraftingShape;
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
+import jdrafting.gui.JDUtils;
 
 public class EyedropperListener extends AbstractCanvasMouseListener
 {
 	private static final Cursor CURSOR =
-						CanvasPanel.getCustomCursor( "eyedropper_cursor.png" );
+							JDUtils.getCustomCursor( "eyedropper_cursor.png" );
 	private Application app;
 	private CanvasPanel canvas;
 	
@@ -24,7 +25,7 @@ public class EyedropperListener extends AbstractCanvasMouseListener
 		this.canvas = canvas;
 		app = canvas.getApplication();
 
-		app.setStatusText( Application.getLocaleText( "txt_eyedropper" ) );
+		app.setStatusText( JDUtils.getLocaleText( "txt_eyedropper" ) );
 	}
 	
 	@Override

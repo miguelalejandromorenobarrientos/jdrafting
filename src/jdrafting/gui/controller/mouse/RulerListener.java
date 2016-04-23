@@ -1,6 +1,6 @@
 package jdrafting.gui.controller.mouse;
 
-import static jdrafting.gui.Application.getLocaleText;
+import static jdrafting.gui.JDUtils.getLocaleText;
 
 import java.awt.BasicStroke;
 import java.awt.Cursor;
@@ -11,11 +11,12 @@ import java.awt.geom.Point2D;
 
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
+import jdrafting.gui.JDUtils;
 
 public class RulerListener extends AbstractCanvasMouseListener
 {
 	private static final Cursor CURSOR = 
-							CanvasPanel.getCustomCursor( "ruler_cursor.png" );
+								JDUtils.getCustomCursor( "ruler_cursor.png" );
 	private CanvasPanel canvas;
 	private Application app;
 

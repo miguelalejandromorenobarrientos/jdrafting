@@ -1,6 +1,6 @@
 package jdrafting.gui.controller.mouse;
 
-import static jdrafting.gui.Application.getLocaleText;
+import static jdrafting.gui.JDUtils.getLocaleText;
 
 import java.awt.BasicStroke;
 import java.awt.Cursor;
@@ -18,11 +18,12 @@ import jdrafting.geom.JDMath;
 import jdrafting.geom.JDPoint;
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
+import jdrafting.gui.JDUtils;
 
 public class EllipseListener extends AbstractCanvasMouseListener
 {
 	private static final Cursor CURSOR =
-							CanvasPanel.getCustomCursor( "ellipse_cursor.png" );
+								JDUtils.getCustomCursor( "ellipse_cursor.png" );
 	private CanvasPanel canvas;
 	private Application app;
 

@@ -21,13 +21,14 @@ import jdrafting.geom.JDraftingShape;
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
 import jdrafting.gui.EditShapeDialog;
+import jdrafting.gui.JDUtils;
 
 public class HandListener extends AbstractCanvasMouseListener 
 {
 	private static final Cursor DRAG_CURSOR = 
-						CanvasPanel.getCustomCursor( "dragging_cursor.png" );
+							JDUtils.getCustomCursor( "dragging_cursor.png" );
 	private static final Cursor HAND_CURSOR = 
-						CanvasPanel.getCustomCursor( "hand_cursor.png" );
+							JDUtils.getCustomCursor( "hand_cursor.png" );
 	private CanvasPanel canvas;
 	private Application app;
 	
@@ -35,7 +36,7 @@ public class HandListener extends AbstractCanvasMouseListener
 	
 	// drag parameters
 	private int newMouseX, newMouseY;
-	private boolean moving = false;
+	public boolean moving = false;
 	private int button = -1;  // (mousedragged doesn't keep pressed button)
 
 	public HandListener( CanvasPanel canvas )
@@ -47,7 +48,7 @@ public class HandListener extends AbstractCanvasMouseListener
 
 		canvas.setCursor( HAND_CURSOR );
 
-		app.setStatusText( Application.getLocaleText( "txt_hand" ) );
+		app.setStatusText( JDUtils.getLocaleText( "txt_hand" ) );
 	}
 	
 	@Override

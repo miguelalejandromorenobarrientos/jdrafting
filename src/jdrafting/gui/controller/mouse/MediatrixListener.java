@@ -1,6 +1,6 @@
 package jdrafting.gui.controller.mouse;
 
-import static jdrafting.gui.Application.getLocaleText;
+import static jdrafting.gui.JDUtils.getLocaleText;
 import static jdrafting.geom.JDMath.linesIntersection;
 import static jdrafting.geom.JDMath.midpoint;
 import static jdrafting.geom.JDMath.normal;
@@ -18,6 +18,7 @@ import java.util.List;
 import jdrafting.geom.JDraftingShape;
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
+import jdrafting.gui.JDUtils;
 
 /**
  * Creates a mediatrix segment using mouse control 
@@ -25,7 +26,7 @@ import jdrafting.gui.CanvasPanel;
 public class MediatrixListener extends AbstractCanvasMouseListener
 {
 	private static final Cursor CURSOR = 
-						CanvasPanel.getCustomCursor( "mediatrix_cursor.png" );
+							JDUtils.getCustomCursor( "mediatrix_cursor.png" );
 	private CanvasPanel canvas;
 	private Application app;
 	

@@ -1,6 +1,6 @@
 package jdrafting.gui;
 
-import static jdrafting.gui.Application.getLocaleText;
+import static jdrafting.gui.JDUtils.getLocaleText;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -16,7 +16,6 @@ import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -31,13 +30,9 @@ import jdrafting.geom.JDraftingShape;
 @SuppressWarnings("serial")
 public class EditShapeDialog extends JDialog
 {
-	public EditShapeDialog( JFrame parent, JDraftingShape jdshape )
+	public EditShapeDialog( Application parent, JDraftingShape jdshape )
 	{
 		super( parent, getLocaleText( "shape_prop" ), true );
-		
-		if ( !( getParent() instanceof Application ) )
-			return;			
-		Application app = (Application) getParent();
 		
 		JPanel panel = new JPanel( new BorderLayout() );
 		panel.setBorder( BorderFactory.createEmptyBorder( 6, 6, 6, 6 ) );
@@ -88,9 +83,9 @@ public class EditShapeDialog extends JDialog
 				jdshape.setDescription( taDesc.getText() );
 				
 				// refresh GUI			
-				app.getCanvas().repaint();
-				app.refreshUndoRedo();
-				app.scrollList.repaint();
+				parent.getCanvas().repaint();
+				parent.refreshUndoRedo();
+				parent.scrollList.repaint();
 
 				dispose();
 			}
@@ -126,7 +121,7 @@ public class EditShapeDialog extends JDialog
 		
 		setDefaultCloseOperation( DISPOSE_ON_CLOSE );
 		pack();
-		setLocationRelativeTo( null );
+		setLocationRelativeTo( parent );
 	}
 		
 	@Override

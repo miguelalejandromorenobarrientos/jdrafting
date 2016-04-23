@@ -1,6 +1,6 @@
 package jdrafting.gui.controller.mouse;
 
-import static jdrafting.gui.Application.getLocaleText;
+import static jdrafting.gui.JDUtils.getLocaleText;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -24,6 +24,7 @@ import jdrafting.geom.JDMath;
 import jdrafting.geom.JDraftingShape;
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
+import jdrafting.gui.JDUtils;
 
 /**
  * Axial symmetry of selected shapes using mouse control 
@@ -31,7 +32,7 @@ import jdrafting.gui.CanvasPanel;
 public class AxialSymmetryListener extends AbstractCanvasMouseListener
 {
 	private static final Cursor CURSOR = 
-					CanvasPanel.getCustomCursor( "axial_symmetry_cursor.png" );
+						JDUtils.getCustomCursor( "axial_symmetry_cursor.png" );
 	private CanvasPanel canvas;
 	private Application app;
 

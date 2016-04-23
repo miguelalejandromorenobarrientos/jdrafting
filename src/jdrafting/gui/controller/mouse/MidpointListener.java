@@ -1,7 +1,7 @@
 package jdrafting.gui.controller.mouse;
 
 import static jdrafting.geom.JDMath.centroid;
-import static jdrafting.gui.Application.getLocaleText;
+import static jdrafting.gui.JDUtils.getLocaleText;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -15,11 +15,12 @@ import jdrafting.geom.JDPoint;
 import jdrafting.geom.JDraftingShape;
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
+import jdrafting.gui.JDUtils;
 
 public class MidpointListener extends AbstractCanvasMouseListener
 {
 	private static final Cursor CURSOR =
-						CanvasPanel.getCustomCursor( "midpoint_cursor.png" );
+							JDUtils.getCustomCursor( "midpoint_cursor.png" );
 	private Application app;
 	private CanvasPanel canvas;
 	

@@ -2,7 +2,6 @@ package jdrafting.gui;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -10,7 +9,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
-import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.geom.NoninvertibleTransformException;
@@ -96,13 +94,12 @@ public class CanvasPanel extends JPanel
 		movementThread = new MoveCanvasThread();
 		movementThread.start();
 	}
-	
-	
-	public Application getApplication() { return app; }	
-	
+		
 	/////////////////////
 	// GETTERS/SETTERS //
 	/////////////////////
+
+	public Application getApplication() { return app; }	
 	
 	/**
 	 * Logic viewport of the canvas
@@ -563,18 +560,6 @@ public class CanvasPanel extends JPanel
 	}
 	
 	/**
-	 * Load a custom mouse cursor by filename
-	 * @param file filename
-	 * @return a mouse cursor
-	 */
-	public static Cursor getCustomCursor( String file )
-	{
-		return Toolkit.getDefaultToolkit().createCustomCursor( 
-			Application.getScaledIco( "cursors/" + file, 32, 32 ).getImage(),
-			new Point( 0, 0 ), "custom cursor" );
-	}
-	
-	/**
 	 * Get current canvas mouse listener (segment tool, hand,...)
 	 * @return current listener
 	 */
@@ -625,7 +610,8 @@ public class CanvasPanel extends JPanel
 				SwingUtilities.invokeLater( () -> {
 					
 					Point mouse = getMousePosition();
-					if ( mouse == null || getCanvasListener() instanceof HandListener )
+					if ( mouse == null 
+						 || getCanvasListener() instanceof HandListener )
 					{
 						wait = MAX_WAIT;
 						return;

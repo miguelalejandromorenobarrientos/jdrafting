@@ -1,5 +1,8 @@
 package jdrafting.gui;
 
+import static jdrafting.gui.JDUtils.getLocaleText;
+import static jdrafting.gui.JDUtils.getSmallIcon;
+
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -9,8 +12,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -30,8 +31,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 import java.util.Set;
 
 import javax.swing.AbstractAction;
@@ -42,7 +41,6 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JCheckBoxMenuItem;
@@ -156,7 +154,7 @@ public class Application extends JFrame
 	//////////////////////
 	// metainfo
 	public static final String APPNAME = "JDrafting";
-	public static final String VERSION = "0.1.7";  // spline, load file from console, camelcase in save actions, color dialogs improved, show/hide all
+	public static final String VERSION = "0.1.7.1";  // Some minor fixes
 	public static final String AUTHOR = "Miguel Alejandro Moreno Barrientos";
 	public static final String COPYLEFT = "2016";
 	public static final String PROJECT_PAGE = 
@@ -183,7 +181,7 @@ public class Application extends JFrame
 	private Exercise exercise;
 	private Set<JDraftingShape> selectedShapes;
 	private double angle = 90.;
-	private double distance = Math.ulp( 0. );
+	private double distance = 0.1;
 	private boolean useDistance = false;
 	private double flatnessValue = 10000.;  // flatness for circumferences, arcs
 	private String saveFilename;
@@ -202,8 +200,8 @@ public class Application extends JFrame
 	public JPanel centerPanel;
 	public JPanel northPanel;
 	public JPanel statusPanel;
-	public JPanel stylePanel;
-	public JPanel rulerProtPanel;
+	public JToolBar styleToolbar;
+	public JToolBar rulerProtToolbar;
 	public CanvasPanel canvas;
 	public JMenuBar menubar;
 	public JMenu menuFile;
@@ -271,7 +269,7 @@ public class Application extends JFrame
 	/////////
 	// GUI //
 	/////////
-	
+
 	/**
 	 * Initialize GUI components
 	 */
@@ -279,9 +277,7 @@ public class Application extends JFrame
 	{
 		// config frame
 		setIconImage( getSmallIcon( "jdrafting.png" ).getImage() );
-		Dimension size = Toolkit.getDefaultToolkit().getScreenSize(); 
-		setPreferredSize( new Dimension( (int) ( size.getWidth() * 0.8 ), 
-										 (int) ( size.getHeight() * 0.9 ) ) );
+		setPreferredSize( JDUtils.getScreenSize( 0.8f, 0.8f ) );
 
 		// --- MENUBAR
 		setJMenuBar( menubar = new JMenuBar() );
@@ -320,20 +316,32 @@ public class Application extends JFrame
 			// north panel
 			contentPanel.add( northPanel = new JPanel(), BorderLayout.NORTH );
 			northPanel.setLayout( 
-					new BoxLayout( northPanel, BoxLayout.LINE_AXIS ) );
+							new BoxLayout( northPanel, BoxLayout.LINE_AXIS ) );
+				JPanel auxPanel = new JPanel();
+				northPanel.add( auxPanel );
+				auxPanel.setBorder( 
+						BorderFactory.createBevelBorder( BevelBorder.RAISED ) );
+				auxPanel.setLayout( 
+							new BoxLayout( auxPanel, BoxLayout.LINE_AXIS ) );
 				// style panel
-				northPanel.add( stylePanel = new JPanel() );
-				stylePanel.setLayout(
-							new BoxLayout( stylePanel, BoxLayout.LINE_AXIS ) );
-				stylePanel.setBorder( BorderFactory.createTitledBorder( 
+				styleToolbar = new JToolBar( getLocaleText( "tit_style" ) );
+				styleToolbar.addHierarchyListener( 
+									(evt) -> Application.this.revalidate() );
+				auxPanel.add( styleToolbar );
+				styleToolbar.setLayout(
+						new BoxLayout( styleToolbar, BoxLayout.LINE_AXIS ) );
+				styleToolbar.setBorder( BorderFactory.createTitledBorder( 
 											getLocaleText( "tit_style" ) ) );
 				// ruler & protractor panel
-				northPanel.add( rulerProtPanel = new JPanel() );
-				rulerProtPanel.setLayout( 
-						new BoxLayout( rulerProtPanel, BoxLayout.LINE_AXIS ) );
-				rulerProtPanel.setBorder( BorderFactory.createTitledBorder(
+				rulerProtToolbar = 
+								new JToolBar( getLocaleText( "ruler_prot" ) );
+				rulerProtToolbar.addHierarchyListener( 
+									(evt) -> Application.this.revalidate() );
+				auxPanel.add( rulerProtToolbar );
+				rulerProtToolbar.setLayout( 
+					new BoxLayout( rulerProtToolbar, BoxLayout.LINE_AXIS ) );
+				rulerProtToolbar.setBorder( BorderFactory.createTitledBorder(
 											getLocaleText( "ruler_prot" ) ) );
-				northPanel.add( Box.createHorizontalGlue() );
 			// status panel
 			contentPanel.add( 
 				statusPanel = new JPanel( new FlowLayout( FlowLayout.LEFT ) ),
@@ -353,21 +361,21 @@ public class Application extends JFrame
 						 BorderLayout.SOUTH );
 		
 		// --- STYLE PANEL
-		stylePanel.add( Box.createHorizontalStrut( 3 ) );		
+		styleToolbar.add( Box.createHorizontalStrut( 3 ) );		
 		// eyedropper button
-		stylePanel.add( buttonEyedropper = new JButton() );
-		stylePanel.add( Box.createHorizontalStrut( 3 ) );
+		styleToolbar.add( buttonEyedropper = new JButton() );
+		styleToolbar.add( Box.createHorizontalStrut( 3 ) );
 		// paste style button
-		stylePanel.add( buttonPasteStyle = new JButton() );
-		stylePanel.add( Box.createHorizontalStrut( 12 ) );
+		styleToolbar.add( buttonPasteStyle = new JButton() );
+		styleToolbar.add( Box.createHorizontalStrut( 12 ) );
 		// jlabel line thickness
 		JLabel labelThickness =
 					new JLabel( getLocaleText( "thickness" ), JLabel.RIGHT );
 		labelThickness.setMaximumSize( labelThickness.getPreferredSize() );
-		stylePanel.add( labelThickness );
-		stylePanel.add( Box.createHorizontalStrut( 3 ) );
+		styleToolbar.add( labelThickness );
+		styleToolbar.add( Box.createHorizontalStrut( 3 ) );
 		// line thikness spinner
-		stylePanel.add( spinThickness = new JSpinner( new SpinnerNumberModel( 
+		styleToolbar.add( spinThickness = new JSpinner( new SpinnerNumberModel( 
 			getStroke().getLineWidth(), .1, Double.POSITIVE_INFINITY, 1. ) ) );
 		spinThickness.setPreferredSize( new Dimension( 60, 30 ) );
 		spinThickness.setMinimumSize( spinThickness.getPreferredSize() );
@@ -378,9 +386,9 @@ public class Application extends JFrame
 			BasicStroke bs = (BasicStroke) comboLineStyle.getSelectedItem();
 			setStroke( JDStrokes.getStroke( bs,	thickness ) );
 		});
-		stylePanel.add( Box.createHorizontalStrut( 3 ) );
+		styleToolbar.add( Box.createHorizontalStrut( 3 ) );
 		// line color button
-		stylePanel.add( buttonColor = new JButton() {
+		styleToolbar.add( buttonColor = new JButton() {
 			@Override
 			protected void paintComponent( Graphics g ) {
 				super.paintComponent( g );
@@ -391,21 +399,21 @@ public class Application extends JFrame
 		buttonColor.setPreferredSize( new Dimension( 30, 30 ) );
 		buttonColor.setMinimumSize( buttonColor.getPreferredSize() );
 		buttonColor.setMaximumSize( buttonColor.getPreferredSize() );
-		stylePanel.add( Box.createHorizontalStrut( 3 ) );
+		styleToolbar.add( Box.createHorizontalStrut( 3 ) );
 		// jcombobox line style
-		stylePanel.add( comboLineStyle = new LineStyleComboBox( this ) );
+		styleToolbar.add( comboLineStyle = new LineStyleComboBox( this ) );
 		comboLineStyle.setPreferredSize( new Dimension( 200, 30 ) );
 		comboLineStyle.setMinimumSize( new Dimension( 100, 30 ) );
 		comboLineStyle.setMaximumSize( comboLineStyle.getPreferredSize() );
-		stylePanel.add( Box.createHorizontalStrut( 12 ) );
+		styleToolbar.add( Box.createHorizontalStrut( 12 ) );
 		// jlabel point thickness
 		JLabel labelPoint =
 				new JLabel( getLocaleText( "point_thickness" ), JLabel.RIGHT );
 		labelPoint.setMaximumSize( labelPoint.getPreferredSize() );
-		stylePanel.add( labelPoint );
-		stylePanel.add( Box.createHorizontalStrut( 3 ) );
+		styleToolbar.add( labelPoint );
+		styleToolbar.add( Box.createHorizontalStrut( 3 ) );
 		// point thickness spinner
-		stylePanel.add( spinPointThickness = new JSpinner( 
+		styleToolbar.add( spinPointThickness = new JSpinner( 
 				new SpinnerNumberModel( getPointStroke().getLineWidth(), .1, 
 										Double.POSITIVE_INFINITY, 1. ) ) );
 		spinPointThickness.setPreferredSize( new Dimension( 60, 30 ) );
@@ -421,9 +429,9 @@ public class Application extends JFrame
 				bs.getLineJoin(), bs.getMiterLimit(), bs.getDashArray(),
 				bs.getDashPhase() ) );
 		});
-		stylePanel.add( Box.createHorizontalStrut( 3 ) );
+		styleToolbar.add( Box.createHorizontalStrut( 3 ) );
 		// point color button
-		stylePanel.add( buttonPointColor = new JButton() {
+		styleToolbar.add( buttonPointColor = new JButton() {
 			@Override
 			protected void paintComponent( Graphics g ) {
 				super.paintComponent( g );
@@ -434,26 +442,26 @@ public class Application extends JFrame
 		buttonPointColor.setPreferredSize( new Dimension( 30, 30 ) );
 		buttonPointColor.setMinimumSize( buttonPointColor.getPreferredSize() );
 		buttonPointColor.setMaximumSize( buttonPointColor.getPreferredSize() );
-		stylePanel.add( Box.createHorizontalStrut( 3 ) );
+		styleToolbar.add( Box.createHorizontalStrut( 3 ) );
 		
 		// --- RULER & PROTRACTOR PANEL
-		rulerProtPanel.add( Box.createHorizontalStrut( 3 ) );
+		rulerProtToolbar.add( Box.createHorizontalStrut( 3 ) );
 		// ruler button
-		rulerProtPanel.add( buttonRuler = new JButton() );
-		rulerProtPanel.add( Box.createHorizontalStrut( 3 ) );
+		rulerProtToolbar.add( buttonRuler = new JButton() );
+		rulerProtToolbar.add( Box.createHorizontalStrut( 3 ) );
 		// checkbox fixed distance
-		rulerProtPanel.add( checkRuler = 
+		rulerProtToolbar.add( checkRuler = 
 								new JCheckBox( getLocaleText( "fix_dist" ) ) );
 		checkRuler.setSelected( isUsingRuler() );
 		checkRuler.setMaximumSize( checkRuler.getPreferredSize() );
 		checkRuler.setMinimumSize( checkRuler.getPreferredSize() );
 		checkRuler.addActionListener( 
 							evt -> setUseDistance( checkRuler.isSelected() ) );
-		rulerProtPanel.add( Box.createHorizontalStrut( 12 ) );
+		rulerProtToolbar.add( Box.createHorizontalStrut( 12 ) );
 		// protractor button
-		rulerProtPanel.add( buttonProtactor = new JButton() );
+		rulerProtToolbar.add( buttonProtactor = new JButton() );
 		// spinner angle
-		rulerProtPanel.add( spinAngle = new JSpinner( new SpinnerNumberModel( 
+		rulerProtToolbar.add( spinAngle = new JSpinner( new SpinnerNumberModel( 
 								getAngle(), 0., Math.nextDown( 360. ), 1. ) ) );
 		spinAngle.setPreferredSize( new Dimension( 70, 30 ) );
 		spinAngle.setMaximumSize( spinAngle.getPreferredSize() );
@@ -474,7 +482,7 @@ public class Application extends JFrame
 		});
 		spinAngle.addChangeListener( 
 				evt -> setAngle( (double) spinAngle.getModel().getValue() ) );
-		rulerProtPanel.add(	new JLabel( getLocaleText( "degrees" ) ) );
+		rulerProtToolbar.add(	new JLabel( getLocaleText( "degrees" ) ) );
 		// final glue
 		northPanel.add( Box.createHorizontalGlue() );
 
@@ -583,6 +591,29 @@ public class Application extends JFrame
 		menuView.addSeparator();
 		// See/Hide toolbars
 		List<AbstractButton> buttonList = new LinkedList<>();
+		JCheckBoxMenuItem checkMenuItemStyleBar = new JCheckBoxMenuItem( 
+					getLocaleText( "item_style" ), styleToolbar.isVisible() );
+		checkMenuItemStyleBar.addActionListener( new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				styleToolbar.setVisible( checkMenuItemStyleBar.isSelected() );
+			}
+		});
+		menuView.add( checkMenuItemStyleBar );
+		buttonList.add( checkMenuItemStyleBar );
+		JCheckBoxMenuItem checkMenuItemRulerProtBar = new JCheckBoxMenuItem( 
+			getLocaleText( "item_ruler_prot" ), rulerProtToolbar.isVisible() );
+		checkMenuItemRulerProtBar.addActionListener( new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				rulerProtToolbar.setVisible( 
+									checkMenuItemRulerProtBar.isSelected() );
+			}
+		});
+		menuView.add( checkMenuItemRulerProtBar );
+		buttonList.add( checkMenuItemRulerProtBar );
 		JCheckBoxMenuItem checkMenuItemStatusBar = new JCheckBoxMenuItem( 
 					getLocaleText( "item_status" ), statusPanel.isVisible() );
 		checkMenuItemStatusBar.addActionListener( new AbstractAction() {
@@ -606,8 +637,7 @@ public class Application extends JFrame
 		menuView.add( checkMenuItemActionBar );
 		buttonList.add( checkMenuItemActionBar );
 		JCheckBoxMenuItem checkMenuItemShapebar = new JCheckBoxMenuItem( 
-												getLocaleText( "item_shape" ),
-												shapebar.isVisible() );
+						getLocaleText( "item_shape" ), shapebar.isVisible() );
 		checkMenuItemShapebar.addActionListener( new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -618,8 +648,7 @@ public class Application extends JFrame
 		menuView.add( checkMenuItemShapebar );
 		buttonList.add( checkMenuItemShapebar );
 		JCheckBoxMenuItem checkMenuItemToolbar = new JCheckBoxMenuItem( 
-												getLocaleText( "item_tool" ),
-												toolbar.isVisible() );
+							getLocaleText( "item_tool" ), toolbar.isVisible() );
 		checkMenuItemToolbar.addActionListener( new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -1192,30 +1221,6 @@ public class Application extends JFrame
 	}
 	
 	/**
-	 * Get a text value in current language
-	 * @param key the key in the language file
-	 * @return the translated expression
-	 */
-	public static String getLocaleText( String key )
-	{
-		try
-		{
-			ResourceBundle resource = ResourceBundle.getBundle( 
-							"jdrafting.resources.language.language", locale );
-			/*if ( !locale.equals( resource.getLocale() ) )  // go to English
-				throw new MissingResourceException( "fallback", "", key );*/
-
-			return resource.getString( key );
-		}
-		catch ( MissingResourceException e )  // Default English
-		{
-			return ResourceBundle.getBundle(
-					"jdrafting.resources.language.language", Locale.ENGLISH )
-					.getString( key );
-		}
-	}
-	
-	/**
 	 * Adds to exercise a Path2D representation of the shape with the
 	 * specified parameters.
 	 * @param pit shape path iterator
@@ -1291,46 +1296,6 @@ public class Application extends JFrame
 		return removeShape( jdshape, null );
 	}
 
-	/**
-	 * Scale an image from the image resource folder to a specified size
-	 * @param name name of the file (from image resource folder)
-	 * @param width new width
-	 * @param height new height
-	 * @return the scaled image
-	 */
-	public static ImageIcon getScaledIco( String name, int width, int height )
-	{
-		return new ImageIcon( new ImageIcon( 
-				Object.class
-				.getResource( "/jdrafting/resources/images/" + name ) )
-				.getImage()
-				.getScaledInstance( width, height, Image.SCALE_SMOOTH ) );
-	}
-
-	/**
-	 * Get small icons of the resource images. 
-	 * See {@link #getScaledIco(String, int, int)}
-	 * @see #getScaledIco(String, int, int)
-	 * @param name filename
-	 * @return scaled image
-	 */
-	public static ImageIcon getSmallIcon( String name )
-	{
-		return getScaledIco( name, 16, 16 );
-	}
-
-	/**
-	 * Get large icons of the resource images. 
-	 * See {@link #getScaledIco(String, int, int)}
-	 * @see #getScaledIco(String, int, int)
-	 * @param name filename
-	 * @return scaled image
-	 */
-	public static ImageIcon getLargeIcon( String name )	
-	{
-		return getScaledIco( name, 32, 32 );
-	}
-	
 	/**
 	 * Exit application
 	 */
@@ -1487,15 +1452,15 @@ public class Application extends JFrame
 			return "Remove " + jdshape.toShortString();
 		}
 	}
-	
-	
+
+
 	//////////////////
 	// GUI LAUNCHER //
 	//////////////////	
 
 	/**
 	 * Launch GUI
-	 * @param args (ignored)  // TODO
+	 * @param args %1 filename to load
 	 */
 	public static void main( String[] args )
 	{

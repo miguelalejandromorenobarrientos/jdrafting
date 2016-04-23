@@ -9,13 +9,14 @@ import java.awt.geom.Point2D;
 
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
+import jdrafting.gui.JDUtils;
 
 public class FreeHandListener extends AbstractCanvasMouseListener 
 {
 	private static final Cursor UP_CURSOR = 
-					CanvasPanel.getCustomCursor( "free_hand_up_cursor.png" );
+						JDUtils.getCustomCursor( "free_hand_up_cursor.png" );
 	private static final Cursor DOWN_CURSOR = 
-			CanvasPanel.getCustomCursor( "free_hand_down_cursor.png" );
+						JDUtils.getCustomCursor( "free_hand_down_cursor.png" );
 	private CanvasPanel canvas;
 	private Application app;
 	
@@ -33,7 +34,7 @@ public class FreeHandListener extends AbstractCanvasMouseListener
 
 		canvas.setCursor( UP_CURSOR );
 
-		app.setStatusText( Application.getLocaleText( "txt_free1" ) );
+		app.setStatusText( JDUtils.getLocaleText( "txt_free1" ) );
 	}
 	
 	@Override

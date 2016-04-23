@@ -4,7 +4,8 @@ import static jdrafting.geom.JDMath.adjustVectorToSize;
 import static jdrafting.geom.JDMath.length;
 import static jdrafting.geom.JDMath.sumVectors;
 import static jdrafting.geom.JDMath.vector;
-import static jdrafting.gui.Application.getLocaleText;
+import static jdrafting.gui.JDUtils.getLargeIcon;
+import static jdrafting.gui.JDUtils.getLocaleText;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -26,11 +27,12 @@ import jdrafting.geom.JDPoint;
 import jdrafting.geom.JDraftingShape;
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
+import jdrafting.gui.JDUtils;
 
 public class DivisionPointsListener extends AbstractCanvasMouseListener
 {
 	private static final Cursor CURSOR =
-						CanvasPanel.getCustomCursor( "divisions_cursor.png" );
+							JDUtils.getCustomCursor( "divisions_cursor.png" );
 	private CanvasPanel canvas;
 	private Application app;
 	
@@ -87,7 +89,7 @@ public class DivisionPointsListener extends AbstractCanvasMouseListener
 				int option = JOptionPane.showOptionDialog( app, spinDivisions, 
 					getLocaleText( "div_dlg" ),
 					JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, 
-					Application.getLargeIcon( "divisions.png" ), null, null );
+					getLargeIcon( "divisions.png" ), null, null );
 				if ( option == JOptionPane.CANCEL_OPTION 
 					 || option == JOptionPane.CLOSED_OPTION )
 				{

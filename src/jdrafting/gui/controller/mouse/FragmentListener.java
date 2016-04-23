@@ -1,6 +1,6 @@
 package jdrafting.gui.controller.mouse;
 
-import static jdrafting.gui.Application.getLocaleText;
+import static jdrafting.gui.JDUtils.getLocaleText;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -14,11 +14,12 @@ import javax.swing.undo.CompoundEdit;
 import jdrafting.geom.JDraftingShape;
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
+import jdrafting.gui.JDUtils;
 
 public class FragmentListener extends AbstractCanvasMouseListener
 {
 	private static final Cursor CURSOR =
-							CanvasPanel.getCustomCursor( "hammer_cursor.png" );
+								JDUtils.getCustomCursor( "hammer_cursor.png" );
 	private CanvasPanel canvas;
 	private Application app;
 

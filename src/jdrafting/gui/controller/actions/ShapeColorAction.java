@@ -1,8 +1,8 @@
 package jdrafting.gui.controller.actions;
 
-import static jdrafting.gui.Application.getLargeIcon;
-import static jdrafting.gui.Application.getLocaleText;
-import static jdrafting.gui.Application.getSmallIcon;
+import static jdrafting.gui.JDUtils.getLargeIcon;
+import static jdrafting.gui.JDUtils.getLocaleText;
+import static jdrafting.gui.JDUtils.getSmallIcon;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
@@ -36,7 +36,7 @@ public class ShapeColorAction extends AbstractAction
 
 		jcc = new JColorChooser();
 		colorChooser = JColorChooser.createDialog( 
-								app, getLocaleText( "color_des" ), false, jcc, 
+								app, getLocaleText( "color_des" ), true, jcc, 
 								(evt) -> app.setColor( jcc.getColor() ), // ok
 								null ); // cancel 
 	}

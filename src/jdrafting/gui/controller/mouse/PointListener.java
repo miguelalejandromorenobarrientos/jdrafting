@@ -10,11 +10,12 @@ import java.awt.geom.Point2D;
 import jdrafting.geom.JDPoint;
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
+import jdrafting.gui.JDUtils;
 
 public class PointListener extends AbstractCanvasMouseListener
 {
 	private static final Cursor CURSOR =
-							CanvasPanel.getCustomCursor( "point_cursor.png" );
+								JDUtils.getCustomCursor( "point_cursor.png" );
 	private CanvasPanel canvas;
 	private Application app;
 
@@ -27,7 +28,7 @@ public class PointListener extends AbstractCanvasMouseListener
 		
 		canvas.setCursor( CURSOR );
 		
-		app.setStatusText( Application.getLocaleText( "txt_point" ) );
+		app.setStatusText( JDUtils.getLocaleText( "txt_point" ) );
 	}
 
 	@Override

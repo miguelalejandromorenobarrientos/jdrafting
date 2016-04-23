@@ -1,8 +1,8 @@
 package jdrafting.gui.controller.actions;
 
-import static jdrafting.gui.Application.getLargeIcon;
-import static jdrafting.gui.Application.getLocaleText;
-import static jdrafting.gui.Application.getSmallIcon;
+import static jdrafting.gui.JDUtils.getLargeIcon;
+import static jdrafting.gui.JDUtils.getLocaleText;
+import static jdrafting.gui.JDUtils.getSmallIcon;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -32,6 +32,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import jdrafting.Exercise;
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
+import jdrafting.gui.JDUtils;
 import jdrafting.gui.Viewport;
 
 @SuppressWarnings("serial")
@@ -62,6 +63,7 @@ public class OpenAction extends AbstractAction
 		accesoryPanel.add( previewPanel );
 		fileChooser.setAccessory( accesoryPanel );
 		fileChooser.addPropertyChangeListener( previewPanel );
+		fileChooser.setPreferredSize( JDUtils.getScreenSize( 0.7f, 0.7f ) );
 	}
 		
 	@Override

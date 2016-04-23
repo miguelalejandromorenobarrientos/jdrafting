@@ -1,7 +1,7 @@
 package jdrafting.gui.controller.mouse;
 
 import static jdrafting.geom.JDMath.nearInt;
-import static jdrafting.gui.Application.getLocaleText;
+import static jdrafting.gui.JDUtils.getLocaleText;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -27,6 +27,7 @@ import com.sun.istack.internal.NotNull;
 import jdrafting.geom.JDraftingShape;
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
+import jdrafting.gui.JDUtils;
 
 /**
  * Apply homothety to selected shapes using mouse control 
@@ -34,7 +35,7 @@ import jdrafting.gui.CanvasPanel;
 public class HomothetyListener extends AbstractCanvasMouseListener
 {
 	private static final Cursor CURSOR = 
-						CanvasPanel.getCustomCursor( "homothety_cursor.png" );
+							JDUtils.getCustomCursor( "homothety_cursor.png" );
 	private CanvasPanel canvas;
 	private Application app;
 

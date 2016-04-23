@@ -4,7 +4,7 @@ import static jdrafting.geom.JDMath.linesIntersection;
 import static jdrafting.geom.JDMath.normal;
 import static jdrafting.geom.JDMath.sumVectors;
 import static jdrafting.geom.JDMath.vector;
-import static jdrafting.gui.Application.getLocaleText;
+import static jdrafting.gui.JDUtils.getLocaleText;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -20,6 +20,7 @@ import javax.swing.undo.CompoundEdit;
 import jdrafting.geom.JDraftingShape;
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
+import jdrafting.gui.JDUtils;
 
 /**
  * Modifies a segment using mouse control 
@@ -27,7 +28,7 @@ import jdrafting.gui.CanvasPanel;
 public class ModifySegmentListener extends AbstractCanvasMouseListener
 {
 	private static final Cursor CURSOR = 
-					CanvasPanel.getCustomCursor( "modify_segment_cursor.png" );
+						JDUtils.getCustomCursor( "modify_segment_cursor.png" );
 	private CanvasPanel canvas;
 	private Application app;
 

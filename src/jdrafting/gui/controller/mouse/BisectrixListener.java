@@ -1,11 +1,12 @@
 package jdrafting.gui.controller.mouse;
 
 import static jdrafting.geom.JDMath.linesIntersection;
+import static jdrafting.geom.JDMath.normal;
 import static jdrafting.geom.JDMath.pointRelativeToCenter;
 import static jdrafting.geom.JDMath.sumVectors;
 import static jdrafting.geom.JDMath.vector;
-import static jdrafting.geom.JDMath.normal;
 import static jdrafting.geom.JDMath.vectorArg;
+import static jdrafting.gui.JDUtils.getLocaleText;
 
 import java.awt.BasicStroke;
 import java.awt.Cursor;
@@ -21,6 +22,7 @@ import javax.swing.JOptionPane;
 import jdrafting.geom.JDraftingShape;
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
+import jdrafting.gui.JDUtils;
 
 /**
  * Create bisectrix segment using mouse control 
@@ -28,7 +30,7 @@ import jdrafting.gui.CanvasPanel;
 public class BisectrixListener extends AbstractCanvasMouseListener
 {
 	private static final Cursor CURSOR = 
-						CanvasPanel.getCustomCursor( "bisectrix_cursor.png" );
+							JDUtils.getCustomCursor( "bisectrix_cursor.png" );
 	private CanvasPanel canvas;
 	private Application app;
 
@@ -44,7 +46,7 @@ public class BisectrixListener extends AbstractCanvasMouseListener
 		
 		canvas.setCursor( CURSOR );
 		
-		app.setStatusText( Application.getLocaleText( "txt_bisectrix1" ) );
+		app.setStatusText( getLocaleText( "txt_bisectrix1" ) );
 	}
 
 	@Override
@@ -82,8 +84,7 @@ public class BisectrixListener extends AbstractCanvasMouseListener
 			{
 				seg1 = jdshape;
 				canvas.setCursor( CURSOR );
-				app.setStatusText(
-								Application.getLocaleText( "txt_bisectrix2" ) );
+				app.setStatusText( getLocaleText( "txt_bisectrix2" ) );
 			}
 			else
 				return;
@@ -101,17 +102,16 @@ public class BisectrixListener extends AbstractCanvasMouseListener
 				{
 					// error message
 					JOptionPane.showMessageDialog( app, 
-								Application.getLocaleText( "bisectrix_dlg" ),
-								Application.getLocaleText( "bisectrix_title" ),
-								JOptionPane.ERROR_MESSAGE );
+											getLocaleText( "bisectrix_dlg" ),
+											getLocaleText( "bisectrix_title" ),
+											JOptionPane.ERROR_MESSAGE );
 					// back to select mode
 					canvas.setCanvasListener( new HandListener( canvas ) );
 					return;
 				}
 				
 				canvas.setCursor( CURSOR );
-				app.setStatusText(
-								Application.getLocaleText( "txt_bisectrix3" ) );
+				app.setStatusText( getLocaleText( "txt_bisectrix3" ) );
 			}
 			else
 				return;
@@ -120,13 +120,13 @@ public class BisectrixListener extends AbstractCanvasMouseListener
 		{
 			Line2D bisectrix = getBisectrix( logicMouse ); 
 			bis1 = bisectrix.getP2();
-			app.setStatusText( Application.getLocaleText( "txt_bisectrix4" ) );
+			app.setStatusText( getLocaleText( "txt_bisectrix4" ) );
 		}
 		else
 		{
 			Line2D bisectrix = getBisectrix( logicMouse );
 			app.addShapeFromIterator( bisectrix.getPathIterator( null ), "", 
-					"> " + Application.getLocaleText( "new_bisectrix" )
+					"> " + getLocaleText( "new_bisectrix" )
 					+ " [" + seg1.getName() + "," + seg2.getName() + "]", 
 					app.getColor(), app.getStroke() );
 			

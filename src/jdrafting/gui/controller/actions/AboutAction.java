@@ -1,8 +1,8 @@
 package jdrafting.gui.controller.actions;
 
-import static jdrafting.gui.Application.getLargeIcon;
-import static jdrafting.gui.Application.getLocaleText;
-import static jdrafting.gui.Application.getSmallIcon;
+import static jdrafting.gui.JDUtils.getLargeIcon;
+import static jdrafting.gui.JDUtils.getLocaleText;
+import static jdrafting.gui.JDUtils.getSmallIcon;
 
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
@@ -17,6 +17,7 @@ import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 
 @SuppressWarnings("serial")
 public class AboutAction extends AbstractAction
@@ -48,7 +49,7 @@ public class AboutAction extends AbstractAction
 			+ "</i></font></p>"
 			+ "<p><font size=4><i>"
 				+ Application.APPNAME + "</i></font> "
-				+ Application.getLocaleText( "app_des" )
+				+ getLocaleText( "app_des" )
 			+ "</p>"
 			+ "<p>"
 			+ "GPLv3 license " 
@@ -83,7 +84,7 @@ public class AboutAction extends AbstractAction
 			}
 		});
 		JOptionPane.showMessageDialog( app, ep, "About " + Application.APPNAME, 
-					JOptionPane.PLAIN_MESSAGE, 
-					Application.getScaledIco( "jdrafting.png", 100, 100 ) );
+							JOptionPane.PLAIN_MESSAGE, 
+							JDUtils.getScaledIco( "jdrafting.png", 100, 100 ) );
 	}
 }

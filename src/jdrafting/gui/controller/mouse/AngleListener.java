@@ -3,7 +3,7 @@ package jdrafting.gui.controller.mouse;
 import static jdrafting.geom.JDMath.pointRelativeToCenter;
 import static jdrafting.geom.JDMath.projection;
 import static jdrafting.geom.JDMath.vector;
-import static jdrafting.gui.Application.getLocaleText;
+import static jdrafting.gui.JDUtils.getLocaleText;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -19,6 +19,7 @@ import java.awt.geom.Point2D;
 import jdrafting.geom.JDMath;
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
+import jdrafting.gui.JDUtils;
 
 /**
  * Create segment by angle using mouse control 
@@ -26,7 +27,7 @@ import jdrafting.gui.CanvasPanel;
 public class AngleListener extends AbstractCanvasMouseListener
 {
 	private static final Cursor CURSOR = 
-						CanvasPanel.getCustomCursor( "angle_cursor.png" );
+							JDUtils.getCustomCursor( "angle_cursor.png" );
 	private CanvasPanel canvas;
 	private Application app;
 

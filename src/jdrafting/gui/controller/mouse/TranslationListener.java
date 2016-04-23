@@ -3,7 +3,7 @@ package jdrafting.gui.controller.mouse;
 import static jdrafting.geom.JDMath.adjustVectorToSize;
 import static jdrafting.geom.JDMath.sumVectors;
 import static jdrafting.geom.JDMath.vector;
-import static jdrafting.gui.Application.getLocaleText;
+import static jdrafting.gui.JDUtils.getLocaleText;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -26,6 +26,7 @@ import com.sun.istack.internal.NotNull;
 import jdrafting.geom.JDraftingShape;
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
+import jdrafting.gui.JDUtils;
 
 /**
  * Translate selected shapes using mouse control 
@@ -33,7 +34,7 @@ import jdrafting.gui.CanvasPanel;
 public class TranslationListener extends AbstractCanvasMouseListener
 {
 	private static final Cursor CURSOR = 
-						CanvasPanel.getCustomCursor( "translation_cursor.png" );
+							JDUtils.getCustomCursor( "translation_cursor.png" );
 	private CanvasPanel canvas;
 	private Application app;
 

@@ -14,6 +14,7 @@ import java.util.Set;
 import jdrafting.geom.JDraftingShape;
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
+import jdrafting.gui.JDUtils;
 
 /**
  * Rectangular selection by mouse control 
@@ -36,7 +37,7 @@ public class SelectionListener extends AbstractCanvasMouseListener
 		
 		canvas.setCursor( new Cursor( Cursor.CROSSHAIR_CURSOR ) );
 
-		app.setStatusText( Application.getLocaleText( "txt_sel1" ) );
+		app.setStatusText( JDUtils.getLocaleText( "txt_sel1" ) );
 	}
 	
 	@Override

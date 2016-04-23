@@ -4,7 +4,7 @@ import static jdrafting.geom.JDMath.adjustVectorToSize;
 import static jdrafting.geom.JDMath.pointRelativeToCenter;
 import static jdrafting.geom.JDMath.sumVectors;
 import static jdrafting.geom.JDMath.vector;
-import static jdrafting.gui.Application.getLocaleText;
+import static jdrafting.gui.JDUtils.getLocaleText;
 
 import java.awt.BasicStroke;
 import java.awt.Cursor;
@@ -18,6 +18,7 @@ import javax.swing.undo.CompoundEdit;
 import jdrafting.geom.JDPoint;
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
+import jdrafting.gui.JDUtils;
 
 /**
  * Create a segment using mouse control 
@@ -25,7 +26,7 @@ import jdrafting.gui.CanvasPanel;
 public class SegmentListener extends AbstractCanvasMouseListener
 {
 	private static final Cursor CURSOR =
-							CanvasPanel.getCustomCursor( "segment_cursor.png" );
+								JDUtils.getCustomCursor( "segment_cursor.png" );
 	private static final double ANGLE_INTERVAL = Math.PI / 4.;
 	private CanvasPanel canvas;
 	private Application app;

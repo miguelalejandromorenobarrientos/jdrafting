@@ -1,8 +1,8 @@
 package jdrafting.gui.controller.actions;
 
-import static jdrafting.gui.Application.getLargeIcon;
-import static jdrafting.gui.Application.getLocaleText;
-import static jdrafting.gui.Application.getSmallIcon;
+import static jdrafting.gui.JDUtils.getLargeIcon;
+import static jdrafting.gui.JDUtils.getLocaleText;
+import static jdrafting.gui.JDUtils.getSmallIcon;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
@@ -48,9 +48,8 @@ public class HomothetyAction extends AbstractAction
 		if ( app.getSelectedShapes().size() > 0 )
 		{
 			// dialog for homothety factor
-			JSpinner spinFactor = new JSpinner(
-				new SpinnerNumberModel( 
-								factor, .1, Double.POSITIVE_INFINITY, .1 ) );
+			JSpinner spinFactor = new JSpinner( new SpinnerNumberModel( 
+								factor, 0.1, Double.POSITIVE_INFINITY, 0.1 ) );
 			spinFactor.addChangeListener( new ChangeListener() {
 				@Override
 				public void stateChanged( ChangeEvent e )
@@ -60,9 +59,9 @@ public class HomothetyAction extends AbstractAction
 			});
 			
 			int option = JOptionPane.showOptionDialog( app, spinFactor, 
-				getLocaleText( "homo_dlg" ),
-				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, 
-				Application.getLargeIcon( "homothety.png" ), null, null );
+						getLocaleText( "homo_dlg" ),
+						JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, 
+						getLargeIcon( "homothety.png" ), null, null );
 			if ( option != JOptionPane.OK_OPTION )
 			{
 				// back to select mode
