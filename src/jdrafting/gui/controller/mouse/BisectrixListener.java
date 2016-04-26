@@ -135,7 +135,7 @@ public class BisectrixListener extends AbstractCanvasMouseListener
 		}
 		canvas.repaint();
 	}
-	
+
 	@Override
 	public void paintTool( Graphics2D g2 )
 	{

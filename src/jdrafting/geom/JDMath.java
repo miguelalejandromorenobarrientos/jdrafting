@@ -8,6 +8,8 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Math utility operations
@@ -189,6 +191,86 @@ public class JDMath
 	public static double projection( Point2D v, Point2D w )
 	{
 		return abs( scalar( v, w ) / v.distance( 0, 0 ) );
+	}
+	
+	/**
+	 * Get incenter of a triangle
+	 * @param a vertex
+	 * @param b vertex
+	 * @param c vertex
+	 * @return the incenter
+	 */
+	public static Point2D incenter( Point2D A, Point2D B, Point2D C )
+	{
+		double a = vector( B, C ).distance( 0, 0 );
+		double b = vector( A, C ).distance( 0, 0 );
+		double c = vector( A, B ).distance( 0, 0 );
+		double abc = a + b + c;
+		
+		return new Point2D.Double( 
+						( a * A.getX() + b * B.getX() + c * C.getX() ) / abc,
+						( a * A.getY() + b * B.getY() + c * C.getY() ) / abc );								   
+	}
+
+	/**
+	 * Get ortocenter of a triangle
+	 * @param A vertex
+	 * @param B vertex
+	 * @param C vertex
+	 * @return the ortocenter or null if vertex are aligned
+	 */
+	public static Point2D ortocenter( Point2D A, Point2D B, Point2D C )
+	{
+		Point2D vBC = vector( B, C );
+		Point2D nBC = normal( vBC );
+		Point2D vAC = vector( A, C );
+		Point2D nAC = normal( vAC );
+		
+		return linesIntersection( A, sumVectors( A, nBC ),
+								  B, sumVectors( B, nAC ) );	
+	}
+	
+	/**
+	 * Get baricenter of a triangle
+	 * @param a vertex
+	 * @param b vertex
+	 * @param c vertex
+	 * @return the baricenter
+	 */
+	public static Point2D baricenter( Point2D A, Point2D B, Point2D C )
+	{
+		List<Point2D> vertex = new LinkedList<>();
+		vertex.add( A );
+		vertex.add( B );
+		vertex.add( C );
+		
+		return centroid( vertex );
+	}
+	
+	/**
+	 * Get circumcenter of a triangle
+	 * @param a vertex
+	 * @param b vertex
+	 * @param c vertex
+	 * @return the circumcenter
+	 */
+	public static Point2D circumcenter( Point2D A, Point2D B, Point2D C )
+	{
+		double Ax = A.getX(), Ay = A.getY();
+		double Bx = B.getX(), By = B.getY();
+		double Cx = C.getX(), Cy = C.getY();
+		double dCBx = Cx - Bx, dBCy = By - Cy;
+		double dACx = Ax - Cx, dCAy = Cy - Ay;
+		double dBAx = Bx - Ax, dABy = Ay - By;
+		double d = 2 * ( Ax * dBCy + Bx * dCAy + Cx * dABy );
+		
+		return new Point2D.Double(
+			( ( Ax * Ax + Ay * Ay ) * dBCy
+			  + ( Bx * Bx + By * By ) * dCAy
+			  + ( Cx * Cx + Cy * Cy ) * dABy ) / d,
+			( ( Ax * Ax + Ay * Ay ) * dCBx
+			  + ( Bx * Bx + By * By ) * dACx
+			  + ( Cx * Cx + Cy * Cy ) * dBAx ) / d );
 	}
 	
 	/**

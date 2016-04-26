@@ -1,11 +1,13 @@
 package jdrafting.gui;
 
+import static jdrafting.gui.JDUtils.getLargeIcon;
 import static jdrafting.gui.JDUtils.getLocaleText;
 import static jdrafting.gui.JDUtils.getSmallIcon;
 
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Desktop;
 import java.awt.Dimension;
@@ -52,6 +54,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
@@ -136,11 +139,14 @@ import jdrafting.gui.controller.actions.ShapeColorAction;
 import jdrafting.gui.controller.actions.SplineAction;
 import jdrafting.gui.controller.actions.TextVisibleAction;
 import jdrafting.gui.controller.actions.TranslationAction;
+import jdrafting.gui.controller.actions.TriangleAction;
+import jdrafting.gui.controller.actions.TrianglePointsAction;
 import jdrafting.gui.controller.actions.UndoAction;
 import jdrafting.gui.controller.actions.VertexAction;
 import jdrafting.gui.controller.actions.ZoomAllAction;
 import jdrafting.gui.controller.actions.ZoomInOutAction;
 import jdrafting.gui.controller.mouse.HandListener;
+import jdrafting.gui.controller.mouse.TrianglePointsListener;
 
 /**
  * GUI frame class
@@ -154,7 +160,7 @@ public class Application extends JFrame
 	//////////////////////
 	// metainfo
 	public static final String APPNAME = "JDrafting";
-	public static final String VERSION = "0.1.7.1";  // Some minor fixes
+	public static final String VERSION = "0.1.8";
 	public static final String AUTHOR = "Miguel Alejandro Moreno Barrientos";
 	public static final String COPYLEFT = "2016";
 	public static final String PROJECT_PAGE = 
@@ -211,6 +217,7 @@ public class Application extends JFrame
 	public JMenu menuExercise;
 	public JMenu menuTools;
 	public JMenu menuTransform;
+	public JMenu menuTrianglePoints;
 	public JMenu menuView;
 	public JMenu menuAppearance;
 	public JMenu menuHelp;
@@ -220,6 +227,7 @@ public class Application extends JFrame
 	public JButton buttonColor, buttonPointColor;
 	public JButton buttonRuler, buttonProtactor;
 	public JCheckBox checkRuler;
+	public JButton buttonMultiplier;
 	public JComboBox<BasicStroke> comboLineStyle;
 	public JToggleButton toggleNames;
 	public JLabel labelStatus;
@@ -457,6 +465,26 @@ public class Application extends JFrame
 		checkRuler.setMinimumSize( checkRuler.getPreferredSize() );
 		checkRuler.addActionListener( 
 							evt -> setUseDistance( checkRuler.isSelected() ) );
+		// multiplier button
+		rulerProtToolbar.add( buttonMultiplier = 
+			new JButton( "<html><font color=blue size=2>xN</font></html>" ) );
+		buttonMultiplier.setMaximumSize( buttonMultiplier.getPreferredSize() );
+		buttonMultiplier.addActionListener( evt -> { 
+			String result = (String) JOptionPane.showInputDialog( 
+						this, getLocaleText( "dist_mult_dlg" ), "xN",
+						JOptionPane.QUESTION_MESSAGE, 
+						getLargeIcon( "ruler.png" ), null, "1" );
+			if ( result == null )  return;
+			try
+			{
+				setDistance( getDistance() * Double.valueOf( result ) );
+			}
+			catch ( NumberFormatException e )
+			{
+				JOptionPane.showMessageDialog( 
+									this, e, "xN", JOptionPane.ERROR_MESSAGE );
+			}
+		} );
 		rulerProtToolbar.add( Box.createHorizontalStrut( 12 ) );
 		// protractor button
 		rulerProtToolbar.add( buttonProtactor = new JButton() );
@@ -715,6 +743,25 @@ public class Application extends JFrame
 		menuShapes.add( action = new AngleAction( this ) );
 		actionMap.put( action.getValue( Action.NAME ), action );
 		menuShapes.addSeparator();
+		// Triangle notable points tool
+		menuShapes.add( menuTrianglePoints = new JMenu() );
+		menuTrianglePoints.setText( getLocaleText( "triangle_tools" ) );
+		menuTrianglePoints.setIcon( getSmallIcon( "triangle_popup.png" ) );
+		menuTrianglePoints.add( action = new TriangleAction( this ) );
+		actionMap.put( action.getValue( Action.NAME ), action );
+		menuTrianglePoints.addSeparator();
+		menuTrianglePoints.add( action = new TrianglePointsAction( 
+								this, TrianglePointsListener.BARICENTER ) );
+		actionMap.put( action.getValue( Action.NAME ), action );
+		menuTrianglePoints.add( action = new TrianglePointsAction( 
+								this, TrianglePointsListener.CIRCUMCENTER ) );
+		actionMap.put( action.getValue( Action.NAME ), action );
+		menuTrianglePoints.add( action = new TrianglePointsAction( 
+								this, TrianglePointsListener.INCENTER ) );
+		actionMap.put( action.getValue( Action.NAME ), action );
+		menuTrianglePoints.add( action = new TrianglePointsAction( 
+								this, TrianglePointsListener.ORTOCENTER ) );
+		actionMap.put( action.getValue( Action.NAME ), action );
 		// Rectangle shape
 		menuShapes.add( action = new RectangleAction( this ) );
 		actionMap.put( action.getValue( Action.NAME ), action );
@@ -943,7 +990,6 @@ public class Application extends JFrame
 		actionMap.put( action.getValue( Action.NAME ), action );
 		
 		// --- TOOLBARS ACTIONS
-		// actionbar
 		actionbar.add( actionMap.get( getLocaleText( "new" ) ) );
 		actionbar.add( actionMap.get( getLocaleText( "open" ) ) );
 		actionbar.add( actionMap.get( getLocaleText( "save" ) ) );
@@ -1000,6 +1046,24 @@ public class Application extends JFrame
 		shapebar.add( actionMap.get( getLocaleText( "circumference" ) ) );
 		shapebar.add( actionMap.get( getLocaleText( "angle" ) ) );
 		shapebar.addSeparator( VSEP );
+		JButton trianglePopup = new JButton( new AbstractAction() {
+			@Override
+			public void actionPerformed( ActionEvent e )
+			{
+				Component src = (Component) e.getSource();
+				JPopupMenu popup = new JPopupMenu();
+				popup.add( actionMap.get( getLocaleText( "triangle" ) ) );
+				popup.addSeparator();
+				popup.add( actionMap.get( getLocaleText( "baricenter" ) ) );
+				popup.add( actionMap.get( getLocaleText( "ortocenter" ) ) );
+				popup.add( actionMap.get( getLocaleText( "circumcenter" ) ) );
+				popup.add( actionMap.get( getLocaleText( "incenter" ) ) );
+				popup.show( src, (int) src.getBounds().getWidth() - 4, -2 );
+			}
+		});
+		trianglePopup.setToolTipText( getLocaleText( "triangle_tools" ) );
+		trianglePopup.setIcon( getLargeIcon( "triangle_popup.png" ) );
+		shapebar.add( trianglePopup );
 		shapebar.add( actionMap.get( getLocaleText( "rectangle" ) ) );
 		shapebar.add( actionMap.get( getLocaleText( "ellipse" ) ) );
 		shapebar.add( actionMap.get( getLocaleText( "polygon" ) ) );
@@ -1021,6 +1085,7 @@ public class Application extends JFrame
 		toolbar.add( actionMap.get(	getLocaleText( "vertex" ) ) );
 		toolbar.add( actionMap.get(	getLocaleText( "extremes" ) ) );
 		toolbar.add( actionMap.get(	getLocaleText( "divisions" ) ) );
+		toolbar.add( actionMap.get(	"Triangle points" ) );
 		toolbar.add( actionMap.get(	getLocaleText( "inter" ) ) );
 		toolbar.add( actionMap.get(	getLocaleText( "bounds" ) ) );
 		toolbar.addSeparator( HSEP );
