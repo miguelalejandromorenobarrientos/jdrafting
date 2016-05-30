@@ -12,6 +12,7 @@ import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 import jdrafting.gui.controller.mouse.PerpendicularListener;
 
 @SuppressWarnings("serial")
@@ -25,7 +26,7 @@ public class PerpendicularAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "perp" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "perp_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_P );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_perp" ) );
 		putValue( ACCELERATOR_KEY, 
 				KeyStroke.getKeyStroke( KeyEvent.VK_1, InputEvent.ALT_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "perpendicular.png" ) );

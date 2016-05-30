@@ -143,7 +143,7 @@ public class BisectrixListener extends AbstractCanvasMouseListener
 		
 		AffineTransform transform = canvas.getTransform();
 		
-		g2.setColor( Application.TOOL_MAIN_COLOR );
+		g2.setColor( Application.toolMainColor );
 		g2.setStroke( new BasicStroke( seg1.getStroke().getLineWidth() ) );
 		// mark first segment
 		g2.draw( transform.createTransformedShape( seg1.getShape() ) );
@@ -198,8 +198,9 @@ public class BisectrixListener extends AbstractCanvasMouseListener
 
 		// get bisectrix extremes
 		Point2D p1 = bis1 == null ? intersection : bis1;
-		Point2D p2 = 
-			bis1 == null ? pointRelativeToCenter( p1, ang, 1. ) : intersection;
+		Point2D p2 = bis1 == null || bis1.distance( intersection ) < 0.000001
+				? pointRelativeToCenter( p1, ang, 1. ) 
+				: intersection;
 		Point2D normal = normal( vector( p1, p2 ) );
 		Point2D q1 = logicMouse;
 		Point2D q2 = sumVectors( q1, normal );

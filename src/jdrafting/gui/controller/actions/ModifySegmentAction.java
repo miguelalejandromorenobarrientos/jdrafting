@@ -12,6 +12,7 @@ import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 import jdrafting.gui.controller.mouse.ModifySegmentListener;
 
 @SuppressWarnings("serial")
@@ -25,7 +26,7 @@ public class ModifySegmentAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "modify" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "modify_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_M );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_mod_seg" ) );
 		putValue( ACCELERATOR_KEY, 
 			KeyStroke.getKeyStroke( KeyEvent.VK_6, InputEvent.ALT_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "modify_segment.png" ) );

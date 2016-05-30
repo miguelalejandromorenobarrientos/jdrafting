@@ -5,7 +5,6 @@ import static jdrafting.gui.JDUtils.getLocaleText;
 import static jdrafting.gui.JDUtils.getSmallIcon;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.util.HashSet;
 
 import javax.swing.AbstractAction;
@@ -13,6 +12,7 @@ import javax.swing.KeyStroke;
 import javax.swing.undo.CompoundEdit;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 
 @SuppressWarnings("serial")
 public class DeleteSelectedAction extends AbstractAction
@@ -25,7 +25,7 @@ public class DeleteSelectedAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "delete" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "delete_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_D );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_delete" ) );
 		putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( "DELETE" ) );
 		putValue( SMALL_ICON, getSmallIcon( "delete_all.png" ) );
 		putValue( LARGE_ICON_KEY, getLargeIcon( "delete_all.png" ) );

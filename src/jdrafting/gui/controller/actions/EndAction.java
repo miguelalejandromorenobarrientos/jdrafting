@@ -12,6 +12,7 @@ import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 
 @SuppressWarnings("serial")
 public class EndAction extends AbstractAction
@@ -24,7 +25,7 @@ public class EndAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "end" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "end_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_E );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_end" ) );
 		putValue( ACCELERATOR_KEY, 
 			KeyStroke.getKeyStroke( KeyEvent.VK_RIGHT, InputEvent.ALT_MASK )  );
 		putValue( SMALL_ICON, getSmallIcon( "end.png" ) );

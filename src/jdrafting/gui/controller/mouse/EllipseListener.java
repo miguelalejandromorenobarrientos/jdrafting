@@ -105,10 +105,10 @@ public class EllipseListener extends AbstractCanvasMouseListener
 										bounds.getCenterX(), bounds.getMinY(), 
 										bounds.getCenterX(), bounds.getMaxY() );
 				app.addShapeFromIterator( 
-					axisH.getPathIterator( null, flatness ), "", "major axis", 
+					axisH.getPathIterator( null ), "", "major axis", 
 					app.getColor(), app.getStroke(), transaction );
 				app.addShapeFromIterator( 
-					axisV.getPathIterator( null, flatness ), "", "minor axis", 
+					axisV.getPathIterator( null ), "", "minor axis", 
 					app.getColor(), app.getStroke(), transaction );
 				// add focuses
 				double w = ellipse.getWidth() / 2, h = ellipse.getHeight() / 2;
@@ -130,13 +130,13 @@ public class EllipseListener extends AbstractCanvasMouseListener
 											 bounds.getCenterY() - f );
 				}
 				app.addShapeFromIterator( 
-					new JDPoint( f1 ).getPathIterator( null, flatness ), 
-					"", "focus", app.getPointColor(), app.getPointStroke(), 
-					transaction );
+					new JDPoint( f1 ).getPathIterator( null ), 
+					"", getLocaleText( "new_focus" ), app.getPointColor(), 
+					app.getPointStroke(), transaction );
 				app.addShapeFromIterator( 
-					new JDPoint( f2 ).getPathIterator( null, flatness ), 
-					"", "focus", app.getPointColor(), app.getPointStroke(), 
-					transaction );
+					new JDPoint( f2 ).getPathIterator( null ), 
+					"", getLocaleText( "new_focus" ), app.getPointColor(), 
+					app.getPointStroke(), transaction );
 				
 				transaction.end();
 				app.undoSupport.postEdit( transaction );				
@@ -163,7 +163,7 @@ public class EllipseListener extends AbstractCanvasMouseListener
 			
 			// set tool style
 			g2.setStroke( new BasicStroke( 1f ) );
-			g2.setColor( Application.TOOL_MAIN_COLOR );
+			g2.setColor( Application.toolMainColor );
 			
 			// draw ellipse
 			Ellipse2D ellipse = getEllipse( logicMouse );

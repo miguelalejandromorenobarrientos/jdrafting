@@ -6,7 +6,6 @@ import static jdrafting.gui.JDUtils.getSmallIcon;
 
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
@@ -29,7 +28,7 @@ public class AboutAction extends AbstractAction
 		this.app = app;
 		
 		putValue( NAME, getLocaleText( "about" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_A );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_about" ) );
 		putValue( SMALL_ICON, getSmallIcon( "jdrafting.png" ) );
 		putValue( LARGE_ICON_KEY, getLargeIcon( "jdrafting.png" ) );
 	}
@@ -61,6 +60,12 @@ public class AboutAction extends AbstractAction
 				+ "<br/>SVG export: " 
 				+ "<a href='https://xmlgraphics.apache.org/batik/'>" 
 				+ "Apache Batik</a>"
+			+ "</p>"
+			+ "<p>"
+				+ "Command line parser: "
+				+ "<a href="
+				+ "'https://github.com/miguelalejandromorenobarrientos/CLA'>"
+				+ "CLA</a>"
 			+ "</p>"
 			+ "<p>"
 				+ "<br/>  @" + Application.COPYLEFT

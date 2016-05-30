@@ -95,7 +95,7 @@ public class RectangleListener extends AbstractCanvasMouseListener
 			// set style
 			g2.setStroke( new BasicStroke( 1f, BasicStroke.CAP_SQUARE, 
 													BasicStroke.JOIN_BEVEL ) );
-			g2.setColor( Application.TOOL_MAIN_COLOR );
+			g2.setColor( Application.toolMainColor );
 			
 			// draw rectangle
 			g2.draw( canvas.getTransform().createTransformedShape( 

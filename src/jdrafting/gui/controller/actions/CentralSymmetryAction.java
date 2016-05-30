@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 import jdrafting.gui.controller.mouse.CentralSymmetryListener;
 
 @SuppressWarnings("serial")
@@ -26,7 +27,8 @@ public class CentralSymmetryAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "central_sym" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "central_sym_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_C );
+		putValue( MNEMONIC_KEY, 
+							JDUtils.getLocaleMnemonic( "mne_sym_central" ) );
 		putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( 
 									KeyEvent.VK_C, InputEvent.SHIFT_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "central_symmetry.png" ) );

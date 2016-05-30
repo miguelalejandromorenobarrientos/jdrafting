@@ -13,6 +13,7 @@ import javax.swing.KeyStroke;
 
 import jdrafting.Exercise;
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 
 @SuppressWarnings("serial")
 public class BackwardAction extends AbstractAction
@@ -25,7 +26,7 @@ public class BackwardAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "backward" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "backward_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_B );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_backward" ) );
 		putValue( ACCELERATOR_KEY, 
 			KeyStroke.getKeyStroke( KeyEvent.VK_LEFT, InputEvent.CTRL_MASK )  );
 		putValue( SMALL_ICON, getSmallIcon( "backward.png" ) );

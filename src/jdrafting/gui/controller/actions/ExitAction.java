@@ -12,6 +12,7 @@ import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 
 @SuppressWarnings("serial")
 public class ExitAction extends AbstractAction
@@ -24,7 +25,7 @@ public class ExitAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "exit" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "exit_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_E );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_exit" ) );
 		putValue( ACCELERATOR_KEY, 
 			KeyStroke.getKeyStroke( KeyEvent.VK_Q, InputEvent.CTRL_MASK )  );
 		putValue( SMALL_ICON, getSmallIcon( "exit.png" ) );

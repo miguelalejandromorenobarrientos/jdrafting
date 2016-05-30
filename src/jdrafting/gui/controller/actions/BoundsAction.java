@@ -12,6 +12,7 @@ import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 import jdrafting.gui.controller.mouse.BoundsListener;
 
 @SuppressWarnings("serial")
@@ -25,7 +26,7 @@ public class BoundsAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "bounds" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "bounds_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_B );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_bounds" ) );
 		putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( 
 				KeyEvent.VK_1, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "bounds.png" ) );

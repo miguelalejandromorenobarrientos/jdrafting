@@ -117,7 +117,7 @@ public class ArcListener extends AbstractCanvasMouseListener
 			// set style
 			g2.setStroke( new BasicStroke( 1f, BasicStroke.CAP_ROUND, 
 										   BasicStroke.JOIN_ROUND ) );
-			g2.setColor( Application.TOOL_MAIN_COLOR );
+			g2.setColor( Application.toolMainColor );
 			
 			// draw center-start radius and circumference
 			if ( start == null )

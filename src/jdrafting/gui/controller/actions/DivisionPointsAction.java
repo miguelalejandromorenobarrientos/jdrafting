@@ -12,6 +12,7 @@ import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 import jdrafting.gui.controller.mouse.DivisionPointsListener;
 
 @SuppressWarnings("serial")
@@ -25,7 +26,7 @@ public class DivisionPointsAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "divisions" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "divisions_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_V );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_divisions" ) );
 		putValue( ACCELERATOR_KEY, 
 			KeyStroke.getKeyStroke( KeyEvent.VK_0, InputEvent.ALT_MASK )  );
 		putValue( SMALL_ICON, getSmallIcon( "divisions.png" ) );

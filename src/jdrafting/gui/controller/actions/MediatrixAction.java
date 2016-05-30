@@ -12,6 +12,7 @@ import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 import jdrafting.gui.controller.mouse.MediatrixListener;
 
 @SuppressWarnings("serial")
@@ -25,7 +26,7 @@ public class MediatrixAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "mediatrix" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "mediatrix_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_P );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_mediatrix" ) );
 		putValue( ACCELERATOR_KEY, 
 				KeyStroke.getKeyStroke( KeyEvent.VK_3, InputEvent.ALT_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "mediatrix.png" ) );

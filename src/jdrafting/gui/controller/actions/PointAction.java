@@ -12,6 +12,7 @@ import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 import jdrafting.gui.controller.mouse.PointListener;
 
 @SuppressWarnings("serial")
@@ -25,7 +26,7 @@ public class PointAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "point" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "point_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_P );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_point" ) );
 		putValue( ACCELERATOR_KEY, 
 				KeyStroke.getKeyStroke( KeyEvent.VK_1, InputEvent.CTRL_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "point.png" ) );

@@ -17,6 +17,7 @@ import javax.swing.undo.CompoundEdit;
 
 import jdrafting.geom.JDraftingShape;
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 
 @SuppressWarnings("serial")
 public class CopySelectedAction extends AbstractAction
@@ -29,7 +30,7 @@ public class CopySelectedAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "copy" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "copy_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_C );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_copy" ) );
 		putValue( ACCELERATOR_KEY, 
 			KeyStroke.getKeyStroke( KeyEvent.VK_C, InputEvent.CTRL_MASK )  );
 		putValue( SMALL_ICON, getSmallIcon( "copy.png" ) );

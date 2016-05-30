@@ -12,6 +12,7 @@ import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 import jdrafting.gui.controller.mouse.RulerListener;
 
 @SuppressWarnings("serial")
@@ -25,7 +26,7 @@ public class RulerAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "ruler" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "ruler_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_R );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_ruler" ) );
 		putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( 
 							KeyEvent.VK_BACK_SPACE, InputEvent.ALT_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "ruler.png" ) );

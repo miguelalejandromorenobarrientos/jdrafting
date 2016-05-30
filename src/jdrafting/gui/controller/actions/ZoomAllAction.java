@@ -5,7 +5,6 @@ import static jdrafting.gui.JDUtils.getLocaleText;
 import static jdrafting.gui.JDUtils.getSmallIcon;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.AbstractAction;
@@ -13,6 +12,7 @@ import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
+import jdrafting.gui.JDUtils;
 import jdrafting.gui.Viewport;
 
 @SuppressWarnings("serial")
@@ -28,7 +28,7 @@ public class ZoomAllAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "zoom_all" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "zoom_all_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_A );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_zoom_all" ) );
 		putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( "typed *" ) );
 		putValue( SMALL_ICON, getSmallIcon( "zoom_all.png" ) );
 		putValue( LARGE_ICON_KEY, getLargeIcon( "zoom_all.png" ) );

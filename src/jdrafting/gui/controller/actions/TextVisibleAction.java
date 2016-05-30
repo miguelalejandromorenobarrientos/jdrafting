@@ -12,6 +12,7 @@ import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 
 @SuppressWarnings("serial")
 public class TextVisibleAction extends AbstractAction 
@@ -24,7 +25,7 @@ public class TextVisibleAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "text" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "text_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_T );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_text" ) );
 		putValue( ACCELERATOR_KEY, 
 				KeyStroke.getKeyStroke( KeyEvent.VK_T, InputEvent.CTRL_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "names.png" ) );

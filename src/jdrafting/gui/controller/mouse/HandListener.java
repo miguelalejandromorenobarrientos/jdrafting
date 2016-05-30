@@ -215,7 +215,7 @@ public class HandListener extends AbstractCanvasMouseListener
 			Point2D namePosition = 
 							CanvasPanel.getNamePosition( bounds, textShape );
 			
-			g2.setColor( Application.TOOL_MAIN_COLOR );
+			g2.setColor( Application.toolMainColor );
 
 			g2.setStroke( textShape.getStroke() );
 			g2.draw( transform.createTransformedShape( textShape.getShape() ) );

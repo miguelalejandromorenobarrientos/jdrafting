@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 import jdrafting.gui.controller.mouse.TranslationListener;
 
 @SuppressWarnings("serial")
@@ -26,7 +27,7 @@ public class TranslationAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "translation" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "translation_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_T );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_trans" ) );
 		putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( 
 									KeyEvent.VK_T, InputEvent.SHIFT_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "translation.png" ) );

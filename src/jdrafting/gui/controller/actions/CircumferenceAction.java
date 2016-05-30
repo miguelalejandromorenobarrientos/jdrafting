@@ -12,6 +12,7 @@ import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 import jdrafting.gui.controller.mouse.CircumferenceListener;
 
 @SuppressWarnings("serial")
@@ -25,9 +26,9 @@ public class CircumferenceAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "circumference" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "circumference_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_C );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_circ" ) );
 		putValue( ACCELERATOR_KEY, 
-			KeyStroke.getKeyStroke( KeyEvent.VK_5, InputEvent.CTRL_MASK ) );
+			KeyStroke.getKeyStroke( KeyEvent.VK_4, InputEvent.CTRL_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "circumference.png" ) );
 		putValue( LARGE_ICON_KEY, getLargeIcon( "circumference.png" ) );
 	}

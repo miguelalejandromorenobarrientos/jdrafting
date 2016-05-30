@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -24,6 +25,9 @@ public class JDUtils
 	 */
 	private JDUtils() {}
 
+	public static int smallIconSize = 16;
+	public static int largeIconSize = 32;
+	
 	/**
 	 * Get screen size, multiplied by factor
 	 * @param ratioX factor width (value 1 for screen width)
@@ -54,12 +58,25 @@ public class JDUtils
 
 			return resource.getString( key );
 		}
-		catch ( MissingResourceException e )  // Default English
+		catch ( MissingResourceException e )
 		{
+			// If all fails, default English
+			// (not needed if "language.properties" resource exists)
 			return ResourceBundle.getBundle(
 					"jdrafting.resources.language.language", Locale.ENGLISH )
 					.getString( key );
 		}
+	}
+	
+	/**
+	 * Get mnemonic in current language
+	 * @param key the key in the language file
+	 * @return keycode for char
+	 */
+	public static int getLocaleMnemonic( String key )
+	{
+		return KeyEvent.getExtendedKeyCodeForChar( 
+											getLocaleText( key ).charAt( 0 ) );
 	}
 	
 	/**
@@ -87,7 +104,7 @@ public class JDUtils
 	 */
 	public static ImageIcon getSmallIcon( String name )
 	{
-		return getScaledIco( name, 16, 16 );
+		return getScaledIco( name, smallIconSize, smallIconSize );
 	}
 
 	/**
@@ -99,7 +116,7 @@ public class JDUtils
 	 */
 	public static ImageIcon getLargeIcon( String name )	
 	{
-		return getScaledIco( name, 32, 32 );
+		return getScaledIco( name, largeIconSize, largeIconSize );
 	}
 	
 	/**
@@ -116,19 +133,17 @@ public class JDUtils
 
 	/**
 	 * Converts a name to a CamelCase string only with alphanumeric characters
-	 * @param name a name
+	 * @param text a name
 	 * @return CamelCase representation
 	 */
-	public static String camelCase( String name )
+	public static String camelCase( String text )
 	{
-		String[] array = name.split( "[^a-zA-Z0-9]" );
-		array =	Stream.of( array )
-			.filter( s -> !s.trim().isEmpty() )
+		String[] words = text.split( "[^\\w]+" );  // split into words
+		words =	Stream.of( words )
 			.map( 
 				s -> Character.toUpperCase( s.charAt( 0 ) ) + s.substring( 1 ) )
-			.toArray( String[]::new );
-		name = String.join( "", array );
-		
-		return name;
+			.toArray( String[]::new );  // to versals
+
+		return String.join( "", words );
 	}
 }

@@ -12,6 +12,7 @@ import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 
 @SuppressWarnings("serial")
 public class RewindAction extends AbstractAction
@@ -24,7 +25,7 @@ public class RewindAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "rewind" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "rewind_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_R );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_rewind" ) );
 		putValue( ACCELERATOR_KEY, 
 			KeyStroke.getKeyStroke( KeyEvent.VK_LEFT, InputEvent.ALT_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "rewind.png" ) );

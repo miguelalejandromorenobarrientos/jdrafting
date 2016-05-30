@@ -13,6 +13,7 @@ import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 
 @SuppressWarnings("serial")
 public class SelectAllAction extends AbstractAction 
@@ -25,7 +26,7 @@ public class SelectAllAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "select_all" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "select_all_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_A );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_sel_all" ) );
 		putValue( ACCELERATOR_KEY, 
 			KeyStroke.getKeyStroke( KeyEvent.VK_A, InputEvent.CTRL_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "select_all.png" ) );

@@ -13,6 +13,7 @@ import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 
 @SuppressWarnings("serial")
 public class InvertSelectionAction extends AbstractAction 
@@ -25,7 +26,7 @@ public class InvertSelectionAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "invert" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "invert_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_I );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_invert_sel" ) );
 		putValue( ACCELERATOR_KEY, 
 			KeyStroke.getKeyStroke( KeyEvent.VK_G, InputEvent.CTRL_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "invert.png" ) );

@@ -68,7 +68,7 @@ public class SaveImageAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "save_image" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "save_image_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_I );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_save_img" ) );
 		putValue( ACCELERATOR_KEY, 
 			KeyStroke.getKeyStroke( KeyEvent.VK_I, InputEvent.CTRL_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "save_image.png" ) );

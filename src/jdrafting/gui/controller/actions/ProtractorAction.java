@@ -12,6 +12,7 @@ import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 import jdrafting.gui.controller.mouse.ProtractorListener;
 
 @SuppressWarnings("serial")
@@ -25,7 +26,7 @@ public class ProtractorAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "protractor" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "protractor_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_P );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_protractor" ) );
 		putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( 
 									KeyEvent.VK_INSERT, InputEvent.ALT_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "protractor.png" ) );

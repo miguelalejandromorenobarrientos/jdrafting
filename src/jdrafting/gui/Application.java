@@ -3,6 +3,7 @@ package jdrafting.gui;
 import static jdrafting.gui.JDUtils.getLargeIcon;
 import static jdrafting.gui.JDUtils.getLocaleText;
 import static jdrafting.gui.JDUtils.getSmallIcon;
+import static jdrafting.gui.JDUtils.getLocaleMnemonic;
 
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
@@ -33,6 +34,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import javax.swing.AbstractAction;
@@ -43,6 +45,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JCheckBoxMenuItem;
@@ -52,6 +55,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -79,6 +83,7 @@ import javax.swing.undo.UndoableEditSupport;
 
 import com.sun.istack.internal.NotNull;
 
+import cla.ParsedParameterMap;
 import jdrafting.Exercise;
 import jdrafting.geom.JDStrokes;
 import jdrafting.geom.JDraftingShape;
@@ -108,15 +113,18 @@ import jdrafting.gui.controller.actions.FragmentAction;
 import jdrafting.gui.controller.actions.FreeHandAction;
 import jdrafting.gui.controller.actions.FusionAction;
 import jdrafting.gui.controller.actions.HomothetyAction;
+import jdrafting.gui.controller.actions.HyperbolaAction;
 import jdrafting.gui.controller.actions.IntersectionsAction;
 import jdrafting.gui.controller.actions.InvertSelectionAction;
 import jdrafting.gui.controller.actions.LookFeelAction;
+import jdrafting.gui.controller.actions.MathFunctionAction;
 import jdrafting.gui.controller.actions.MediatrixAction;
 import jdrafting.gui.controller.actions.MidpointAction;
 import jdrafting.gui.controller.actions.ModifySegmentAction;
 import jdrafting.gui.controller.actions.MoveZBufferAction;
 import jdrafting.gui.controller.actions.NewAction;
 import jdrafting.gui.controller.actions.OpenAction;
+import jdrafting.gui.controller.actions.ParabolaAction;
 import jdrafting.gui.controller.actions.ParallelAction;
 import jdrafting.gui.controller.actions.PasteStyleAction;
 import jdrafting.gui.controller.actions.PerpendicularAction;
@@ -127,6 +135,7 @@ import jdrafting.gui.controller.actions.PolygonAction;
 import jdrafting.gui.controller.actions.ProtractorAction;
 import jdrafting.gui.controller.actions.RectangleAction;
 import jdrafting.gui.controller.actions.RedoAction;
+import jdrafting.gui.controller.actions.RegularPolygonAction;
 import jdrafting.gui.controller.actions.RewindAction;
 import jdrafting.gui.controller.actions.RotationAction;
 import jdrafting.gui.controller.actions.RulerAction;
@@ -149,8 +158,9 @@ import jdrafting.gui.controller.mouse.HandListener;
 import jdrafting.gui.controller.mouse.TrianglePointsListener;
 
 /**
- * GUI frame class
- * @author Miguel Alejandro Moreno Barrientos, 2016
+ * {@value #APPNAME} GUI class
+ * @author {@value #AUTHOR}, {@value #COPYLEFT}
+ * @version {@value #VERSION}
  */
 @SuppressWarnings("serial")
 public class Application extends JFrame
@@ -160,7 +170,7 @@ public class Application extends JFrame
 	//////////////////////
 	// metainfo
 	public static final String APPNAME = "JDrafting";
-	public static final String VERSION = "0.1.8";
+	public static final String VERSION = "0.1.9";
 	public static final String AUTHOR = "Miguel Alejandro Moreno Barrientos";
 	public static final String COPYLEFT = "2016";
 	public static final String PROJECT_PAGE = 
@@ -168,7 +178,7 @@ public class Application extends JFrame
 	public static final String GITHUB_REPOSITORY =	
 	"https://github.com/miguelalejandromorenobarrientos/jdrafting/tree/master";
 	// colors
-	public static final Color TOOL_MAIN_COLOR = Color.BLUE;
+	public static Color toolMainColor = Color.BLUE;
 	// separators
 	private static final Dimension HSEP = new Dimension( 12, 0 ); 
 	private static final Dimension VSEP = new Dimension( 0, 12 ); 
@@ -178,6 +188,9 @@ public class Application extends JFrame
 	// STATIC VARS //
 	/////////////////
 	public static Locale locale = Locale.getDefault(); 
+	public static String lookAndFeelClassName = 
+									UIManager.getSystemLookAndFeelClassName();
+	public static boolean jmeEnabled = false;
 	
 	
 	///////////////////
@@ -189,7 +202,7 @@ public class Application extends JFrame
 	private double angle = 90.;
 	private double distance = 0.1;
 	private boolean useDistance = false;
-	private double flatnessValue = 10000.;  // flatness for circumferences, arcs
+	private double flatnessValue = 10000.;  // flatness for curved shapes
 	private String saveFilename;
 	private boolean visibleNames = true;
 	// style
@@ -206,8 +219,6 @@ public class Application extends JFrame
 	public JPanel centerPanel;
 	public JPanel northPanel;
 	public JPanel statusPanel;
-	public JToolBar styleToolbar;
-	public JToolBar rulerProtToolbar;
 	public CanvasPanel canvas;
 	public JMenuBar menubar;
 	public JMenu menuFile;
@@ -218,10 +229,12 @@ public class Application extends JFrame
 	public JMenu menuTools;
 	public JMenu menuTransform;
 	public JMenu menuTrianglePoints;
+	public JMenu menuPolygon;
+	public JMenu menuConics;
 	public JMenu menuView;
 	public JMenu menuAppearance;
 	public JMenu menuHelp;
-	public JToolBar actionbar, shapebar, toolbar;
+	public JToolBar styleToolbar,rulerProtToolbar, actionbar,shapebar,toolbar;
 	public JSpinner spinThickness, spinPointThickness, spinAngle;
 	public JButton buttonEyedropper, buttonPasteStyle;
 	public JButton buttonColor, buttonPointColor;
@@ -241,9 +254,6 @@ public class Application extends JFrame
 	/////////////////
 	public Application()
 	{
-		// Test language
-		//locale = Locale.ENGLISH;  // TODO while developing
-		
 		// create app window
 		initUI();
 		createActions();
@@ -257,9 +267,15 @@ public class Application extends JFrame
 		JFrame.setDefaultLookAndFeelDecorated( false );
 	    JDialog.setDefaultLookAndFeelDecorated( false );    
 
-		try { UIManager.setLookAndFeel( 
-								UIManager.getSystemLookAndFeelClassName() ); }
-		catch ( Exception e ) {}
+		try
+		{ 
+			UIManager.setLookAndFeel( lookAndFeelClassName );
+		}
+		catch ( Exception e )
+		{
+			System.out.println( e );
+			System.exit( -1 );
+		}
 		SwingUtilities.updateComponentTreeUI( this );
 		
 		// exit app
@@ -291,29 +307,41 @@ public class Application extends JFrame
 		setJMenuBar( menubar = new JMenuBar() );
 		// menu File
 		menubar.add( menuFile = new JMenu( getLocaleText( "file" ) ) );
+		menuFile.setMnemonic( getLocaleMnemonic( "mne_menu_file" ) );
 		// menu Edit
 		menubar.add( menuEdit = new JMenu( getLocaleText( "edit" ) ) );
+		menuEdit.setMnemonic( getLocaleMnemonic( "mne_menu_edit" ) );
 		// menu Style
 		menubar.add( menuStyle = new JMenu( getLocaleText( "style" ) ) );
+		menuStyle.setMnemonic( getLocaleMnemonic( "mne_menu_style" ) );
 		// menu Shapes
 		menubar.add( menuShapes = new JMenu( getLocaleText( "shapes" ) ) );
+		menuShapes.setMnemonic( getLocaleMnemonic( "mne_menu_shapes" ) );
 		// menu Tools
 		menubar.add( menuTools = new JMenu( getLocaleText( "tools" ) ) );
+		menuTools.setMnemonic( getLocaleMnemonic( "mne_menu_tools" ) );
 			// submenu transform
 			menuTools.add( menuTransform = 
 								new JMenu( getLocaleText( "transforms" ) ) );
+			menuTransform.setMnemonic( 
+									getLocaleMnemonic( "mne_menu_transform" ) );
 			menuTools.addSeparator();
 		// menu Exercise
 		menubar.add( menuExercise = new JMenu( getLocaleText( "exercise" ) ) );
+		menuExercise.setMnemonic( getLocaleMnemonic( "mne_menu_exercise" ) );
 		// menu View
 		menubar.add( menuView = new JMenu( getLocaleText( "view" ) ) );
+		menuView.setMnemonic( KeyEvent.VK_V );
 			// submenu Appearance
 			menuView.add( menuAppearance = 
 								new JMenu( getLocaleText( "appearance" ) ) );
 				menuAppearance.setToolTipText( "GUI Theme" );
+				menuAppearance.setMnemonic( 
+										getLocaleMnemonic( "mne_menu_appea" ) );
 			menuView.addSeparator();
 		// menu Help
 		menubar.add( menuHelp = new JMenu( getLocaleText( "help" ) ) );
+		menuHelp.setMnemonic( getLocaleMnemonic( "mne_menu_help" ) );
 
 		// --- PANELS
 		// content panel
@@ -510,7 +538,7 @@ public class Application extends JFrame
 		});
 		spinAngle.addChangeListener( 
 				evt -> setAngle( (double) spinAngle.getModel().getValue() ) );
-		rulerProtToolbar.add(	new JLabel( getLocaleText( "degrees" ) ) );
+		rulerProtToolbar.add( new JLabel( getLocaleText( "degrees" ) ) );
 		// final glue
 		northPanel.add( Box.createHorizontalGlue() );
 
@@ -722,16 +750,12 @@ public class Application extends JFrame
 						b.setSelected( true );
 					}
 			}
-		});
-		
+		});		
 		// Point shape
 		menuShapes.add( action = new PointAction( this ) );
 		actionMap.put( action.getValue( Action.NAME ), action );
 		// Segment shape
 		menuShapes.add( action = new SegmentAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
-		// Segment shape
-		menuShapes.add( action = new ArrowAction( this ) );
 		actionMap.put( action.getValue( Action.NAME ), action );
 		// Arc shape
 		menuShapes.add( action = new ArcAction( this ) );
@@ -742,14 +766,20 @@ public class Application extends JFrame
 		// Angle shape
 		menuShapes.add( action = new AngleAction( this ) );
 		actionMap.put( action.getValue( Action.NAME ), action );
+		// Arrow shape
+		menuShapes.add( action = new ArrowAction( this ) );
+		actionMap.put( action.getValue( Action.NAME ), action );
 		menuShapes.addSeparator();
-		// Triangle notable points tool
-		menuShapes.add( menuTrianglePoints = new JMenu() );
-		menuTrianglePoints.setText( getLocaleText( "triangle_tools" ) );
+		// Triangle notable points menu
+		menuShapes.add(	menuTrianglePoints = 
+							new JMenu( getLocaleText( "triangle_tools" ) ) );
+		menuTrianglePoints.setMnemonic( getLocaleMnemonic( "mne_menu_trian" ) );
 		menuTrianglePoints.setIcon( getSmallIcon( "triangle_popup.png" ) );
+		// Triangle shape
 		menuTrianglePoints.add( action = new TriangleAction( this ) );
 		actionMap.put( action.getValue( Action.NAME ), action );
 		menuTrianglePoints.addSeparator();
+		// Triangle notable points
 		menuTrianglePoints.add( action = new TrianglePointsAction( 
 								this, TrianglePointsListener.BARICENTER ) );
 		actionMap.put( action.getValue( Action.NAME ), action );
@@ -765,14 +795,34 @@ public class Application extends JFrame
 		// Rectangle shape
 		menuShapes.add( action = new RectangleAction( this ) );
 		actionMap.put( action.getValue( Action.NAME ), action );
-		// Ellipse shape
-		menuShapes.add( action = new EllipseAction( this ) );
+		// Polygon menu
+		menuShapes.add( 
+				menuPolygon = new JMenu( getLocaleText( "polygon_tools" ) ) );
+		menuPolygon.setMnemonic( getLocaleMnemonic( "mne_menu_poly" ) );
+		menuPolygon.setIcon( getSmallIcon( "polygon_popup.png" ) );
+		// Regular polygon shape
+		menuPolygon.add( action = new RegularPolygonAction( this ) );
 		actionMap.put( action.getValue( Action.NAME ), action );
 		// Polygon shape
-		menuShapes.add( action = new PolygonAction( this ) );
+		menuPolygon.add( action = new PolygonAction( this ) );
 		actionMap.put( action.getValue( Action.NAME ), action );
 		// Polyline shape
-		menuShapes.add( action = new PolyLineAction( this ) );
+		menuPolygon.add( action = new PolyLineAction( this ) );
+		actionMap.put( action.getValue( Action.NAME ), action );
+		// Conics menu
+		menuShapes.add( menuConics = new JMenu( getLocaleText( "conics" ) ) );
+		menuConics.setMnemonic( getLocaleMnemonic( "mne_menu_conics" ) );
+		menuConics.setIcon( getSmallIcon( "conics.png" ) );
+		// Circumference shape (repeated)
+		menuConics.add( new CircumferenceAction( this ) );
+		// Ellipse shape
+		menuConics.add( action = new EllipseAction( this ) );
+		actionMap.put( action.getValue( Action.NAME ), action );
+		// Parabola shape
+		menuConics.add( action = new ParabolaAction( this ) );
+		actionMap.put( action.getValue( Action.NAME ), action );
+		// Hyperbola shape
+		menuConics.add( action = new HyperbolaAction( this ) );
 		actionMap.put( action.getValue( Action.NAME ), action );
 		menuShapes.addSeparator();
 		// Spline shape
@@ -781,6 +831,12 @@ public class Application extends JFrame
 		// Free hand shape
 		menuShapes.add( action = new FreeHandAction( this ) );
 		actionMap.put( action.getValue( Action.NAME ), action );
+		// Function shape
+		if ( jmeEnabled )
+		{
+			menuShapes.add( action = new MathFunctionAction( this ) );
+			actionMap.put( action.getValue( Action.NAME ), action );
+		}
 		// Translation transform
 		menuTransform.add( action = new TranslationAction( this ) );
 		actionMap.put( action.getValue( Action.NAME ), action );
@@ -925,8 +981,7 @@ public class Application extends JFrame
 			radioItem.setText( lafi.getName() );
 			menuAppearance.add( radioItem );
 			group.add( radioItem );
-			if ( UIManager.getSystemLookAndFeelClassName()
-				 == lafi.getClassName() )
+			if ( lookAndFeelClassName.equals( lafi.getClassName() ) )
 				radioItem.setSelected( true );
 		}
 		// Project page
@@ -990,6 +1045,7 @@ public class Application extends JFrame
 		actionMap.put( action.getValue( Action.NAME ), action );
 		
 		// --- TOOLBARS ACTIONS
+		// actionbar
 		actionbar.add( actionMap.get( getLocaleText( "new" ) ) );
 		actionbar.add( actionMap.get( getLocaleText( "open" ) ) );
 		actionbar.add( actionMap.get( getLocaleText( "save" ) ) );
@@ -1041,10 +1097,10 @@ public class Application extends JFrame
 		shapebar.addSeparator( VSEP );
 		shapebar.add( actionMap.get( getLocaleText( "point" ) ) );
 		shapebar.add( actionMap.get( getLocaleText( "segment" ) ) );
-		shapebar.add( actionMap.get( getLocaleText( "arrow" ) ) );
 		shapebar.add( actionMap.get( getLocaleText( "arc" ) ) );
 		shapebar.add( actionMap.get( getLocaleText( "circumference" ) ) );
 		shapebar.add( actionMap.get( getLocaleText( "angle" ) ) );
+		shapebar.add( actionMap.get( getLocaleText( "arrow" ) ) );
 		shapebar.addSeparator( VSEP );
 		JButton trianglePopup = new JButton( new AbstractAction() {
 			@Override
@@ -1058,6 +1114,10 @@ public class Application extends JFrame
 				popup.add( actionMap.get( getLocaleText( "ortocenter" ) ) );
 				popup.add( actionMap.get( getLocaleText( "circumcenter" ) ) );
 				popup.add( actionMap.get( getLocaleText( "incenter" ) ) );
+				for ( Component c : popup.getComponents() )
+					if ( c instanceof JMenuItem )
+						( (JMenuItem) c ).setIcon( (Icon) ( (JMenuItem) c )
+							.getAction().getValue( Action.LARGE_ICON_KEY ) );
 				popup.show( src, (int) src.getBounds().getWidth() - 4, -2 );
 			}
 		});
@@ -1065,12 +1125,50 @@ public class Application extends JFrame
 		trianglePopup.setIcon( getLargeIcon( "triangle_popup.png" ) );
 		shapebar.add( trianglePopup );
 		shapebar.add( actionMap.get( getLocaleText( "rectangle" ) ) );
-		shapebar.add( actionMap.get( getLocaleText( "ellipse" ) ) );
-		shapebar.add( actionMap.get( getLocaleText( "polygon" ) ) );
-		shapebar.add( actionMap.get( getLocaleText( "polyline" ) ) );
+		JButton polygonPopup = new JButton( new AbstractAction() {
+			@Override
+			public void actionPerformed( ActionEvent e )
+			{
+				Component src = (Component) e.getSource();
+				JPopupMenu popup = new JPopupMenu();
+				popup.add( actionMap.get( getLocaleText( "reg_poly" ) ) );
+				popup.add( actionMap.get( getLocaleText( "polygon" ) ) );
+				popup.add( actionMap.get( getLocaleText( "polyline" ) ) );
+				for ( Component c : popup.getComponents() )
+					if ( c instanceof JMenuItem )
+						( (JMenuItem) c ).setIcon( (Icon) ( (JMenuItem) c )
+							.getAction().getValue( Action.LARGE_ICON_KEY ) );
+				popup.show( src, (int) src.getBounds().getWidth() - 4, -2 );
+			}
+		});
+		polygonPopup.setToolTipText( getLocaleText( "polygon_tools" ) );
+		polygonPopup.setIcon( getLargeIcon( "polygon_popup.png" ) );
+		shapebar.add( polygonPopup );
+		JButton conicsPopup = new JButton( new AbstractAction() {
+			@Override
+			public void actionPerformed( ActionEvent e )
+			{
+				Component src = (Component) e.getSource();
+				JPopupMenu popup = new JPopupMenu();
+				popup.add( new CircumferenceAction( Application.this ) );
+				popup.add( actionMap.get( getLocaleText( "ellipse" ) ) );
+				popup.add( actionMap.get( getLocaleText( "parabola" ) ) );
+				popup.add( actionMap.get( getLocaleText( "hyperbola" ) ) );
+				for ( Component c : popup.getComponents() )
+					if ( c instanceof JMenuItem )
+						( (JMenuItem) c ).setIcon( (Icon) ( (JMenuItem) c )
+							.getAction().getValue( Action.LARGE_ICON_KEY ) );
+				popup.show( src, (int) src.getBounds().getWidth() - 4, -2 );
+			}
+		});
+		conicsPopup.setToolTipText( getLocaleText( "conics" ) );
+		conicsPopup.setIcon( getLargeIcon( "conics.png" ) );
+		shapebar.add( conicsPopup );
 		shapebar.addSeparator( VSEP );
 		shapebar.add( actionMap.get( getLocaleText( "spline" ) ) );
 		shapebar.add( actionMap.get( getLocaleText( "free_hand" ) ) );
+		if ( jmeEnabled )
+			shapebar.add( actionMap.get( "Math function" ) );
 		// toolbar
 		toolbar.add( actionMap.get(	getLocaleText( "perp" ) ) );
 		toolbar.add( actionMap.get(	getLocaleText( "para" ) ) );
@@ -1085,7 +1183,6 @@ public class Application extends JFrame
 		toolbar.add( actionMap.get(	getLocaleText( "vertex" ) ) );
 		toolbar.add( actionMap.get(	getLocaleText( "extremes" ) ) );
 		toolbar.add( actionMap.get(	getLocaleText( "divisions" ) ) );
-		toolbar.add( actionMap.get(	"Triangle points" ) );
 		toolbar.add( actionMap.get(	getLocaleText( "inter" ) ) );
 		toolbar.add( actionMap.get(	getLocaleText( "bounds" ) ) );
 		toolbar.addSeparator( HSEP );
@@ -1530,10 +1627,38 @@ public class Application extends JFrame
 	public static void main( String[] args )
 	{
 		SwingUtilities.invokeLater( () -> {
-			Application app = new Application();
-			app.setVisible( true );
-			if ( args.length > 0 )
-				app.openFile( new File( args[0] ) );
+			try
+			{
+				// parse and execute parameters before app instantiation
+				// (some parameters like lang, lookfeel need to be executed 
+				// before app intantiation)
+				JDraftingArgs argsParser = new JDraftingArgs( null );
+				ParsedParameterMap parsedMap = 
+											argsParser.parseAndExecute( args );
+
+				// application instance
+				Application app = new Application();
+	
+				// parse and execute parameters after app instantiation
+				argsParser.setApp( app );
+				argsParser.execute( parsedMap );
+
+				// launch app
+				app.setVisible( true );
+			
+				// load file from console
+				// (file load must be executed with a visible app)
+				if ( parsedMap.containsParam( "file" ) )
+					app.openFile( 
+								new File( parsedMap.getValues( "file" )[0] ) );
+			}
+			catch ( NoSuchElementException e )
+			{
+				System.out.printf( 
+						"Launch error (%s: %s)\n-help for parameter info", 
+						e.getClass().getSimpleName(), e.getMessage() );
+				System.exit( -1 );
+			}
 		} );
 	}
 }

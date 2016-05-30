@@ -12,6 +12,7 @@ import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 import jdrafting.gui.controller.mouse.EyedropperListener;
 
 @SuppressWarnings("serial")
@@ -25,7 +26,7 @@ public class EyedropperAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "eyedropper" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "eyedropper_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_E );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_eyedropper" ) );
 		putValue( ACCELERATOR_KEY, 
 			KeyStroke.getKeyStroke( KeyEvent.VK_E, InputEvent.CTRL_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "eyedropper.png" ) );

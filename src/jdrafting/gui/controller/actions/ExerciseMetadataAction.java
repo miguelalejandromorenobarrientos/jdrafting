@@ -13,6 +13,7 @@ import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
 import jdrafting.gui.FileInfoDialog;
+import jdrafting.gui.JDUtils;
 
 @SuppressWarnings("serial")
 public class ExerciseMetadataAction extends AbstractAction 
@@ -25,7 +26,8 @@ public class ExerciseMetadataAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "fileinfo" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "fileinfo_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_I );
+		putValue( MNEMONIC_KEY, 
+							JDUtils.getLocaleMnemonic( "mne_ex_metadata" ) );
 		putValue( ACCELERATOR_KEY, 
 			KeyStroke.getKeyStroke( KeyEvent.VK_I, InputEvent.SHIFT_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "fileinfo.png" ) );

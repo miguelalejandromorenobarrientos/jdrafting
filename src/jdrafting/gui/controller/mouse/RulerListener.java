@@ -2,17 +2,20 @@ package jdrafting.gui.controller.mouse;
 
 import static jdrafting.gui.JDUtils.getLocaleText;
 
-import java.awt.BasicStroke;
 import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 
+import jdrafting.geom.JDStrokes;
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
 import jdrafting.gui.JDUtils;
 
+/**
+ * Capture a distance by mouse control 
+ */
 public class RulerListener extends AbstractCanvasMouseListener
 {
 	private static final Cursor CURSOR = 
@@ -59,13 +62,17 @@ public class RulerListener extends AbstractCanvasMouseListener
 		else
 		{
 			// capture distance with ruler
-			app.setDistance( start.distance( logicMouse ) );
+			double distance = start.distance( logicMouse );
+			if ( add() )
+				distance += app.getDistance();
+			else if ( sub() )
+				distance = 
+						Math.max( app.getDistance() - distance, Math.ulp( 0 ) );			
+			app.setDistance( distance );
 
 			// back to select mode
 			canvas.setCanvasListener( new HandListener( canvas ) );			
 		}
-
-		canvas.repaint();
 	}
 	
 	@Override
@@ -77,10 +84,17 @@ public class RulerListener extends AbstractCanvasMouseListener
 			Point2D logicMouse = canvas.adjustToPoint( mouse().getPoint() );
 			
 			// draw line
-			g2.setStroke( new BasicStroke( 1f ) );
-			g2.setColor( Application.TOOL_MAIN_COLOR );	
+			g2.setStroke( 
+					JDStrokes.getStroke( JDStrokes.DASHED.getStroke(), 1f ) );
+			g2.setColor( Application.toolMainColor );	
 			g2.draw( canvas.getTransform().createTransformedShape( 
 									new Line2D.Double( start, logicMouse ) ) );
 		}
 	}
+	
+	// --- HELPERS
+	
+	// check modifiers
+	private boolean add() { return mouse().isShiftDown(); }
+	private boolean sub() { return mouse().isControlDown(); }
 }

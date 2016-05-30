@@ -12,6 +12,7 @@ import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 import jdrafting.gui.controller.mouse.FreeHandListener;
 
 @SuppressWarnings("serial")
@@ -25,9 +26,9 @@ public class FreeHandAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "free_hand" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "free_hand_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_F );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_free" ) );
 		putValue( ACCELERATOR_KEY, 
-				KeyStroke.getKeyStroke( KeyEvent.VK_F, InputEvent.CTRL_MASK ) );
+				KeyStroke.getKeyStroke( KeyEvent.VK_9, InputEvent.CTRL_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "free_hand.png" ) );
 		putValue( LARGE_ICON_KEY, getLargeIcon( "free_hand.png" ) );
 	}

@@ -12,6 +12,7 @@ import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 import jdrafting.gui.controller.mouse.FragmentListener;
 
 @SuppressWarnings("serial")
@@ -25,7 +26,7 @@ public class FragmentAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "fragment" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "fragment_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_F );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_fragment" ) );
 		putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( 
 				KeyEvent.VK_2, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "hammer.png" ) );

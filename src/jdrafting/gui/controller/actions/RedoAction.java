@@ -13,6 +13,7 @@ import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 
 @SuppressWarnings("serial")
 public class RedoAction extends AbstractAction
@@ -24,7 +25,7 @@ public class RedoAction extends AbstractAction
 		this.app = app;
 		
 		putValue( NAME, getLocaleText( "redo" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_R );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_redo" ) );
 		putValue( ACCELERATOR_KEY, 
 				  KeyStroke.getKeyStroke( KeyEvent.VK_Z,
 							InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK ) );

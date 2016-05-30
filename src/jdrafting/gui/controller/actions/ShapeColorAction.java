@@ -14,6 +14,7 @@ import javax.swing.JDialog;
 import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 
 @SuppressWarnings("serial")
 public class ShapeColorAction extends AbstractAction
@@ -28,7 +29,7 @@ public class ShapeColorAction extends AbstractAction
 
 		putValue( NAME, getLocaleText( "color" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "color_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_S );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_shape_col" ) );
 		putValue( ACCELERATOR_KEY, 
 				KeyStroke.getKeyStroke( KeyEvent.VK_V, InputEvent.CTRL_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "color.png" ) );

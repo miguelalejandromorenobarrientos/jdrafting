@@ -13,6 +13,7 @@ import javax.swing.KeyStroke;
 
 import jdrafting.Exercise;
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 
 @SuppressWarnings("serial")
 public class ForwardAction extends AbstractAction
@@ -25,7 +26,7 @@ public class ForwardAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "forward" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "forward_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_F );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_forward" ) );
 		putValue( ACCELERATOR_KEY, 
 			KeyStroke.getKeyStroke( KeyEvent.VK_RIGHT, InputEvent.CTRL_MASK )  );
 		putValue( SMALL_ICON, getSmallIcon( "forward.png" ) );

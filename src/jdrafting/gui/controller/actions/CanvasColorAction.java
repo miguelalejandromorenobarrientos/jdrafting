@@ -14,6 +14,7 @@ import javax.swing.JDialog;
 import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 
 @SuppressWarnings("serial")
 public class CanvasColorAction extends AbstractAction
@@ -28,7 +29,7 @@ public class CanvasColorAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "background_color" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "background_color_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_C );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_canvas_col" ) );
 		putValue( ACCELERATOR_KEY, 
 			KeyStroke.getKeyStroke( KeyEvent.VK_B, InputEvent.CTRL_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "backcolor.png" ) );

@@ -1,5 +1,11 @@
 package jdrafting.gui.controller.mouse;
 
+import static jdrafting.geom.JDMath.adjustVectorToSize;
+import static jdrafting.geom.JDMath.linesIntersection;
+import static jdrafting.geom.JDMath.midpoint;
+import static jdrafting.geom.JDMath.normal;
+import static jdrafting.geom.JDMath.sumVectors;
+import static jdrafting.geom.JDMath.vector;
 import static jdrafting.gui.JDUtils.getLocaleText;
 
 import java.awt.BasicStroke;
@@ -65,11 +71,7 @@ public class TriangleListener extends AbstractCanvasMouseListener
 		else
 		{
 			// create triangle
-			Path2D triangle = new Path2D.Double();
-			triangle.moveTo( A.getX(), A.getY() );
-			triangle.lineTo( B.getX(), B.getY() );
-			triangle.lineTo( logicMouse.getX(), logicMouse.getY() );
-			triangle.lineTo( A.getX(), A.getY() );
+			Path2D triangle = getTriangle( logicMouse );
 			
 			// add triangle to exercise
 			app.addShapeFromIterator( triangle.getPathIterator( null ),
@@ -91,28 +93,63 @@ public class TriangleListener extends AbstractCanvasMouseListener
 		Point2D logicMouse = canvas.adjustToPoint( mouse().getPoint() );
 		
 		// set tool style
-		g2.setColor( Application.TOOL_MAIN_COLOR );
+		g2.setColor( Application.toolMainColor );
 		g2.setStroke( new BasicStroke( 1f ) );
 		
 		// draw triangle
-		if ( B == null )
-		{
-			g2.draw( transform.createTransformedShape( 
-										new Line2D.Double( A, logicMouse ) ) );
-			return;
-		}
-		else
-			g2.draw( transform.createTransformedShape( 
-												new Line2D.Double( A, B ) ) );
-		g2.draw( transform.createTransformedShape( 
-										new Line2D.Double( A, logicMouse ) ) );
-		g2.draw( transform.createTransformedShape( 
-										new Line2D.Double( B, logicMouse ) ) );
+		g2.draw( 
+				transform.createTransformedShape( getTriangle( logicMouse ) ) );
 	}
 	
 	// --- HELPERS
 	
 	// check modifiers
-	/*private boolean isRectangle() { return mouse().isControlDown(); }
-	private boolean isEquilateral() { return mouse().isShiftDown(); }*/
+	private boolean isRectangle() { return mouse().isControlDown(); }
+	private boolean isEquilateral() { return mouse().isShiftDown(); }
+	
+	private Path2D getTriangle( Point2D logicMouse )
+	{
+		if ( A == null )  return null;
+		
+		Path2D triangle = new Path2D.Double();
+		
+		triangle.moveTo( A.getX(), A.getY() );		
+		if ( B == null )
+		{
+			triangle.lineTo( logicMouse.getX(), logicMouse.getY() );
+			return triangle;  // return line (A,mouse)
+		}
+		triangle.lineTo( B.getX(), B.getY() );
+		if ( isRectangle() )
+		{
+			Point2D v = vector( A, B );
+			Point2D n = normal( v );
+			Point2D p;
+			if ( logicMouse.distance( A ) < logicMouse.distance( B ) )
+				p = A;
+			else
+				p = B;
+			Point2D C = linesIntersection( p, sumVectors( p, n ), logicMouse, 
+										   sumVectors( logicMouse, v ) );
+			triangle.lineTo( C.getX(), C.getY() );
+		}
+		else if ( isEquilateral() )
+		{
+			double factor = Line2D.Double.relativeCCW( 
+									A.getX(), A.getY(), B.getX(), B.getY(), 
+									logicMouse.getX(), logicMouse.getY() ) < 0
+							? Math.sqrt( 3 ) / 2.
+							: -Math.sqrt( 3 ) / 2.;
+			Point2D v = vector( A, B );
+			Point2D n = 
+				adjustVectorToSize( normal( v ), v.distance( 0, 0 ) * factor );
+			Point2D C = sumVectors( midpoint( A, B ), n );
+			triangle.lineTo( C.getX(), C.getY() );
+		}
+		else
+			triangle.lineTo( logicMouse.getX(), logicMouse.getY() );
+		triangle.lineTo( A.getX(), A.getY() );
+		
+		return triangle;
+	}
 }

@@ -12,18 +12,18 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
-import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+
+import com.sun.glass.events.KeyEvent;
 
 import jdrafting.geom.JDraftingShape;
 
@@ -72,9 +72,10 @@ public class EditShapeDialog extends JDialog
 		
 	    box.add( btnPanel );
 
+	    // ok button
 	    JButton btnOk = new JButton( getLocaleText( "save_close" ) );
 	    btnPanel.add( btnOk );
-		btnOk.addActionListener( new ActionListener() {
+	    Action okAction = new AbstractAction() {
 			@Override
 			public void actionPerformed( ActionEvent e )
 			{
@@ -89,7 +90,9 @@ public class EditShapeDialog extends JDialog
 
 				dispose();
 			}
-		} );
+		};
+		btnOk.addActionListener( okAction ); 
+		// details button
 	    JButton btnDetails = new JButton( getLocaleText( "details" ) );
 	    btnPanel.add( btnDetails );
 	    btnDetails.addActionListener( new ActionListener() {
@@ -107,42 +110,32 @@ public class EditShapeDialog extends JDialog
 						getLocaleText( "details" ) + ": " + jdshape.toString(),
 						JOptionPane.PLAIN_MESSAGE );
 			}
-		});	    
+		});
+	    // cancel button
 	    JButton btnCancel =	new JButton( getLocaleText( "cancel" ) );
 	    btnPanel.add( btnCancel );
-		btnCancel.addActionListener( new ActionListener() {
+	    Action cancelAction = new AbstractAction() {
 			@Override
 			public void actionPerformed( ActionEvent e )
 			{
 				setVisible( false );
 				dispose();
 			}
-		} );
+		};
+		btnCancel.addActionListener( cancelAction );
+
+		// ESCAPE 
+        getRootPane().getInputMap( JComponent.WHEN_IN_FOCUSED_WINDOW )
+        	.put( KeyStroke.getKeyStroke( KeyEvent.VK_ESCAPE, 0 ), "ESCAPE" );
+        getRootPane().getActionMap().put( "ESCAPE", cancelAction );
+        // ENTER
+        getRootPane().getInputMap( JComponent.WHEN_IN_FOCUSED_WINDOW )
+        	.put( KeyStroke.getKeyStroke( KeyEvent.VK_ENTER, 0 ), "ENTER" );
+        getRootPane().getActionMap().put( "ENTER", okAction );
 		
+        // window
 		setDefaultCloseOperation( DISPOSE_ON_CLOSE );
 		pack();
 		setLocationRelativeTo( parent );
-	}
-		
-	@Override
-	protected JRootPane createRootPane()
-	{
-		JRootPane rootPanel = new JRootPane();
-		
-		// ESCAPE key
-		KeyStroke stroke = KeyStroke.getKeyStroke( "ESCAPE" );
-		Action action = new AbstractAction() {
-		    public void actionPerformed(ActionEvent e)
-		    {
-		    	setVisible( false );
-		    	dispose();
-            }
-        };
-        InputMap inputMap = rootPanel.getInputMap(
-        							JComponent.WHEN_IN_FOCUSED_WINDOW );
-        inputMap.put( stroke, "ESCAPE" );
-        rootPanel.getActionMap().put( "ESCAPE", action );
-
-        return rootPanel;
 	}
 }

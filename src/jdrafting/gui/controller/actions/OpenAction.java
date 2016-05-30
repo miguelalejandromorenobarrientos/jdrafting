@@ -47,7 +47,7 @@ public class OpenAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "open" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "open_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_O );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_open" ) );
 		putValue( ACCELERATOR_KEY, 
 				KeyStroke.getKeyStroke( KeyEvent.VK_O, InputEvent.CTRL_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "open.png" ) );

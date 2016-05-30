@@ -89,7 +89,7 @@ public class ArrowListener extends AbstractCanvasMouseListener
 			
 			// draw segment
 			g2.setStroke( new BasicStroke( 1f ) );
-			g2.setColor( Application.TOOL_MAIN_COLOR );
+			g2.setColor( Application.toolMainColor );
 
 			g2.draw( canvas.getTransform().createTransformedShape( 
 												getArrow( logicMouse ) ) );

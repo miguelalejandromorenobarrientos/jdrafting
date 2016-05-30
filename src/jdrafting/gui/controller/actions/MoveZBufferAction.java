@@ -21,6 +21,7 @@ import javax.swing.undo.CannotUndoException;
 
 import jdrafting.geom.JDraftingShape;
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 
 @SuppressWarnings("serial")
 public class MoveZBufferAction extends AbstractAction 
@@ -36,7 +37,9 @@ public class MoveZBufferAction extends AbstractAction
 		putValue( NAME, getLocaleText( up ? "move_up" : "move_down" ) );
 		putValue( SHORT_DESCRIPTION, 
 						getLocaleText( up ? "move_up_des" : "move_down_des" ) );
-		putValue( MNEMONIC_KEY, up ? KeyEvent.VK_U : KeyEvent.VK_D );
+		putValue( MNEMONIC_KEY, up 
+								? JDUtils.getLocaleMnemonic( "mne_z_up" ) 
+								: JDUtils.getLocaleMnemonic( "mne_z_down" ) );
 		putValue( ACCELERATOR_KEY, up ?
 			KeyStroke.getKeyStroke( KeyEvent.VK_UP, InputEvent.CTRL_MASK ) :
 			KeyStroke.getKeyStroke( KeyEvent.VK_DOWN, InputEvent.CTRL_MASK ) );

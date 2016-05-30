@@ -13,12 +13,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
-import jdrafting.gui.controller.mouse.HandListener;
+import jdrafting.gui.JDUtils;
 import jdrafting.gui.controller.mouse.HomothetyListener;
 
 @SuppressWarnings("serial")
@@ -33,7 +31,7 @@ public class HomothetyAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "homothety" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "homothety_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_H );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_homo" ) );
 		putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( 
 									KeyEvent.VK_H, InputEvent.SHIFT_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "homothety.png" ) );
@@ -50,24 +48,15 @@ public class HomothetyAction extends AbstractAction
 			// dialog for homothety factor
 			JSpinner spinFactor = new JSpinner( new SpinnerNumberModel( 
 								factor, 0.1, Double.POSITIVE_INFINITY, 0.1 ) );
-			spinFactor.addChangeListener( new ChangeListener() {
-				@Override
-				public void stateChanged( ChangeEvent e )
-				{
-					factor = (double) ( (JSpinner) e.getSource() ).getValue();
-				}
-			});
+			spinFactor.addChangeListener( evt ->
+				factor = (double) ( (JSpinner) evt.getSource() ).getValue() );
 			
 			int option = JOptionPane.showOptionDialog( app, spinFactor, 
 						getLocaleText( "homo_dlg" ),
 						JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, 
 						getLargeIcon( "homothety.png" ), null, null );
-			if ( option != JOptionPane.OK_OPTION )
-			{
-				// back to select mode
-				canvas.setCanvasListener( new HandListener( canvas ) );
-				return;
-			}
+			if ( option != JOptionPane.OK_OPTION )  return;
+
 			canvas.setCanvasListener( new HomothetyListener( canvas, factor ) );
 		}
 		else

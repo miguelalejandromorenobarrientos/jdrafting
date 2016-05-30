@@ -12,6 +12,7 @@ import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 import jdrafting.gui.controller.mouse.AngleListener;
 
 @SuppressWarnings("serial")
@@ -25,9 +26,9 @@ public class AngleAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "angle" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "angle_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_N );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_angle" ) );
 		putValue( ACCELERATOR_KEY, 
-			KeyStroke.getKeyStroke( KeyEvent.VK_6, InputEvent.CTRL_MASK ) );
+				KeyStroke.getKeyStroke( KeyEvent.VK_5, InputEvent.CTRL_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "angle.png" ) );
 		putValue( LARGE_ICON_KEY, getLargeIcon( "angle.png" ) );
 	}

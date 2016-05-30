@@ -14,6 +14,7 @@ import javax.swing.KeyStroke;
 
 import jdrafting.Exercise;
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 
 @SuppressWarnings("serial")
 public class NewAction extends AbstractAction
@@ -26,7 +27,7 @@ public class NewAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "new" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "new_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_N );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_new" ) );
 		putValue( ACCELERATOR_KEY, 
 				KeyStroke.getKeyStroke( KeyEvent.VK_N, InputEvent.CTRL_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "new.png" ) );

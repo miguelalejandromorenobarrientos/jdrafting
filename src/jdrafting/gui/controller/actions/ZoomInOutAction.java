@@ -5,13 +5,13 @@ import static jdrafting.gui.JDUtils.getLocaleText;
 import static jdrafting.gui.JDUtils.getSmallIcon;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
+import jdrafting.gui.JDUtils;
 import jdrafting.gui.Viewport;
 
 @SuppressWarnings("serial")
@@ -28,7 +28,9 @@ public class ZoomInOutAction extends AbstractAction
 		putValue( NAME, getLocaleText( zoomIn ? "zoom_in" : "zoom_out" ) );
 		putValue( SHORT_DESCRIPTION, 
 					getLocaleText( zoomIn ? "zoom_in_des" : "zoom_out_des" ) );
-		putValue( MNEMONIC_KEY, zoomIn ? KeyEvent.VK_I : KeyEvent.VK_O );
+		putValue( MNEMONIC_KEY, zoomIn
+								? JDUtils.getLocaleMnemonic( "mne_zoom_in" )
+								: JDUtils.getLocaleMnemonic( "mne_zoom_out" ) );
 		putValue( ACCELERATOR_KEY,
 					KeyStroke.getKeyStroke(	zoomIn ? "typed +" : "typed -" ) );
 		putValue( SMALL_ICON,

@@ -115,7 +115,7 @@ public class TranslationListener extends AbstractCanvasMouseListener
 			Point2D vt = getVector( logicMouse );
 			g2.draw( transform.createTransformedShape( 
 						new Line2D.Double( start, sumVectors( start, vt ) ) ) );
-			g2.setColor( Application.TOOL_MAIN_COLOR );			
+			g2.setColor( Application.toolMainColor );			
 			for ( Shape translated : getTranslated( app.getSelectedShapes(), 
 													vt.getX(), vt.getY() ) )
 				g2.draw( transform.createTransformedShape( translated ) );			

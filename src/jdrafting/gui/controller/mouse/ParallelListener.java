@@ -117,7 +117,7 @@ public class ParallelListener extends AbstractCanvasMouseListener
 			// draw parallel
 			g2.setStroke( new BasicStroke( 1f, BasicStroke.CAP_ROUND, 
 													BasicStroke.JOIN_ROUND ) );
-			g2.setColor( Application.TOOL_MAIN_COLOR );
+			g2.setColor( Application.toolMainColor );
 			g2.draw( canvas.getTransform().createTransformedShape( 
 												getParallel( logicMouse ) ) );
 		}

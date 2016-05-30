@@ -94,7 +94,7 @@ public class PointListener extends AbstractCanvasMouseListener
 			}
 		}
 		
-		g2.setColor( Application.TOOL_MAIN_COLOR );
+		g2.setColor( Application.toolMainColor );
 		g2.setStroke( new BasicStroke( 1f ) );
 		g2.drawOval( (int) Math.round( point.getX() - cross / 2. ), 
 					 (int) Math.round( point.getY() - cross / 2. ),

@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 import jdrafting.gui.controller.mouse.RotationListener;
 
 @SuppressWarnings("serial")
@@ -26,7 +27,7 @@ public class RotationAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "rotation" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "rotation_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_R );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_rotation" ) );
 		putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( 
 									KeyEvent.VK_R, InputEvent.SHIFT_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "rotation.png" ) );

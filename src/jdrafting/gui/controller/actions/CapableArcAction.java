@@ -12,6 +12,7 @@ import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 import jdrafting.gui.controller.mouse.CapableArcListener;
 
 @SuppressWarnings("serial")
@@ -25,7 +26,7 @@ public class CapableArcAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "capable_arc" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "capable_arc_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_C );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_cap_arc" ) );
 		putValue( ACCELERATOR_KEY, 
 				KeyStroke.getKeyStroke( KeyEvent.VK_5, InputEvent.ALT_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "capable_arc.png" ) );

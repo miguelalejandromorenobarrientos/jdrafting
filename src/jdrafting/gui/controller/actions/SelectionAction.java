@@ -12,6 +12,7 @@ import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 import jdrafting.gui.controller.mouse.SelectionListener;
 
 @SuppressWarnings("serial")
@@ -25,7 +26,7 @@ public class SelectionAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "selection" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "selection_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_S );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_selection" ) );
 		putValue( ACCELERATOR_KEY, 
 				KeyStroke.getKeyStroke( KeyEvent.VK_0, InputEvent.CTRL_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "selection.png" ) );

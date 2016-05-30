@@ -93,7 +93,7 @@ public class CentralSymmetryListener extends AbstractCanvasMouseListener
 		g2.setColor( Color.RED );
 		g2.fillOval( nearInt( canCenter.getX() - 4 ), 
 					 nearInt( canCenter.getY() - 4 ), 8, 8 );
-		g2.setColor( Application.TOOL_MAIN_COLOR );			
+		g2.setColor( Application.toolMainColor );			
 		for ( Shape sym : getSymmetric( app.getSelectedShapes(), center ) )
 			g2.draw( transform.createTransformedShape( sym ) );			
 	}

@@ -113,7 +113,7 @@ public class AxialSymmetryListener extends AbstractCanvasMouseListener
 			g2.setColor( Color.RED ); // axis	
 			g2.draw( transform.createTransformedShape( 
 									new Line2D.Double( start, logicMouse ) ) );
-			g2.setColor( Application.TOOL_MAIN_COLOR );  // transformed shapes			
+			g2.setColor( Application.toolMainColor );  // transformed shapes			
 			for ( Shape symmetric : getSymmetric( app.getSelectedShapes(), 
 												  vector, start ) )
 				g2.draw( transform.createTransformedShape( symmetric ) );			

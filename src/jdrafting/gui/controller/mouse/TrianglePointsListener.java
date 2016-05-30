@@ -63,7 +63,7 @@ public class TrianglePointsListener extends AbstractCanvasMouseListener
 
 		canvas.setCursor( CURSOR.get( type ) );
 		
-		app.setStatusText( getLocaleText( "txt_triangle_points1" ) );
+		app.setStatusText( getLocaleText( "txt_triangle_points2" ) );
 	}
 
 	@Override
@@ -121,7 +121,7 @@ public class TrianglePointsListener extends AbstractCanvasMouseListener
 		// mouse position on logic viewport
 		Point2D logicMouse = canvas.adjustToPoint( mouse().getPoint() );
 		
-		g2.setColor( Application.TOOL_MAIN_COLOR );
+		g2.setColor( Application.toolMainColor );
 		g2.setStroke( new BasicStroke( 1f ) );
 		
 		if ( B == null )

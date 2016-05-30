@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 import jdrafting.gui.controller.mouse.AxialSymmetryListener;
 
 @SuppressWarnings("serial")
@@ -26,7 +27,7 @@ public class AxialSymmetryAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "axial_sym" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "axial_sym_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_A );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_sym_axial" ) );
 		putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( 
 									KeyEvent.VK_A, InputEvent.SHIFT_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "axial_symmetry.png" ) );

@@ -1,14 +1,16 @@
 package jdrafting.gui.controller.actions;
 
-import static jdrafting.gui.JDUtils.getLargeIcon;
 import static jdrafting.gui.JDUtils.getLocaleText;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
+import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 import jdrafting.gui.controller.mouse.TriangleListener;
 
 @SuppressWarnings("serial")
@@ -22,11 +24,11 @@ public class TriangleAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "triangle" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "triangle_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_T );
-		/*putValue( ACCELERATOR_KEY, 
-			KeyStroke.getKeyStroke( KeyEvent.VK_5, InputEvent.CTRL_MASK ) );*/
-		putValue( SMALL_ICON, getLargeIcon( "triangle.png" ) );
-		putValue( LARGE_ICON_KEY, getLargeIcon( "triangle.png" ) );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_triangle" ) );
+		putValue( ACCELERATOR_KEY, 
+			KeyStroke.getKeyStroke( KeyEvent.VK_1, InputEvent.SHIFT_MASK ) );
+		putValue( SMALL_ICON, JDUtils.getSmallIcon( "triangle.png" ) );
+		putValue( LARGE_ICON_KEY, JDUtils.getLargeIcon( "triangle.png" ) );
 	}
 		
 	@Override

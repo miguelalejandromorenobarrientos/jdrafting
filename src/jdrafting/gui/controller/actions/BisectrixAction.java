@@ -12,6 +12,7 @@ import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 import jdrafting.gui.controller.mouse.BisectrixListener;
 
 @SuppressWarnings("serial")
@@ -25,7 +26,7 @@ public class BisectrixAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "bisectrix" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "bisectrix_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_P );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_bisectrix" ) );
 		putValue( ACCELERATOR_KEY, 
 			KeyStroke.getKeyStroke( KeyEvent.VK_4, InputEvent.ALT_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "bisectrix.png" ) );

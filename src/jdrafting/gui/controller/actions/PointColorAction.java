@@ -14,6 +14,7 @@ import javax.swing.JDialog;
 import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 
 @SuppressWarnings("serial")
 public class PointColorAction extends AbstractAction
@@ -28,7 +29,7 @@ public class PointColorAction extends AbstractAction
 
 		putValue( NAME, getLocaleText( "point_color" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "point_color_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_P );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_point_col" ) );
 		putValue( ACCELERATOR_KEY, 
 				KeyStroke.getKeyStroke( KeyEvent.VK_K, InputEvent.CTRL_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "point_color.png" ) );

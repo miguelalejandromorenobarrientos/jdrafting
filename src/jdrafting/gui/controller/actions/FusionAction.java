@@ -17,6 +17,7 @@ import javax.swing.KeyStroke;
 import javax.swing.undo.CompoundEdit;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 
 @SuppressWarnings("serial")
 public class FusionAction extends AbstractAction
@@ -29,7 +30,7 @@ public class FusionAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "fusion" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "fusion_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_C );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_fusion" ) );
 		putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( 
 				KeyEvent.VK_3, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "fusion.png" ) );
@@ -49,8 +50,8 @@ public class FusionAction extends AbstractAction
 			return;
 		}
 		
-		// new shape name
-		String name = String.join( "-", app.getSelectedShapes()
+		// shape description
+		String desc = String.join( "-", app.getSelectedShapes()
 	  			.stream()
 	  			.map( jdshape -> jdshape.getName().length() > 0
 	  							 ? jdshape.getName()
@@ -66,13 +67,13 @@ public class FusionAction extends AbstractAction
 			@Override
 			public String getRedoPresentationName()
 			{
-				return "Redo Fusion " + name 
+				return "Redo Fusion " + desc 
 					   + "(" + ( edits.size() - 1 ) + " shapes)";
 			}
 			@Override
 			public String getUndoPresentationName()
 			{
-				return "Redo Fusion " + name 
+				return "Redo Fusion " + desc 
 					   + "(" + ( edits.size() - 1 ) + " shapes)";
 			}
 		};
@@ -89,8 +90,8 @@ public class FusionAction extends AbstractAction
 		});
 		
 		// add new shape to exercise
-		app.addShapeFromIterator( path.getPathIterator( null ),	name, 
-					getLocaleText( "new_fusion" ) + " " + name, app.getColor(), 
+		app.addShapeFromIterator( path.getPathIterator( null ),	"", 
+					getLocaleText( "new_fusion" ) + " " + desc, app.getColor(), 
 					app.getStroke(), transaction );
 		
 		transaction.end();

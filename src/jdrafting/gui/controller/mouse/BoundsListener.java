@@ -78,7 +78,7 @@ public class BoundsListener extends AbstractCanvasMouseListener
 		
 		// set tool style
 		g2.setStroke( new BasicStroke( 1f ) );
-		g2.setColor( Application.TOOL_MAIN_COLOR );
+		g2.setColor( Application.toolMainColor );
 
 		// draw bounds
 		g2.draw( canvas.getTransform().createTransformedShape( 

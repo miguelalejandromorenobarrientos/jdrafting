@@ -99,7 +99,7 @@ public class SplineListener extends AbstractCanvasMouseListener
 		
 		// set style
 		g2.setStroke( new BasicStroke( 1f ) );
-		g2.setColor( Application.TOOL_MAIN_COLOR );
+		g2.setColor( Application.toolMainColor );
 
 		// draw spline
 		Object[] data = getSpline( _points );

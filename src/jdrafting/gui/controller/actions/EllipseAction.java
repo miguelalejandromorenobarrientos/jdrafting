@@ -12,6 +12,7 @@ import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 import jdrafting.gui.controller.mouse.EllipseListener;
 
 @SuppressWarnings("serial")
@@ -25,9 +26,9 @@ public class EllipseAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "ellipse" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "ellipse_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_E );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_ellipse" ) );
 		putValue( ACCELERATOR_KEY, 
-				KeyStroke.getKeyStroke( KeyEvent.VK_8, InputEvent.CTRL_MASK ) );
+			KeyStroke.getKeyStroke( KeyEvent.VK_5, InputEvent.SHIFT_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "ellipse.png" ) );
 		putValue( LARGE_ICON_KEY, getLargeIcon( "ellipse.png" ) );
 	}

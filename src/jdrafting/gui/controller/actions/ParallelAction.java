@@ -12,6 +12,7 @@ import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 import jdrafting.gui.controller.mouse.ParallelListener;
 
 @SuppressWarnings("serial")
@@ -25,7 +26,7 @@ public class ParallelAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "para" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "para_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_A );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_parallel" ) );
 		putValue( ACCELERATOR_KEY, 
 				KeyStroke.getKeyStroke( KeyEvent.VK_2, InputEvent.ALT_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "parallel.png" ) );

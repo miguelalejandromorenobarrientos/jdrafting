@@ -112,7 +112,7 @@ public class CapableArcListener extends AbstractCanvasMouseListener
 		
 		AffineTransform transform = canvas.getTransform();
 		
-		g2.setColor( Application.TOOL_MAIN_COLOR );
+		g2.setColor( Application.toolMainColor );
 		g2.setStroke( new BasicStroke( 1f ) );
 		
 		// draw capable arc

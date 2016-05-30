@@ -125,7 +125,7 @@ public class HomothetyListener extends AbstractCanvasMouseListener
 		}
 		
 		g2.setStroke( new BasicStroke( 2f ) );  // transformed shapes
-		g2.setColor( Application.TOOL_MAIN_COLOR );			
+		g2.setColor( Application.toolMainColor );			
 		for ( Shape tshape : transformed )
 			g2.draw( transform.createTransformedShape( tshape ) );
 			

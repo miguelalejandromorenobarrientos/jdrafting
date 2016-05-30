@@ -22,6 +22,7 @@ import jdrafting.geom.JDPoint;
 import jdrafting.geom.JDraftingShape;
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
+import jdrafting.gui.JDUtils;
 
 /**
  * Get intersections between selected shapes  
@@ -37,7 +38,7 @@ public class IntersectionsAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "inter" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "inter_des" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_I );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_intersection" ) );
 		putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( 
 				KeyEvent.VK_0, InputEvent.ALT_MASK | InputEvent.SHIFT_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "intersection.png" ) );

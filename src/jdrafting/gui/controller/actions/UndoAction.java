@@ -13,6 +13,7 @@ import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
 import jdrafting.gui.Application;
+import jdrafting.gui.JDUtils;
 
 @SuppressWarnings("serial")
 public class UndoAction extends AbstractAction
@@ -24,7 +25,7 @@ public class UndoAction extends AbstractAction
 		this.app = app;
 		
 		putValue( NAME, getLocaleText( "undo" ) );
-		putValue( MNEMONIC_KEY, KeyEvent.VK_U );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_undo" ) );
 		putValue( ACCELERATOR_KEY, 
 				KeyStroke.getKeyStroke( KeyEvent.VK_Z, InputEvent.CTRL_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "undo.png" ) );
