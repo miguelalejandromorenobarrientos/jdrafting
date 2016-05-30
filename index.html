@@ -1,0 +1,108 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+	<title>JDrafting Project Site</title>
+
+	<meta charset="utf-8"/>
+	<meta http-equiv="content-language" content="en"/>
+	<meta name="keyword" content="JDrafting, drafting, cad, drawing, dibujo tecnico" />
+	<meta name="description" content="Open source Java application to create Technical Drawing exercises. Author: Miguel Alejandro Moreno Barrientos" />
+	<meta name="author" content="Miguel Alejandro Moreno Barrientos" />
+	<meta name="publisher" content="Miguel Alejandro Moreno Barrientos" />
+	<meta name="copyright" content="Miguel Alejandro Moreno Barrientos" />
+	<meta name="distribution" content="Global" />
+	<meta name="audience" content="all" />
+	<meta name="robots" content="index,follow" />
+	
+	<link rel="shortcut icon" href="images/jdrafting.png">
+	
+	<link rel="stylesheet" type="text/css" href="jd.css">
+	
+	<script>
+		window.onload = function() {
+			div_download = document.getElementById( "div_download" );
+			div_download.onmouseover = function() {
+				div_download.style.boxShadow = "0px 0px 4px 2px black";
+				div_download.style.padding = "4px 6px";
+			}
+			div_download.onmouseout = function() {
+				div_download.style.boxShadow = "0px 0px 8px 4px #123";
+				div_download.style.padding = "6px 9px";
+			}
+		}
+	</script>
+</head>
+
+<body>
+
+	<header>
+		<div id="div_title">
+			<p id="title">JDrafting<small>v0.1.9</small></p>		
+			<p><small><i>JDrafting</i> is an <i>open source</i> <b>Java</b> application to create small Technical Drawing exercises.</small></p>
+			<p id="author">Author: <i>Miguel Alejandro Moreno Barrientos</i>, 2016</p>
+		</div>
+		<iframe style="margin:2px 40px 2px 60px;box-shadow:0px 0px 10px black" width="300" height="200" src="https://www.youtube.com/embed/H4ZuJF91zuI" frameborder="0" allowfullscreen></iframe>		
+		<div id="div_logo">
+			<img src="images/jdrafting.png" width=200 height=200 alt="logo"/>
+		</div>
+	</header>
+	
+	
+	<hr/>
+	
+	<div id="div_features">
+		Main features:
+		<ul>
+			<li>Basic shapes; points, segments, arcs, circumferences, ...</li>
+			<li>Ruler and protractor</li>
+			<li>Other shapes; squares, rectangles, polygons, polylines, splines, free hand</li>
+			<li>Tools for perpendiculars, parallels, mediatrix, bisectrix, capable arc, ...</li>
+			<li>Transforms; rotations, translations, homothety, symmetries, ...</li>
+			<li>Show exercise step by step</li>
+			<li>Export to SVG/PNG</li>
+			<li>Very easy to use</li>
+			<li>Language; English/Spanish</li>
+		</ul>
+	</div>
+	
+	<div id="div_download">
+		<p class="shadow" style="color:#bdc"><b>Download</b>&nbsp;&nbsp;&nbsp;<i>JDrafting v0.1.9</i></p>
+		<p><small>Executable <a href="jdrafting_0.1.9_exec.jar">jdrafting_0.1.9_exec.jar</a> 2.2MB</small></p>
+		<p><small>Code <a href="jdrafting_0.1.9_src.jar">jdrafting_0.1.9_src.jar</a> 1.9MB</small></p>
+	</div>
+	
+	<br/>
+	
+	<div id="div_requirements">
+		System requirements:
+		<ul>
+			<li>Java 8+</li>
+		</ul>
+	</div>
+	
+	<div id="div_releases">
+		<font size='3'><p>Project links:</p>
+		<p><a href=https://sourceforge.net/projects/jdrafting>Sourceforge</a></p>
+		<p><a href='https://github.com/miguelalejandromorenobarrientos/jdrafting/tree/master'>Github repository</a></p>
+		<p><a href="https://github.com/miguelalejandromorenobarrientos/jdrafting/releases">Releases and version changes</a></p></font>
+	</div>
+	
+	<hr/>
+	
+	<img class="centered" src="images/screenshot0.png" width='1000' height='700' "/>
+	<hr/>
+	<img class="centered" src="images/screenshot1.png" width='1000' height='700' "/>
+	<hr/>
+	<img class="centered" src="images/screenshot2.png" width='1000' height='700' "/>
+	<hr/>
+	<img class="centered" src="images/screenshot3.png" width='1000' height='700' "/>
+	<hr/>
+	<img class="centered" src="images/screenshot4.png" width='1000' height='700' "/>
+	
+	<hr/>
+	<footer>JDrafting Project Page  // Miguel Alejandro Moreno Barrientos, 2016</footer>
+</body>
+
+</html>
