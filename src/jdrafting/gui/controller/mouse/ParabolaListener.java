@@ -97,36 +97,35 @@ public class ParabolaListener extends AbstractCanvasMouseListener
 				Map<String,Object> map = getParabola( logicMouse );
 				// add parabola, bounds, vertex, focus, directrix
 				app.addShapeFromIterator( ( (Path2D) map.get( "parabola" ) )
-													.getPathIterator( null ), 
-						"", "", app.getColor(), app.getStroke(), transaction );
+												.getPathIterator( null ), "", 
+										  getLocaleText( "new_parabola" ), 
+										  app.getColor(), app.getStroke(), transaction );
 				app.addShapeFromIterator( ( (Rectangle2D) map.get( "bounds" ) )
-													.getPathIterator( null ), 
-						"", getLocaleText( "new_para_bounds" ), app.getColor(), 
-						app.getStroke(), transaction );
+												.getPathIterator( null ), "", 
+										  getLocaleText( "new_para_bounds" ), 
+										  app.getColor(), app.getStroke(), transaction );
 				app.addShapeFromIterator( ( (Line2D) map.get( "directrix" ) )
-													.getPathIterator( null ), 
-						"", getLocaleText( "new_directrix" ), app.getColor(), 
-						app.getStroke(), transaction );
-				app.addShapeFromIterator( 
-					( new JDPoint( (Point2D) map.get( "vertex" ) ) )
-													.getPathIterator( null ), 
-					"", getLocaleText( "new_para_vertex" ), 
-					app.getPointColor(), app.getPointStroke(), transaction );
-				app.addShapeFromIterator( 
-						( new JDPoint( (Point2D) map.get( "focus" ) ) )
-													.getPathIterator( null ), 
-						"", getLocaleText( "new_focus" ), app.getPointColor(), 
-						app.getPointStroke(), transaction );
+												.getPathIterator( null ), "", 
+										  getLocaleText( "new_directrix" ), 
+										  app.getColor(), app.getStroke(), transaction );
+				app.addShapeFromIterator( ( new JDPoint( (Point2D) map.get( "vertex" ) ) )
+												.getPathIterator( null ), "", 
+										  getLocaleText( "new_para_vertex" ), 
+										  app.getPointColor(), app.getPointStroke(), transaction );
+				app.addShapeFromIterator( ( new JDPoint( (Point2D) map.get( "focus" ) ) )
+												.getPathIterator( null ), "", 
+										  getLocaleText( "new_focus" ), 
+										  app.getPointColor(), app.getPointStroke(), transaction );
 				
 				transaction.end();
 				app.undoSupport.postEdit( transaction );
 			}
 			else
 				// add parabola to exercise
-				app.addShapeFromIterator( 
-					( (Path2D) getParabola( logicMouse ).get( "parabola" ) )
-						.getPathIterator( null ),
-					"", "", app.getColor(), app.getStroke() );
+				app.addShapeFromIterator( ( (Path2D) getParabola( logicMouse ).get( "parabola" ) )
+											.getPathIterator( null ), "", 
+										  getLocaleText( "new_parabola" ), 
+										  app.getColor(), app.getStroke() );
 
 			// back to select mode
 			canvas.setCanvasListener( new HandListener( canvas ) );

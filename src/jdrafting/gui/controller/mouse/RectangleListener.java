@@ -45,8 +45,7 @@ public class RectangleListener extends AbstractCanvasMouseListener
 		if ( start == null )  return;
 		
 		// dynamic cursor
-		Point2D pos =
-				canvas.getInverseTransform().transform( e.getPoint(), null );
+		Point2D pos = canvas.getInverseTransform().transform( e.getPoint(), null );
 		if ( ( pos.getX() - start.getX() ) * ( pos.getY() - start.getY() ) > 0 )
 			canvas.setCursor( new Cursor( Cursor.NE_RESIZE_CURSOR ) );
 		else
@@ -73,9 +72,9 @@ public class RectangleListener extends AbstractCanvasMouseListener
 		else
 		{
 			// add rectangle to exercise
-			app.addShapeFromIterator( 
-							getRectangle( logicMouse ).getPathIterator( null ),
-							"", "", app.getColor(), app.getStroke() );
+			app.addShapeFromIterator( getRectangle( logicMouse ).getPathIterator( null ), "", 
+									  getLocaleText( isSquare() ? "new_square" : "new_rectangle" ), 
+									  app.getColor(), app.getStroke() );
 
 			// back to select mode
 			canvas.setCanvasListener( new HandListener( canvas ) );

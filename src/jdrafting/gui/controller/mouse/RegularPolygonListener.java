@@ -26,8 +26,7 @@ import jdrafting.gui.JDUtils;
  */
 public class RegularPolygonListener extends AbstractCanvasMouseListener
 {
-	private static final Cursor CURSOR = 
-							JDUtils.getCustomCursor( "reg_poly_cursor.png" );
+	private static final Cursor CURSOR = JDUtils.getCustomCursor( "reg_poly_cursor.png" );
 	private CanvasPanel canvas;
 	private Application app;
 	
@@ -97,33 +96,31 @@ public class RegularPolygonListener extends AbstractCanvasMouseListener
 				
 				Map<String,Object> map = getPolygon( logicMouse );
 				// add polygon
-				app.addShapeFromIterator( ( (Path2D) map.get( "polygon" ) )
-													.getPathIterator( null ), 
-						"", "", app.getColor(), app.getStroke(), transaction );
+				app.addShapeFromIterator( ( (Path2D) map.get( "polygon" ) ).getPathIterator( null ), 
+										  "", getLocaleText( "new_regular_polygon" ), 
+										  app.getColor(), app.getStroke(), transaction );
 				// add center
-				app.addShapeFromIterator( 
-					( new JDPoint( (Point2D) map.get( "center" ) ) )
-						.getPathIterator( null ), 
-					"", getLocaleText( "new_center_reg" ), 
-					app.getPointColor(), app.getPointStroke(), transaction );
+				app.addShapeFromIterator( ( new JDPoint( (Point2D) map.get( "center" ) ) )
+											.getPathIterator( null ), 
+										  "", getLocaleText( "new_center_reg" ), 
+										  app.getPointColor(), app.getPointStroke(), transaction );
 				// add circumference circumscribed
 				double flatness = ( (Ellipse2D) map.get( "circumscribed" ) )
 										.getWidth() / app.getFlatnessValue();
-				app.addShapeFromIterator( 
-					( (Ellipse2D) map.get( "circumscribed" ) )
-						.getPathIterator( null, flatness ), 
-					"", getLocaleText( "new_circumscribed" ), app.getColor(), 
-					app.getStroke(), transaction );
+				app.addShapeFromIterator( ( (Ellipse2D) map.get( "circumscribed" ) )
+												.getPathIterator( null, flatness ), 
+										  "", getLocaleText( "new_circumscribed" ), app.getColor(), 
+										  app.getStroke(), transaction );
 				
 				transaction.end();
 				app.undoSupport.postEdit( transaction );
 			}
 			else
 				// add polygon to exercise
-				app.addShapeFromIterator( 
-						( (Path2D) getPolygon( logicMouse ).get( "polygon" ) )
-							.getPathIterator( null ),
-						"", "", app.getColor(), app.getStroke() );
+				app.addShapeFromIterator( ( (Path2D) getPolygon( logicMouse ).get( "polygon" ) )
+											.getPathIterator( null ), "", 
+										  getLocaleText( "new_regular_polygon" ), 
+										  app.getColor(), app.getStroke() );
 
 			// back to select mode
 			canvas.setCanvasListener( new HandListener( canvas ) );

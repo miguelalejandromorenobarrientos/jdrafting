@@ -71,7 +71,8 @@ public class ArrowListener extends AbstractCanvasMouseListener
 		{
 			// add shape to exercise
 			Path2D line = getArrow( logicMouse );
-			app.addShapeFromIterator( line.getPathIterator( null ), "", "", 
+			app.addShapeFromIterator( line.getPathIterator( null ), "", 
+									  getLocaleText( "new_arrow" ), 
 									  app.getColor(), app.getStroke() );
 
 			// back to select mode
@@ -91,8 +92,7 @@ public class ArrowListener extends AbstractCanvasMouseListener
 			g2.setStroke( new BasicStroke( 1f ) );
 			g2.setColor( Application.toolMainColor );
 
-			g2.draw( canvas.getTransform().createTransformedShape( 
-												getArrow( logicMouse ) ) );
+			g2.draw( canvas.getTransform().createTransformedShape( getArrow( logicMouse ) ) );
 		}
 	}
 	

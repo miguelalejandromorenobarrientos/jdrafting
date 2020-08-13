@@ -6,6 +6,7 @@ import static jdrafting.geom.JDMath.pointRelativeToCenter;
 import static jdrafting.geom.JDMath.sumVectors;
 import static jdrafting.geom.JDMath.vector;
 import static jdrafting.geom.JDMath.vectorArg;
+import static jdrafting.gui.JDUtils.getLocaleText;
 
 import java.awt.BasicStroke;
 import java.awt.Cursor;
@@ -68,10 +69,10 @@ public class SplineListener extends AbstractCanvasMouseListener
 			Path2D spline = (Path2D) getSpline( points )[0];
 			
 			// add polygon to exercise
-			double flatness = 
-					spline.getBounds2D().getWidth() / app.getFlatnessValue();
-			app.addShapeFromIterator( spline.getPathIterator( null, flatness ),
-									"", "", app.getColor(), app.getStroke() );
+			double flatness = spline.getBounds2D().getWidth() / app.getFlatnessValue();
+			app.addShapeFromIterator( spline.getPathIterator( null, flatness ), "", 
+									  getLocaleText( "new_spline" ), 
+									  app.getColor(), app.getStroke() );
 			
 			// back to select mode
 			canvas.setCanvasListener( new HandListener( canvas ) );

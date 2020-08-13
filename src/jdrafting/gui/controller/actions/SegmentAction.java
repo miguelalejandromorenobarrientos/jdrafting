@@ -36,7 +36,6 @@ public class SegmentAction extends AbstractAction
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		app.getCanvas().setCanvasListener( 
-									new SegmentListener( app.getCanvas() ) );
+		app.getCanvas().setCanvasListener( new SegmentListener( app.getCanvas() ) );
 	}
 }

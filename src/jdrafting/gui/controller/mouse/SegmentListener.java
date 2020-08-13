@@ -91,24 +91,24 @@ public class SegmentListener extends AbstractCanvasMouseListener
 					}
 				};				
 				// add segment
-				app.addShapeFromIterator( line.getPathIterator( null ),	"", "", 
-					app.getColor(), app.getStroke(), transaction );
+				app.addShapeFromIterator( line.getPathIterator( null ),	"", 
+										  getLocaleText( "new_segment" ), 
+										  app.getColor(), app.getStroke(), transaction );
 				// add extremes
-				app.addShapeFromIterator(
-					new JDPoint( line.getP1() ).getPathIterator( null ), "", 
-					"segment extreme", app.getPointColor(), 
-					app.getPointStroke(), transaction );
-				app.addShapeFromIterator(
-					new JDPoint( line.getP2() ).getPathIterator( null ), "", 
-					"segment extreme", app.getPointColor(), 
-					app.getPointStroke(), transaction );
+				app.addShapeFromIterator( new JDPoint( line.getP1() ).getPathIterator( null ), "", 
+								 		  getLocaleText( "new_segment_extreme" ) + " 1", 
+								 		  app.getPointColor(), app.getPointStroke(), transaction );
+				app.addShapeFromIterator( new JDPoint( line.getP2() ).getPathIterator( null ), "", 
+										  getLocaleText( "new_segment_extreme" ) + " 2", 
+										  app.getPointColor(), app.getPointStroke(), transaction );
 				
 				transaction.end();
 				app.undoSupport.postEdit( transaction );
 			}
 			else  // add segment
-				app.addShapeFromIterator( line.getPathIterator( null ),
-									"", "", app.getColor(), app.getStroke() );
+				app.addShapeFromIterator( line.getPathIterator( null ), "", 
+										  getLocaleText( "new_segment" ), 
+										  app.getColor(), app.getStroke() );
 
 			// back to select mode
 			canvas.setCanvasListener( new HandListener( canvas ) );

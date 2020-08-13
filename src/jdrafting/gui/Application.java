@@ -1,9 +1,9 @@
 package jdrafting.gui;
 
 import static jdrafting.gui.JDUtils.getLargeIcon;
+import static jdrafting.gui.JDUtils.getLocaleMnemonic;
 import static jdrafting.gui.JDUtils.getLocaleText;
 import static jdrafting.gui.JDUtils.getSmallIcon;
-import static jdrafting.gui.JDUtils.getLocaleMnemonic;
 
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -160,6 +161,7 @@ import jdrafting.gui.controller.mouse.TrianglePointsListener;
 /**
  * {@value #APPNAME} GUI class
  * @author {@value #AUTHOR}, {@value #COPYLEFT}
+ * @since 0.1.0
  * @version {@value #VERSION}
  */
 @SuppressWarnings("serial")
@@ -170,13 +172,13 @@ public class Application extends JFrame
 	//////////////////////
 	// metainfo
 	public static final String APPNAME = "JDrafting";
-	public static final String VERSION = "0.1.9";
+	public static final String VERSION = "0.1.10";
 	public static final String AUTHOR = "Miguel Alejandro Moreno Barrientos";
-	public static final String COPYLEFT = "2016";
+	public static final String COPYLEFT = "2016,2020";
 	public static final String PROJECT_PAGE = 
-				"http://miguelalejandromorenobarrientos.github.io/jdrafting";
+									"http://miguelalejandromorenobarrientos.github.io/jdrafting";
 	public static final String GITHUB_REPOSITORY =	
-	"https://github.com/miguelalejandromorenobarrientos/jdrafting/tree/master";
+						"https://github.com/miguelalejandromorenobarrientos/jdrafting/tree/master";
 	// colors
 	public static Color toolMainColor = Color.BLUE;
 	// separators
@@ -188,9 +190,8 @@ public class Application extends JFrame
 	// STATIC VARS //
 	/////////////////
 	public static Locale locale = Locale.getDefault(); 
-	public static String lookAndFeelClassName = 
-									UIManager.getSystemLookAndFeelClassName();
-	public static boolean jmeEnabled = false;
+	public static String lookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
+	public static boolean jmeEnabled = true;
 	
 	
 	///////////////////
@@ -210,7 +211,7 @@ public class Application extends JFrame
 	private BasicStroke stroke = JDStrokes.PLAIN_ROUND.getStroke();
 	private Color pointColor = Color.DARK_GRAY;
 	private BasicStroke pointStroke = 
-		new BasicStroke( 8f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND );
+							new BasicStroke( 8f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND );
 	// undo/redo
 	public UndoManager undoManager;
 	public UndoableEditSupport undoSupport;
@@ -254,6 +255,11 @@ public class Application extends JFrame
 	/////////////////
 	public Application()
 	{
+		// easter egg joke
+		final int year = Calendar.getInstance().get( Calendar.YEAR );
+		if ( year >= 2030 )
+			System.out.println( "\n\tYeah! My program still running in " + year + "!!\n" );
+		
 		// create app window
 		initUI();
 		createActions();
@@ -1168,7 +1174,7 @@ public class Application extends JFrame
 		shapebar.add( actionMap.get( getLocaleText( "spline" ) ) );
 		shapebar.add( actionMap.get( getLocaleText( "free_hand" ) ) );
 		if ( jmeEnabled )
-			shapebar.add( actionMap.get( "Math function" ) );
+			shapebar.add( actionMap.get( getLocaleText( "func" ) ) );
 		// toolbar
 		toolbar.add( actionMap.get(	getLocaleText( "perp" ) ) );
 		toolbar.add( actionMap.get(	getLocaleText( "para" ) ) );
@@ -1539,8 +1545,7 @@ public class Application extends JFrame
 		private JDraftingShape jdshape;
 		private int index;
 		
-		public EditAddShapeToExercise(@NotNull JDraftingShape jdshape,
-									  int index )
+		public EditAddShapeToExercise( @NotNull JDraftingShape jdshape, int index )
 		{
 			this.jdshape = jdshape;
 			this.index = index;
@@ -1633,8 +1638,7 @@ public class Application extends JFrame
 				// (some parameters like lang, lookfeel need to be executed 
 				// before app intantiation)
 				JDraftingArgs argsParser = new JDraftingArgs( null );
-				ParsedParameterMap parsedMap = 
-											argsParser.parseAndExecute( args );
+				ParsedParameterMap parsedMap = argsParser.parseAndExecute( args );
 
 				// application instance
 				Application app = new Application();
@@ -1649,8 +1653,7 @@ public class Application extends JFrame
 				// load file from console
 				// (file load must be executed with a visible app)
 				if ( parsedMap.containsParam( "file" ) )
-					app.openFile( 
-								new File( parsedMap.getValues( "file" )[0] ) );
+					app.openFile( new File( parsedMap.getValues( "file" )[0] ) );
 			}
 			catch ( NoSuchElementException e )
 			{

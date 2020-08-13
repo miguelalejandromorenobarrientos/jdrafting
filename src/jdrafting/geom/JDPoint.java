@@ -18,7 +18,6 @@ public class JDPoint extends Line2D.Double
 	@Override
 	public Rectangle2D getBounds2D()
 	{
-		return new Rectangle2D.Double( 
-				getX1(), getY1(), Math.ulp( 0. ), Math.ulp( 0. ) );
+		return new Rectangle2D.Double( getX1(), getY1(), Math.ulp( 0. ), Math.ulp( 0. ) );
 	}
 }

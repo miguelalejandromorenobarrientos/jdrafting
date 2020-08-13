@@ -48,8 +48,7 @@ public class SaveAction extends AbstractAction
 				KeyStroke.getKeyStroke( KeyEvent.VK_S, InputEvent.CTRL_MASK ) );
 		}
 		else
-			putValue( MNEMONIC_KEY, 
-								JDUtils.getLocaleMnemonic( "mne_save_as" ) );
+			putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_save_as" ) );
 		putValue( SMALL_ICON, getSmallIcon( "save.png" ) );
 		putValue( LARGE_ICON_KEY, getLargeIcon( "save.png" ) );
 		

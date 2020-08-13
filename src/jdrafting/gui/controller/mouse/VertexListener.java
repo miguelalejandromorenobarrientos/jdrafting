@@ -19,8 +19,7 @@ import jdrafting.gui.JDUtils;
 
 public class VertexListener extends AbstractCanvasMouseListener
 {
-	private static final Cursor CURSOR =
-								JDUtils.getCustomCursor( "vertex_cursor.png" );
+	private static final Cursor CURSOR = JDUtils.getCustomCursor( "vertex_cursor.png" );
 	private CanvasPanel canvas;
 	private Application app;
 

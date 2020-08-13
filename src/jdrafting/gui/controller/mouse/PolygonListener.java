@@ -14,15 +14,15 @@ import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
 import jdrafting.gui.JDUtils;
 
+import static jdrafting.gui.JDUtils.getLocaleText;
+
 /**
  * Creates a polygon or polyline using mouse control
  */
 public class PolygonListener extends AbstractCanvasMouseListener
 {
-	private static final Cursor CURSOR_POLYGON =
-							JDUtils.getCustomCursor( "polygon_cursor.png" ); 
-	private static final Cursor CURSOR_POLYLINE =
-							JDUtils.getCustomCursor( "polyline_cursor.png" ); 
+	private static final Cursor CURSOR_POLYGON = JDUtils.getCustomCursor( "polygon_cursor.png" ); 
+	private static final Cursor CURSOR_POLYLINE = JDUtils.getCustomCursor( "polyline_cursor.png" ); 
 	private final Cursor CURSOR;
 	private CanvasPanel canvas;
 	private Application app;
@@ -71,8 +71,9 @@ public class PolygonListener extends AbstractCanvasMouseListener
 				//polygon.closePath();  // "Fragment" would ignore last side
 
 			// add polygon to exercise
-			app.addShapeFromIterator( polygon.getPathIterator( null ),
-									"", "", app.getColor(), app.getStroke() );
+			app.addShapeFromIterator( polygon.getPathIterator( null ), "", 
+									  getLocaleText( closed ? "new_polygon" : "new_polyline" ), 
+									  app.getColor(), app.getStroke() );
 			
 			// back to select mode
 			canvas.setCanvasListener( new HandListener( canvas ) );

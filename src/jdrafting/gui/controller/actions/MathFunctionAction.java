@@ -3,10 +3,13 @@ package jdrafting.gui.controller.actions;
 import static jdrafting.gui.JDUtils.getLargeIcon;
 import static jdrafting.gui.JDUtils.getSmallIcon;
 
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,10 +18,12 @@ import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.event.HyperlinkEvent;
 
 import jdrafting.gui.Application;
 import jdrafting.gui.JDUtils;
@@ -26,6 +31,7 @@ import jdrafting.gui.controller.mouse.MathFunctionListener;
 import jme.Expresion;
 import jme.excepciones.ExpresionException;
 import jme.terminales.RealDoble;
+import static jdrafting.gui.JDUtils.getLocaleText;
 
 @SuppressWarnings("serial")
 public class MathFunctionAction extends AbstractAction 
@@ -37,8 +43,8 @@ public class MathFunctionAction extends AbstractAction
 	{
 		this.app = app;
 		
-		putValue( NAME, "Math function" );
-		putValue( SHORT_DESCRIPTION, "Create graph from function" );
+		putValue( NAME, getLocaleText( "func" ) );
+		putValue( SHORT_DESCRIPTION, getLocaleText( "func_des" ) );
 		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_jme" ) );
 		putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( "typed ¡" ) );
 		putValue( SMALL_ICON, getSmallIcon( "jme.png" ) );
@@ -61,30 +67,46 @@ public class MathFunctionAction extends AbstractAction
 	{
 		private JMEDialog()
 		{
-			super( app, "jme params dialog", true );
-			setLayout( new GridLayout( 5, 2, 4, 4 ) );
-			add( new JLabel( 
-				"<html>jme examples  ->   f(x):=<font color=blue>cos(x)</font> "
-				+ "|| f(t):=<font color=red>[cos(t),3*sin(t)]</font></html>", 
-				JLabel.RIGHT ) );
+			super( app, getLocaleText( "jme_dlg" ), true );
+			setLayout( new GridLayout( 6, 2, 4, 4 ) );
+			add( new JLabel() );
+			JEditorPane ep = new JEditorPane( "text/html", 
+					"<html><a href='https://miguelalejandromorenobarrientos.github.io/JmeDoc/'>"
+					+ getLocaleText( "jme_doc" )
+					+ "</a></html>" );
+			ep.setEditable( false );
+			ep.getCaret().deinstall( ep );  // non-selectable
+			ep.addHyperlinkListener( ev -> {
+				if ( ev.getEventType().equals( HyperlinkEvent.EventType.ACTIVATED )
+					 && Desktop.isDesktopSupported() 
+					 && Desktop.getDesktop().isSupported( Desktop.Action.BROWSE ) )
+				{
+					try { Desktop.getDesktop().browse( ev.getURL().toURI() ); }
+					catch ( URISyntaxException | IOException ex ) {}
+				}
+			});			
+			add( ep );
+			add( new JLabel( "<html>JME "
+					+ getLocaleText( "jme_examples" )
+					+ "  ->   f(x):=<font color=blue>cos(x)</font> "
+					+ "|| f(t):=<font color=red>[cos(t),3*sin(t)]</font></html>", 
+							 JLabel.RIGHT ) );
 			JTextField tfExpression = new JTextField(
-					jmeParams != null
-					? ( (Expresion) jmeParams.get( "expression" ) ).entrada()
-					: "" );
+										jmeParams != null
+										? ( (Expresion) jmeParams.get( "expression" ) ).entrada()
+										: "" );
 			add( tfExpression );
-			add( new JLabel( "Min 'x' value", JLabel.RIGHT ) );
-			JTextField tfminX = new JTextField(
-											jmeParams != null
-											? jmeParams.get( "xmin" ).toString()
-											: "-10" );
+			add( new JLabel( getLocaleText( "jme_min" ), JLabel.RIGHT ) );
+			JTextField tfminX = new JTextField( jmeParams != null
+												? jmeParams.get( "xmin" ).toString()
+												: "-10" );
 			add( tfminX );
-			add( new JLabel( "Max 'x' value", JLabel.RIGHT ) );
-			JTextField tfmaxX = new JTextField(
-											jmeParams != null
-											? jmeParams.get( "xmax" ).toString()
-											: "10" );
+			add( new JLabel( getLocaleText( "jme_max" ), JLabel.RIGHT ) );
+			JTextField tfmaxX = new JTextField( jmeParams != null
+												? jmeParams.get( "xmax" ).toString()
+												: "10" );
 			add( tfmaxX );
-			add( new JLabel( "Number of intervals", JLabel.RIGHT ) );
+			add( new JLabel( getLocaleText( "jme_intervals" ), JLabel.RIGHT ) );
 			JTextField tfIntervals = new JTextField( 
 						jmeParams != null
 						? jmeParams.get( "intervals" ).toString()

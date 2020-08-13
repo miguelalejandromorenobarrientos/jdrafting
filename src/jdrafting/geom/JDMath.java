@@ -195,9 +195,9 @@ public class JDMath
 	
 	/**
 	 * Get incenter of a triangle
-	 * @param a vertex
-	 * @param b vertex
-	 * @param c vertex
+	 * @param A vertex
+	 * @param B vertex
+	 * @param C vertex
 	 * @return the incenter
 	 */
 	public static Point2D incenter( Point2D A, Point2D B, Point2D C )

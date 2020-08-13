@@ -170,6 +170,9 @@ public class CanvasPanel extends JPanel
 		
 		Graphics2D g2 = (Graphics2D) g;
 		
+		// High quality render
+		JDUtils.setHighQualityRender( g2 );
+		
 		// draw exercise shapes
 		drawExercise( g2, getTransform(), app.getExercise(),
 					  app.getSelectedShapes(), app.isVisibleNames() );
@@ -599,7 +602,8 @@ public class CanvasPanel extends JPanel
 		public void stopMe() { stop = true; }
 		
 		@Override
-		public void run() {
+		public void run() 
+		{
 			while ( !stop )
 			{
 				try { Thread.sleep( wait < MAX_WAIT ? 20 : 200 ); }

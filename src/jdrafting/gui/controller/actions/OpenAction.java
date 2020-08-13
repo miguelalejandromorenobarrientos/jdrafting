@@ -114,8 +114,7 @@ public class OpenAction extends AbstractAction
 		{
 			String propertyName = e.getPropertyName();
 			
-			if ( propertyName
-						.equals( JFileChooser.SELECTED_FILE_CHANGED_PROPERTY ) )
+			if ( propertyName.equals( JFileChooser.SELECTED_FILE_CHANGED_PROPERTY ) )
 			{
 	            File selected = (File) e.getNewValue();
 	            
@@ -143,15 +142,19 @@ public class OpenAction extends AbstractAction
 			if ( exercise != null )
 			{
 				setBackground( exercise.getBackgroundColor() );
+				
 				Graphics2D g2 = (Graphics2D) g;				
-				Rectangle2D bounds = exercise.getBounds();
+				// High quality render
+				JDUtils.setHighQualityRender( g2 );
+				
+				final Rectangle2D bounds = exercise.getBounds();
 				int width = SIZE;
 				int height = Math.min( getPreferredSize().height,
-					(int) ( width * bounds.getHeight() / bounds.getWidth() ) );
+									   (int) ( width * bounds.getHeight() / bounds.getWidth() ) );
 				CanvasPanel.drawExercise( g2, CanvasPanel.getTransform( 
-										new Viewport( bounds ), 
-										new Viewport( 0, width, 0, height ) ),
-										exercise, new HashSet<>(), false );
+															new Viewport( bounds ), 
+															new Viewport( 0, width, 0, height ) ),
+										  exercise, new HashSet<>(), false );
 			}
 			else
 				setBackground( fileChooser.getBackground() );

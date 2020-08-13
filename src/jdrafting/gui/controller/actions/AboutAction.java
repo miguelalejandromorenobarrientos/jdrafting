@@ -13,7 +13,6 @@ import javax.swing.AbstractAction;
 import javax.swing.JEditorPane;
 import javax.swing.JOptionPane;
 import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 
 import jdrafting.gui.Application;
 import jdrafting.gui.JDUtils;
@@ -68,24 +67,25 @@ public class AboutAction extends AbstractAction
 				+ "CLA</a>"
 			+ "</p>"
 			+ "<p>"
-				+ "<br/>  @" + Application.COPYLEFT
+				+ "Math parser for functions: "
+				+ "<a href="
+				+ "'https://miguelalejandromorenobarrientos.github.io/JmeDoc/'>"
+			+ "JME parser</a>"
+		+ "</p>"
+			+ "<p>"
+				+ "<br/>  (C)" + Application.COPYLEFT
 			+ "</p>"
 		+ "</html>" );
 		ep.setEditable( false );
 		ep.setOpaque( false );
-		ep.addHyperlinkListener( new HyperlinkListener() {
-			@Override
-			public void hyperlinkUpdate( HyperlinkEvent e )
+		ep.getCaret().deinstall( ep );  // non-selectable
+		ep.addHyperlinkListener( ev -> {
+			if ( ev.getEventType().equals( HyperlinkEvent.EventType.ACTIVATED )
+				 && Desktop.isDesktopSupported() 
+				 && Desktop.getDesktop().isSupported( Desktop.Action.BROWSE ) )
 			{
-				if ( e.getEventType().equals( 
-											HyperlinkEvent.EventType.ACTIVATED )
-					 && Desktop.isDesktopSupported() 
-					 && Desktop.getDesktop().isSupported( 
-							 						Desktop.Action.BROWSE ) )
-				{
-					try { Desktop.getDesktop().browse( e.getURL().toURI() ); }
-					catch ( URISyntaxException | IOException ex ) {}
-				}
+				try { Desktop.getDesktop().browse( ev.getURL().toURI() ); }
+				catch ( URISyntaxException | IOException ex ) {}
 			}
 		});
 		JOptionPane.showMessageDialog( app, ep, "About " + Application.APPNAME, 

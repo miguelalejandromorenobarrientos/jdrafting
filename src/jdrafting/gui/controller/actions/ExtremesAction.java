@@ -36,8 +36,7 @@ public class ExtremesAction extends AbstractAction
 	@Override
 	public void actionPerformed( ActionEvent e )
 	{
-		app.getCanvas().setCanvasListener(
-									new ExtremesListener( app.getCanvas() ) );
+		app.getCanvas().setCanvasListener( new ExtremesListener( app.getCanvas() ) );
 	}
 
 }

@@ -74,8 +74,9 @@ public class TriangleListener extends AbstractCanvasMouseListener
 			Path2D triangle = getTriangle( logicMouse );
 			
 			// add triangle to exercise
-			app.addShapeFromIterator( triangle.getPathIterator( null ),
-									"", "", app.getColor(), app.getStroke() );
+			app.addShapeFromIterator( triangle.getPathIterator( null ), "", 
+									  getLocaleText( "new_triangle" ), 
+									  app.getColor(), app.getStroke() );
 			
 			// back to select mode
 			canvas.setCanvasListener( new HandListener( canvas ) );

@@ -26,8 +26,7 @@ import jdrafting.gui.JDUtils;
  */
 public class AngleListener extends AbstractCanvasMouseListener
 {
-	private static final Cursor CURSOR = 
-							JDUtils.getCustomCursor( "angle_cursor.png" );
+	private static final Cursor CURSOR = JDUtils.getCustomCursor( "angle_cursor.png" );
 	private CanvasPanel canvas;
 	private Application app;
 
@@ -80,12 +79,13 @@ public class AngleListener extends AbstractCanvasMouseListener
 			Line2D segment = getSegment( logicMouse );
 			
 			// add segment to exercise
-			app.addShapeFromIterator( segment.getPathIterator( null ), "", "", 
+			app.addShapeFromIterator( segment.getPathIterator( null ), "", 
+									  getLocaleText( "new_segment" ), 
 									  app.getColor(), app.getStroke() );
 			if ( isTwoSides() )  // add first side
-				app.addShapeFromIterator( 
-					new Line2D.Double( vertex, p1 ).getPathIterator( null ), 
-					"", "", app.getColor(), app.getStroke() );
+				app.addShapeFromIterator( new Line2D.Double( vertex, p1 ).getPathIterator( null ), 
+										  "", getLocaleText( "new_segment" ), 
+										  app.getColor(), app.getStroke() );
 			
 			// back to select mode
 			canvas.setCanvasListener( new HandListener( canvas ) );
@@ -110,8 +110,7 @@ public class AngleListener extends AbstractCanvasMouseListener
 			g2.setColor( Application.toolMainColor );			
 			
 			// draw first side
-			Line2D line1 =
-					new Line2D.Double( vertex, p1 == null ? logicMouse : p1 );			
+			Line2D line1 = new Line2D.Double( vertex, p1 == null ? logicMouse : p1 );			
 			g2.draw( transform.createTransformedShape( line1 ) );			
 
 			if ( p1 != null )
@@ -121,7 +120,7 @@ public class AngleListener extends AbstractCanvasMouseListener
 				g2.draw( transform.createTransformedShape( line2 ) );
 
 				// draw angle
-				double ang = Math.toDegrees( JDMath.lineAng( line1, line2 ) );				
+				double ang = Math.toDegrees( JDMath.lineAng( line1, line2 ) );	
 				double dist = Math.min( vertex.distance( p1 ), 
 										vertex.distance( line2.getP2() ) ) / 2.;
 				double offang = Math.toDegrees( Math.atan2(
@@ -153,7 +152,7 @@ public class AngleListener extends AbstractCanvasMouseListener
 			}
 		}
 	}
-	
+
 	
 	// --- HELPERS ---
 	

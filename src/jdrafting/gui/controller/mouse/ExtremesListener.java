@@ -91,14 +91,12 @@ public class ExtremesListener extends AbstractCanvasMouseListener
 					@Override
 					public String getRedoPresentationName()
 					{
-						return
-							"Redo add extremes (" + edits.size() + " points)";
+						return "Redo add extremes (" + edits.size() + " points)";
 					}
 					@Override
 					public String getUndoPresentationName()
 					{
-						return
-							"Undo add extremes (" + edits.size() + " points)";
+						return "Undo add extremes (" + edits.size() + " points)";
 					}
 				};
 				

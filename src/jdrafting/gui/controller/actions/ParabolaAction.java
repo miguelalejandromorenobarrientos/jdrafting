@@ -36,7 +36,6 @@ public class ParabolaAction extends AbstractAction
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		app.getCanvas().setCanvasListener(
-									new ParabolaListener( app.getCanvas() ) );
+		app.getCanvas().setCanvasListener( new ParabolaListener( app.getCanvas() ) );
 	}
 }

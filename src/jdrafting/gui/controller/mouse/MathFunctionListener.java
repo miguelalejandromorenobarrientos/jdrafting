@@ -24,8 +24,7 @@ import jme.terminales.VectorEvaluado;
  */
 public class MathFunctionListener extends AbstractCanvasMouseListener
 {
-	private static final Cursor CURSOR = 
-									JDUtils.getCustomCursor( "jme_cursor.png" );
+	private static final Cursor CURSOR = JDUtils.getCustomCursor( "jme_cursor.png" );
 	private CanvasPanel canvas;
 	private Application app;
 	
@@ -33,8 +32,7 @@ public class MathFunctionListener extends AbstractCanvasMouseListener
 	private Point2D[] values;
 	private Map<String,Object> jmeParams;
 	
-	public MathFunctionListener( CanvasPanel canvas, 
-								 Map<String,Object> jmeParams )
+	public MathFunctionListener( CanvasPanel canvas, Map<String,Object> jmeParams )
 	{
 		super( canvas );
 		
@@ -116,10 +114,9 @@ public class MathFunctionListener extends AbstractCanvasMouseListener
 		else
 		{
 			// add function to exercise
-			app.addShapeFromIterator( 
-								getGraph( logicMouse ).getPathIterator( null ),
-								"", jmeParams.get( "expression" ).toString(), 
-								app.getColor(), app.getStroke() );
+			app.addShapeFromIterator( getGraph( logicMouse ).getPathIterator( null ),
+									  "", jmeParams.get( "expression" ).toString(), 
+									  app.getColor(), app.getStroke() );
 
 			// back to select mode
 			canvas.setCanvasListener( new HandListener( canvas ) );

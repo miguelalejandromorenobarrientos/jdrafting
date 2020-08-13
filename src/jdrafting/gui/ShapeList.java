@@ -113,8 +113,7 @@ public class ShapeList extends JList<JDraftingShape>
 	/**
 	 * ListCellRenderer 
 	 */
-	class ShapeListRenderer extends JPanel implements 
-											ListCellRenderer<JDraftingShape>
+	class ShapeListRenderer extends JPanel implements ListCellRenderer<JDraftingShape>
 	{
 		@Override
 		public Component getListCellRendererComponent(
@@ -140,6 +139,9 @@ public class ShapeList extends JList<JDraftingShape>
 					super.paintComponent(g);
 					
 					Graphics2D g2 = (Graphics2D) g;
+					
+					// High quality render
+					JDUtils.setHighQualityRender( g2 );
 
 					Viewport viewDest = new Viewport( 0, getWidth() - 1, 
 													  0, getHeight() - 1 );  
@@ -168,10 +170,9 @@ public class ShapeList extends JList<JDraftingShape>
 			mini.setMinimumSize( mini.getPreferredSize() );
 			// name
 			add( Box.createHorizontalStrut( 4 ) );
-			JLabel shapeName = new JLabel( 
-						value.getName() != null && value.getName().length() > 0
-						? value.getName()
-						: "unnamed", JLabel.LEFT );
+			JLabel shapeName = new JLabel( value.getName() != null && value.getName().length() > 0
+										   ? value.getName()
+										   : "", JLabel.LEFT );
 			add( shapeName );
 			shapeName.setFont( new Font( Font.SANS_SERIF, Font.BOLD, 20 )  );
 			shapeName.setForeground( Color.BLUE );			

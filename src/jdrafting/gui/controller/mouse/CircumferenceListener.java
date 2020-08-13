@@ -88,21 +88,21 @@ public class CircumferenceListener extends AbstractCanvasMouseListener
 					}
 				};
 				// add circumference
-				app.addShapeFromIterator( 
-					circ.getPathIterator( null, flatness ), "", "", 
-					app.getColor(), app.getStroke(), transaction );
+				app.addShapeFromIterator( circ.getPathIterator( null, flatness ), "", 
+										  getLocaleText( "new_circumference" ), 
+										  app.getColor(), app.getStroke(), transaction );
 				// add center
-				app.addShapeFromIterator( 
-					new JDPoint( center ).getPathIterator( null ), "", "center", 
-					app.getPointColor(), app.getPointStroke(), transaction );
+				app.addShapeFromIterator( new JDPoint( center ).getPathIterator( null ), "", 
+										  getLocaleText( "new_circumference_center" ), 
+										  app.getPointColor(), app.getPointStroke(), transaction );
 				
 				transaction.end();
 				app.undoSupport.postEdit( transaction );				
 			}
 			else  // add circumference
-				app.addShapeFromIterator( 
-								circ.getPathIterator( null, flatness ), "", "", 
-								app.getColor(), app.getStroke() );
+				app.addShapeFromIterator( circ.getPathIterator( null, flatness ), "", 
+										  getLocaleText( "new_circumference" ), 
+										  app.getColor(), app.getStroke() );
 			
 			// back to select mode
 			canvas.setCanvasListener( new HandListener( canvas ) );

@@ -225,6 +225,9 @@ public class SaveImageAction extends AbstractAction
 				new BufferedImage( width, height, BufferedImage.TYPE_INT_ARGB );
 		
 		Graphics2D g2 = (Graphics2D) img.getGraphics();
+		
+		// High quality render
+		JDUtils.setHighQualityRender( g2 );		
 
 		// draw background in image
 		g2.setColor( fileChooser.checkBackground.isSelected()
@@ -246,9 +249,9 @@ public class SaveImageAction extends AbstractAction
 		private JTextField textWidth = new JTextField( "1000" );
 		private JTextField textHeight = new JTextField();
 		private JCheckBox checkBackground = new JCheckBox( 
-									getLocaleText( "save_image_acce2" ), true );
+														getLocaleText( "save_image_acce2" ), true );
 		private JCheckBox checkText = new JCheckBox( 
-					getLocaleText( "save_image_acce3" ), app.isVisibleNames() );
+										getLocaleText( "save_image_acce3" ), app.isVisibleNames() );
 		private JLabel labelImage = new JLabel();
 				
 		private ImageChooser()
@@ -262,9 +265,8 @@ public class SaveImageAction extends AbstractAction
 				{
 					try
 					{
-						textHeight.setText( 
-							String.valueOf( getAutomaticHeight( 
-								Integer.parseInt( textWidth.getText() ) ) ) );
+						textHeight.setText( String.valueOf( getAutomaticHeight( 
+													Integer.parseInt( textWidth.getText() ) ) ) );
 					}
 					catch ( NumberFormatException ex ) {}
 				}
@@ -287,13 +289,13 @@ public class SaveImageAction extends AbstractAction
 				public void itemStateChanged( ItemEvent e )
 				{
 					labelImage.setIcon(	new ImageIcon( 
-								createBImage( MINI_SIZE, MINI_SIZE, false ) ) );
+													createBImage( MINI_SIZE, MINI_SIZE, false ) ) );
 				}
 			});
 
 			JPanel panel = new JPanel();
 			panel.setBorder( BorderFactory.createTitledBorder( 
-										getLocaleText( "save_image_acce1" ) ) );
+															getLocaleText( "save_image_acce1" ) ) );
 			
 			GroupLayout layout = new GroupLayout( panel );
 			panel.setLayout( layout );
@@ -301,8 +303,7 @@ public class SaveImageAction extends AbstractAction
 			layout.setAutoCreateContainerGaps(true);
 			
 			layout.setHorizontalGroup( layout.createSequentialGroup()
-				.addGroup( layout.createParallelGroup(
-												GroupLayout.Alignment.CENTER )
+				.addGroup( layout.createParallelGroup( GroupLayout.Alignment.CENTER )
 					.addComponent( labelImage )
 					.addGroup( layout.createSequentialGroup()
 						.addComponent( labelWidth )
@@ -314,12 +315,10 @@ public class SaveImageAction extends AbstractAction
 					.addComponent( checkText ) ) );
 			layout.setVerticalGroup( layout.createSequentialGroup()
 				.addComponent( labelImage )
-				.addGroup( layout.createParallelGroup(
-												GroupLayout.Alignment.BASELINE )
+				.addGroup( layout.createParallelGroup( GroupLayout.Alignment.BASELINE )
 					.addComponent( labelWidth )
 					.addComponent( textWidth ) )
-				.addGroup( layout.createParallelGroup(
-												GroupLayout.Alignment.BASELINE )
+				.addGroup( layout.createParallelGroup( GroupLayout.Alignment.BASELINE )
 					.addComponent( labelHeight )
 					.addComponent( textHeight ) )
 				.addComponent( checkBackground )

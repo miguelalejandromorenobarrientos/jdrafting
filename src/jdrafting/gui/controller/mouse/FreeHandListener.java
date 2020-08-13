@@ -1,5 +1,7 @@
 package jdrafting.gui.controller.mouse;
 
+import static jdrafting.gui.JDUtils.getLocaleText;
+
 import java.awt.BasicStroke;
 import java.awt.Cursor;
 import java.awt.Graphics2D;
@@ -79,8 +81,9 @@ public class FreeHandListener extends AbstractCanvasMouseListener
 		if ( e.getClickCount() == 2 )
 		{
 			// add free polyline to exercise
-			app.addShapeFromIterator( path.getPathIterator( null ),
-									"", "", app.getColor(), app.getStroke() );
+			app.addShapeFromIterator( path.getPathIterator( null ), "", 
+									  getLocaleText( "new_free_hand" ), 
+									  app.getColor(), app.getStroke() );
 			
 			// back to select mode
 			canvas.setCanvasListener( new HandListener( canvas ) );

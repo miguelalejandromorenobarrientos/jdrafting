@@ -94,22 +94,20 @@ public class EllipseListener extends AbstractCanvasMouseListener
 
 				// add ellipse
 				Rectangle2D bounds = ellipse.getBounds2D();
-				app.addShapeFromIterator( 
-					ellipse.getPathIterator( null, flatness ), "", "", 
-					app.getColor(), app.getStroke(), transaction );
+				app.addShapeFromIterator( ellipse.getPathIterator( null, flatness ), "", 
+										  getLocaleText( "new_ellipse" ), 
+										  app.getColor(), app.getStroke(), transaction );
 				// add axis
-				Line2D axisH = new Line2D.Double( 
-										bounds.getMinX(), bounds.getCenterY(), 
-										bounds.getMaxX(), bounds.getCenterY() );
-				Line2D axisV = new Line2D.Double( 
-										bounds.getCenterX(), bounds.getMinY(), 
-										bounds.getCenterX(), bounds.getMaxY() );
-				app.addShapeFromIterator( 
-					axisH.getPathIterator( null ), "", "major axis", 
-					app.getColor(), app.getStroke(), transaction );
-				app.addShapeFromIterator( 
-					axisV.getPathIterator( null ), "", "minor axis", 
-					app.getColor(), app.getStroke(), transaction );
+				Line2D axisH = new Line2D.Double( bounds.getMinX(), bounds.getCenterY(), 
+												  bounds.getMaxX(), bounds.getCenterY() );
+				Line2D axisV = new Line2D.Double( bounds.getCenterX(), bounds.getMinY(), 
+												  bounds.getCenterX(), bounds.getMaxY() );
+				app.addShapeFromIterator( axisH.getPathIterator( null ), "", 
+										  getLocaleText( "new_h_axis" ), 
+										  app.getColor(), app.getStroke(), transaction );
+				app.addShapeFromIterator( axisV.getPathIterator( null ), "", 
+										  getLocaleText( "new_v_axis" ), 
+										  app.getColor(), app.getStroke(), transaction );
 				// add focuses
 				double w = ellipse.getWidth() / 2, h = ellipse.getHeight() / 2;
 				Point2D f1, f2;
@@ -129,22 +127,20 @@ public class EllipseListener extends AbstractCanvasMouseListener
 					f2 = new Point2D.Double( bounds.getCenterX(),
 											 bounds.getCenterY() - f );
 				}
-				app.addShapeFromIterator( 
-					new JDPoint( f1 ).getPathIterator( null ), 
-					"", getLocaleText( "new_focus" ), app.getPointColor(), 
-					app.getPointStroke(), transaction );
-				app.addShapeFromIterator( 
-					new JDPoint( f2 ).getPathIterator( null ), 
-					"", getLocaleText( "new_focus" ), app.getPointColor(), 
-					app.getPointStroke(), transaction );
+				app.addShapeFromIterator( new JDPoint( f1 ).getPathIterator( null ), "", 
+										  getLocaleText( "new_focus" ) + " 1", app.getPointColor(), 
+										  app.getPointStroke(), transaction );
+				app.addShapeFromIterator( new JDPoint( f2 ).getPathIterator( null ), "", 
+										  getLocaleText( "new_focus" ) + " 2", 
+										  app.getPointColor(), app.getPointStroke(), transaction );
 				
 				transaction.end();
 				app.undoSupport.postEdit( transaction );				
 			}
 			else
-				app.addShapeFromIterator( 
-							ellipse.getPathIterator( null, flatness ), "", "", 
-							app.getColor(), app.getStroke() );
+				app.addShapeFromIterator( ellipse.getPathIterator( null, flatness ), "", 
+										  getLocaleText( "new_ellipse" ), 
+										  app.getColor(), app.getStroke() );
 			
 			// back to select mode
 			canvas.setCanvasListener( new HandListener( canvas ) );

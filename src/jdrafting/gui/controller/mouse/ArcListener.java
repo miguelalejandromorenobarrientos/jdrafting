@@ -84,17 +84,15 @@ public class ArcListener extends AbstractCanvasMouseListener
 			
 			// create arc
 			double radius = center.distance( end );
-			double startAng = Math.toDegrees( vectorArg( 
-											vector( center, start ) ) );
-			Arc2D arc = new Arc2D.Double( 
-				center.getX() - radius, center.getY() - radius,
-				2 * radius, 2 * radius,
-				-startAng, -getArcExtent( end, logicMouse ), Arc2D.OPEN );
+			double startAng = Math.toDegrees( vectorArg( vector( center, start ) ) );
+			Arc2D arc = new Arc2D.Double( center.getX() - radius, center.getY() - radius,
+										  2 * radius, 2 * radius,
+										  -startAng, -getArcExtent( end, logicMouse ), Arc2D.OPEN );
 			double flatness = arc.getWidth() / app.getFlatnessValue();
 
 			// add shape to exercise
-			app.addShapeFromIterator( arc.getPathIterator( null, flatness ), 
-									"", "",	app.getColor(), app.getStroke() );
+			app.addShapeFromIterator( arc.getPathIterator( null, flatness ), "", 
+									  getLocaleText( "new_arc" ), app.getColor(), app.getStroke() );
 
 			// back to select mode
 			canvas.setCanvasListener( new HandListener( canvas ) );
@@ -115,8 +113,7 @@ public class ArcListener extends AbstractCanvasMouseListener
 			Point2D logicMouse = canvas.adjustToPoint( mouse().getPoint() );
 			
 			// set style
-			g2.setStroke( new BasicStroke( 1f, BasicStroke.CAP_ROUND, 
-										   BasicStroke.JOIN_ROUND ) );
+			g2.setStroke( new BasicStroke( 1f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND ) );
 			g2.setColor( Application.toolMainColor );
 			
 			// draw center-start radius and circumference

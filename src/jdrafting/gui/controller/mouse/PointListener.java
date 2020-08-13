@@ -1,5 +1,7 @@
 package jdrafting.gui.controller.mouse;
 
+import static jdrafting.gui.JDUtils.getLocaleText;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -12,10 +14,10 @@ import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
 import jdrafting.gui.JDUtils;
 
+
 public class PointListener extends AbstractCanvasMouseListener
 {
-	private static final Cursor CURSOR =
-								JDUtils.getCustomCursor( "point_cursor.png" );
+	private static final Cursor CURSOR = JDUtils.getCustomCursor( "point_cursor.png" );
 	private CanvasPanel canvas;
 	private Application app;
 
@@ -59,8 +61,7 @@ public class PointListener extends AbstractCanvasMouseListener
 			if ( p != null )
 				point = new JDPoint( p );
 			else
-				point = new JDPoint( canvas.getInverseTransform().transform( 
-														e.getPoint(), null ) );
+				point = new JDPoint( canvas.getInverseTransform().transform( e.getPoint(), null ) );
 		}
 
 		// add point to exercise
@@ -71,7 +72,7 @@ public class PointListener extends AbstractCanvasMouseListener
 							 ? app.getStroke()
 							 : app.getPointStroke();
 		app.addShapeFromIterator( point.getPathIterator( null ), 
-								  "", "", color, stroke );
+								  "", getLocaleText( "new_point" ), color, stroke );
 
 		// back to select mode
 		canvas.setCanvasListener( new HandListener( canvas ) );
@@ -80,7 +81,7 @@ public class PointListener extends AbstractCanvasMouseListener
 	@Override
 	public void paintTool( Graphics2D g2 )
 	{
-		int cross = 7;  // cross size		
+		int crossSize = 7;		
 		Point2D point = mouse().getPoint();
 		// adjust to intersection or vertex
 		if ( !isFreePoint() )
@@ -90,15 +91,15 @@ public class PointListener extends AbstractCanvasMouseListener
 			if ( p != null )
 			{
 				point = canvas.getTransform().transform( p, null );
-				cross = 11;
+				crossSize = 11;
 			}
 		}
 		
 		g2.setColor( Application.toolMainColor );
 		g2.setStroke( new BasicStroke( 1f ) );
-		g2.drawOval( (int) Math.round( point.getX() - cross / 2. ), 
-					 (int) Math.round( point.getY() - cross / 2. ),
-					 cross, cross );
+		g2.drawOval( (int) Math.round( point.getX() - crossSize / 2. ), 
+					 (int) Math.round( point.getY() - crossSize / 2. ),
+					 crossSize, crossSize );
 	}
 	
 	// --- HELPERS

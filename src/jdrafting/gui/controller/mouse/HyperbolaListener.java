@@ -103,11 +103,11 @@ public class HyperbolaListener extends AbstractCanvasMouseListener
 			// add hyperbola branches
 			app.addShapeFromIterator( 
 					( (Path2D) map.get( "branch1" ) ).getPathIterator( null ), 
-					"", getLocaleText( "new_hype_branch" ), app.getColor(), 
+					"", getLocaleText( "new_hype_branch" ) + " 1", app.getColor(), 
 					app.getStroke(), transaction );
 			app.addShapeFromIterator( 
 					( (Path2D) map.get( "branch2" ) ).getPathIterator( null ), 
-					"", getLocaleText( "new_hype_branch" ), app.getColor(), 
+					"", getLocaleText( "new_hype_branch" ) + " 2", app.getColor(), 
 					app.getStroke(), transaction );
 			// add more hyperbola elements
 			if ( addMore() )

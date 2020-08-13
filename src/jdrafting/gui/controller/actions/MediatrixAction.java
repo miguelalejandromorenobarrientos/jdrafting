@@ -27,8 +27,7 @@ public class MediatrixAction extends AbstractAction
 		putValue( NAME, getLocaleText( "mediatrix" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "mediatrix_des" ) );
 		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_mediatrix" ) );
-		putValue( ACCELERATOR_KEY, 
-				KeyStroke.getKeyStroke( KeyEvent.VK_3, InputEvent.ALT_MASK ) );
+		putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( KeyEvent.VK_3, InputEvent.ALT_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "mediatrix.png" ) );
 		putValue( LARGE_ICON_KEY, getLargeIcon( "mediatrix.png" ) );
 	}
@@ -36,7 +35,6 @@ public class MediatrixAction extends AbstractAction
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		app.getCanvas().setCanvasListener(
-									new MediatrixListener( app.getCanvas() ) );
+		app.getCanvas().setCanvasListener( new MediatrixListener( app.getCanvas() ) );
 	}
 }
