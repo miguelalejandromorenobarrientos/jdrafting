@@ -11,8 +11,10 @@ import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
+import jdrafting.geom.JDraftingShape;
 import jdrafting.gui.Application;
 import jdrafting.gui.JDUtils;
+import jdrafting.gui.ToastCanvasStep;
 
 @SuppressWarnings("serial")
 public class RewindAction extends AbstractAction
@@ -27,7 +29,7 @@ public class RewindAction extends AbstractAction
 		putValue( SHORT_DESCRIPTION, getLocaleText( "rewind_des" ) );
 		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_rewind" ) );
 		putValue( ACCELERATOR_KEY, 
-			KeyStroke.getKeyStroke( KeyEvent.VK_LEFT, InputEvent.ALT_MASK ) );
+				  KeyStroke.getKeyStroke( KeyEvent.VK_LEFT, InputEvent.ALT_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "rewind.png" ) );
 		putValue( LARGE_ICON_KEY, getLargeIcon( "rewind.png" ) );
 	}
@@ -35,9 +37,24 @@ public class RewindAction extends AbstractAction
 	@Override
 	public void actionPerformed( ActionEvent e )
 	{
+		// update frame
 		app.getExercise().setFrameIndex( app.getExercise().isEmpty() ? 0 : 1 );
-		
-		app.getCanvas().repaint();
-		app.scrollList.repaint();
+		if ( !app.getExercise().isEmpty() )
+		{
+			// create step description toast 
+			final JDraftingShape shape = app.shapeList.getModel().get(0);
+			if ( app.currentToast != null )
+			{
+				if ( app.currentToast.getClosingTimer() != null )
+					app.currentToast.getClosingTimer().stop();
+				app.currentToast.dispose();
+			}
+			app.currentToast = new ToastCanvasStep( shape, 1, app.canvas.getLocationOnScreen() )
+							   .showToast();
+			
+			// refresh
+			app.getCanvas().repaint();
+			app.scrollList.repaint();
+		}
 	}
 }

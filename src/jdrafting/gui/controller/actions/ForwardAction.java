@@ -12,8 +12,10 @@ import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
 import jdrafting.Exercise;
+import jdrafting.geom.JDraftingShape;
 import jdrafting.gui.Application;
 import jdrafting.gui.JDUtils;
+import jdrafting.gui.ToastCanvasStep;
 
 @SuppressWarnings("serial")
 public class ForwardAction extends AbstractAction
@@ -28,7 +30,7 @@ public class ForwardAction extends AbstractAction
 		putValue( SHORT_DESCRIPTION, getLocaleText( "forward_des" ) );
 		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_forward" ) );
 		putValue( ACCELERATOR_KEY, 
-			KeyStroke.getKeyStroke( KeyEvent.VK_RIGHT, InputEvent.CTRL_MASK )  );
+				  KeyStroke.getKeyStroke( KeyEvent.VK_RIGHT, InputEvent.CTRL_MASK )  );
 		putValue( SMALL_ICON, getSmallIcon( "forward.png" ) );
 		putValue( LARGE_ICON_KEY, getLargeIcon( "forward.png" ) );
 	}
@@ -36,12 +38,28 @@ public class ForwardAction extends AbstractAction
 	@Override
 	public void actionPerformed( ActionEvent e )
 	{
-		Exercise exercise = app.getExercise();
+		final Exercise exercise = app.getExercise();
 		if ( !exercise.isIndexAtEnd() )
 		{
+			// update frame
 			exercise.setFrameIndex( exercise.getFrameIndex() + 1 );
+			
+			// create step description toast 
+			final JDraftingShape shape = app.shapeList.getModel().get(exercise.getFrameIndex() - 1);
+			if ( app.currentToast != null )
+			{
+				if ( app.currentToast.getClosingTimer() != null )
+					app.currentToast.getClosingTimer().stop();
+				app.currentToast.dispose();
+			}
+			
+			app.currentToast = new ToastCanvasStep( shape, exercise.getFrameIndex(), 
+													app.canvas.getLocationOnScreen() )
+							   .showToast();
+			
+			// refresh
 			app.getCanvas().repaint();
-			app.scrollList.repaint();
+			app.scrollList.repaint(); 
 		}
 	}
 }

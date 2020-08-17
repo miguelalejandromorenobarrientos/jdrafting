@@ -172,7 +172,7 @@ public class Application extends JFrame
 	//////////////////////
 	// metainfo
 	public static final String APPNAME = "JDrafting";
-	public static final String VERSION = "0.1.10";
+	public static final String VERSION = "0.1.10.1";
 	public static final String AUTHOR = "Miguel Alejandro Moreno Barrientos";
 	public static final String COPYLEFT = "2016,2020";
 	public static final String PROJECT_PAGE = 
@@ -185,7 +185,7 @@ public class Application extends JFrame
 	private static final Dimension HSEP = new Dimension( 12, 0 ); 
 	private static final Dimension VSEP = new Dimension( 0, 12 ); 
 
-	
+
 	/////////////////
 	// STATIC VARS //
 	/////////////////
@@ -248,6 +248,7 @@ public class Application extends JFrame
 	public ShapeList shapeList;
 	public JScrollPane scrollList;
 	public JSplitPane splitPanel;
+	public Toast currentToast;
 	
 	
 	/////////////////

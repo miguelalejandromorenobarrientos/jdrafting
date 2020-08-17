@@ -67,15 +67,21 @@ public class AboutAction extends AbstractAction
 				+ "CLA</a>"
 			+ "</p>"
 			+ "<p>"
+				+ "Toast in canvas for step description: "
+				+ "<a href="
+				+ "'https://github.com/miguelalejandromorenobarrientos/Toast-Swing'>"
+				+ "Toast</a>"
+			+ "</p>"
+			+ "<p>"
 				+ "Math parser for functions: "
 				+ "<a href="
 				+ "'https://miguelalejandromorenobarrientos.github.io/JmeDoc/'>"
-			+ "JME parser</a>"
-		+ "</p>"
+				+ "JME parser</a>"
+			+ "</p>"
 			+ "<p>"
 				+ "<br/>  (C)" + Application.COPYLEFT
 			+ "</p>"
-		+ "</html>" );
+		+ "</html>" );		
 		ep.setEditable( false );
 		ep.setOpaque( false );
 		ep.getCaret().deinstall( ep );  // non-selectable
