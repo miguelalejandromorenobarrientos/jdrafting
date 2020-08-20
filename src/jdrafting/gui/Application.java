@@ -133,6 +133,7 @@ import jdrafting.gui.controller.actions.PointAction;
 import jdrafting.gui.controller.actions.PointColorAction;
 import jdrafting.gui.controller.actions.PolyLineAction;
 import jdrafting.gui.controller.actions.PolygonAction;
+import jdrafting.gui.controller.actions.PrintAction;
 import jdrafting.gui.controller.actions.ProtractorAction;
 import jdrafting.gui.controller.actions.RectangleAction;
 import jdrafting.gui.controller.actions.RedoAction;
@@ -172,7 +173,7 @@ public class Application extends JFrame
 	//////////////////////
 	// metainfo
 	public static final String APPNAME = "JDrafting";
-	public static final String VERSION = "0.1.10.1";
+	public static final String VERSION = "0.1.10.2";
 	public static final String AUTHOR = "Miguel Alejandro Moreno Barrientos";
 	public static final String COPYLEFT = "2016,2020";
 	public static final String PROJECT_PAGE = 
@@ -606,10 +607,14 @@ public class Application extends JFrame
 		menuFile.add( action = new SaveImageAction( this ) );
 		actionMap.put( action.getValue( Action.NAME ), action );
 		menuFile.addSeparator();
+		// Print as image
+		menuFile.add( action = new PrintAction( this ) );
+		actionMap.put( action.getValue( Action.NAME ), action );
+		menuFile.addSeparator();
 		// Exit
 		menuFile.add( action = new ExitAction( this ) );
 		actionMap.put( action.getValue( Action.NAME ), action );
-		// undo/redo
+		// Undo/Redo
 		menuEdit.add( action = new UndoAction( this ) );
 		actionMap.put( action.getValue( Action.NAME ), action );
 		menuEdit.add( action = new RedoAction( this ) );
@@ -1057,6 +1062,8 @@ public class Application extends JFrame
 		actionbar.add( actionMap.get( getLocaleText( "open" ) ) );
 		actionbar.add( actionMap.get( getLocaleText( "save" ) ) );
 		actionbar.add( actionMap.get( getLocaleText( "save_image" ) ) );
+		actionbar.add( actionMap.get( getLocaleText( "print" ) ) );
+		actionbar.addSeparator( HSEP );
 		actionbar.add( actionMap.get( getLocaleText( "fileinfo" ) ) );
 		actionbar.addSeparator( HSEP );
 		actionbar.add( actionMap.get( getLocaleText( "undo" ) ) );

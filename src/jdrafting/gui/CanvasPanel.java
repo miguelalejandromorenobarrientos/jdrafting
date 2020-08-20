@@ -198,7 +198,7 @@ public class CanvasPanel extends JPanel
 	}
 
 	public static void drawExercise( Graphics2D g2, AffineTransform transform, 
-				Exercise exercise, Set<JDraftingShape> selected, boolean text )
+									 Exercise exercise, Set<JDraftingShape> selected, boolean text )
 	{
 		// draw non-selected shapes
 		for ( JDraftingShape jdshape : exercise.getFramesUntilIndex() )
@@ -219,14 +219,12 @@ public class CanvasPanel extends JPanel
 		for ( JDraftingShape jdshape: selected )
 		{
 			// transform shape to canvas
-			Shape transShape = transform.createTransformedShape(
-														jdshape.getShape() );
+			Shape transShape = transform.createTransformedShape( jdshape.getShape() );
 			
 			// set style
 			BasicStroke stroke = jdshape.getStroke();
 			if ( stroke.getLineWidth() < 8f )
-				g2.setStroke( new BasicStroke( 8f, stroke.getEndCap(), 
-												stroke.getLineJoin() ) );
+				g2.setStroke( new BasicStroke( 8f, stroke.getEndCap(), stroke.getLineJoin() ) );
 			else
 				g2.setStroke( stroke );
 			g2.setColor( new Color( 200, 32, 32, 222 ) );
@@ -248,8 +246,7 @@ public class CanvasPanel extends JPanel
 					g2.setFont( textFont );
 					g2.setColor( new Color( 0, 0, 0, 200 ) );
 					
-					Rectangle2D bounds =
-									getShapeCanvasBounds( jdshape, transform);
+					Rectangle2D bounds = getShapeCanvasBounds( jdshape, transform);
 			
 					double textX = bounds.getCenterX() 
 						+ jdshape.getTextPosition().getX() * bounds.getWidth();
@@ -275,8 +272,7 @@ public class CanvasPanel extends JPanel
 			case SAME_RATIO:
 				Viewport logicView = getViewport();
 				double canvasRatio = (double) getWidth() / getHeight();
-				double logicRatio =
-								logicView.getWidth() / logicView.getHeight();
+				double logicRatio = logicView.getWidth() / logicView.getHeight();
 				if ( canvasRatio >= logicRatio )
 					return new Viewport( 
 									0, getWidth() / canvasRatio * logicRatio, 

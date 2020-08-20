@@ -77,8 +77,7 @@ public class JDUtils
 	 */
 	public static int getLocaleMnemonic( String key )
 	{
-		return KeyEvent.getExtendedKeyCodeForChar( 
-											getLocaleText( key ).charAt( 0 ) );
+		return KeyEvent.getExtendedKeyCodeForChar( getLocaleText( key ).charAt( 0 ) );
 	}
 	
 	/**

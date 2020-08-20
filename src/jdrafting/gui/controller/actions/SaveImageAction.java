@@ -91,10 +91,8 @@ public class SaveImageAction extends AbstractAction
 		// set png format as the unique filter
 		Arrays.stream( fileChooser.getChoosableFileFilters() )
 			  .forEach( f -> fileChooser.removeChoosableFileFilter( f ) );
-		FileNameExtensionFilter svgFilter = 
-							new FileNameExtensionFilter( "SVG images", "svg" );
-		FileNameExtensionFilter pngFilter = 
-							new FileNameExtensionFilter( "PNG images", "png" );
+		FileNameExtensionFilter svgFilter = new FileNameExtensionFilter( "SVG images", "svg" );
+		FileNameExtensionFilter pngFilter = new FileNameExtensionFilter( "PNG images", "png" );
 		fileChooser.addChoosableFileFilter( svgFilter );
 		fileChooser.addChoosableFileFilter( pngFilter );
 
@@ -103,12 +101,11 @@ public class SaveImageAction extends AbstractAction
 			fileChooser.setSelectedFile( new File( "jd_" + ( counter++ ) ) );
 		else
 			fileChooser.setSelectedFile( new File( 
-						JDUtils.camelCase( app.getExercise().getTitle() ) ) );
+											JDUtils.camelCase( app.getExercise().getTitle() ) ) );
 		// set fields
-		fileChooser.textHeight.setText( 
-				 				String.valueOf( getAutomaticHeight( 1000 ) ) );	
+		fileChooser.textHeight.setText( String.valueOf( getAutomaticHeight( 1000 ) ) );	
 		fileChooser.labelImage.setIcon(	new ImageIcon( 
-								createBImage( MINI_SIZE, MINI_SIZE, false ) ) );
+													createBImage( MINI_SIZE, MINI_SIZE, false ) ) );
 		fileChooser.checkText.setSelected( app.isVisibleNames() );
 		
 		if ( fileChooser.showSaveDialog( app ) == JFileChooser.APPROVE_OPTION )
@@ -162,7 +159,7 @@ public class SaveImageAction extends AbstractAction
 	
 	private int getAutomaticHeight( int width )
 	{
-		Rectangle2D bound = app.getExercise().getBounds();
+		final Rectangle2D bound = app.getExercise().getBounds();
 		
 		return (int) Math.round( width * bound.getHeight() / bound.getWidth() );
 	}
@@ -179,8 +176,7 @@ public class SaveImageAction extends AbstractAction
 				throws UnsupportedEncodingException, SVGGraphics2DIOException
 	{
 	    // Get a DOMImplementation.
-	    DOMImplementation domImpl =
-	      GenericDOMImplementation.getDOMImplementation();
+	    DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
 
 	    // Create an instance of org.w3c.dom.Document.
 	    String svgNS = "http://www.w3.org/2000/svg";
@@ -198,16 +194,15 @@ public class SaveImageAction extends AbstractAction
 	    
 	    // draw exercise to SVG generator
 		CanvasPanel.drawExercise( svgGenerator,
-			CanvasPanel.getTransform( 
-								new Viewport( app.getExercise().getBounds() ), 
-								new Viewport( 0., width, 0., height ) ),
-			app.getExercise(), new HashSet<>(), 
-			fileChooser.checkText.isSelected() );
+								  CanvasPanel.getTransform( 
+									  				new Viewport( app.getExercise().getBounds() ), 
+									  				new Viewport( 0., width, 0., height ) ),
+								  app.getExercise(), new HashSet<>(), 
+								  fileChooser.checkText.isSelected() );
 
 	    // Stream out SVG to output using UTF-8 encoding
 	    boolean useCSS = true; // we want to use CSS style attributes
-	    try ( PrintWriter out = 
-	    			new PrintWriter( filename, "UTF-8" ) )
+	    try ( PrintWriter out = new PrintWriter( filename, "UTF-8" ) )
 	    {
 	    	svgGenerator.stream( out, useCSS );
 	    	out.write( "<!-- SVG file created by " + APPNAME + " v" + VERSION 
@@ -221,8 +216,7 @@ public class SaveImageAction extends AbstractAction
 		Rectangle2D bounds = CanvasPanel.getExerciseBounds( app.getExercise(), 
 				new Viewport( app.getExercise().getBounds() ), 
 				new Viewport( 0, width, 0, height ) );
-		BufferedImage img = 
-				new BufferedImage( width, height, BufferedImage.TYPE_INT_ARGB );
+		BufferedImage img = new BufferedImage( width, height, BufferedImage.TYPE_INT_ARGB );
 		
 		Graphics2D g2 = (Graphics2D) img.getGraphics();
 		
