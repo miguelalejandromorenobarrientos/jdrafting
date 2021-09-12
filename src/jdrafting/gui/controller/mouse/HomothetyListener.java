@@ -22,8 +22,6 @@ import javax.swing.undo.AbstractUndoableEdit;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 
-import com.sun.istack.internal.NotNull;
-
 import jdrafting.geom.JDraftingShape;
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
@@ -163,8 +161,7 @@ public class HomothetyListener extends AbstractCanvasMouseListener
 	 * @param logicMouse mouse logic position
 	 * @return a list of new shapes
 	 */
-	private Shape[] getTransformed(@NotNull Set<JDraftingShape> selected, 
-								   Point2D center, double factor )
+	private Shape[] getTransformed( Set<JDraftingShape> selected, Point2D center, double factor )
 	{
 		AffineTransform homothecy = new AffineTransform();
 		homothecy.translate( center.getX(), center.getY() );

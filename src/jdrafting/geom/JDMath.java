@@ -13,13 +13,20 @@ import java.util.List;
 
 /**
  * Math utility operations
+ * @version 0.1.11
  */
-public class JDMath
+final public class JDMath
 {
 	/**
 	 * Avoid instantiation
 	 */
 	private JDMath() {}
+	
+	@Override
+	protected Object clone() throws CloneNotSupportedException 
+	{
+		throw new CloneNotSupportedException();
+	}
 
 	/**
 	 * Round double to the nearest integer
@@ -334,7 +341,8 @@ public class JDMath
 	 * @param f_  x2^2+y2^2-r2^2
 	 * @return a vector with tangency points or null if circles are externals or overlapping
 	 */
-	public static Point2D.Double[] circlesIntersection( double d, double e, double f, double d_, double e_, double f_ )
+	public static Point2D.Double[] circlesIntersection( double d, double e, double f, double d_, 
+														double e_, double f_ )
 	{
 		double dd = d - d_, de = e_ - e, df = f_ - f;
 		double dd2 = dd * dd, de2 = de * de, df2 = df * df;
@@ -351,7 +359,8 @@ public class JDMath
 				return new Point2D.Double[] { new Point2D.Double( x, solY[0] ) };
 			
 			// secant circles
-			return new Point2D.Double[] { new Point2D.Double( x, solY[0] ), new Point2D.Double( x, solY[1] ) };
+			return new Point2D.Double[] { new Point2D.Double( x, solY[0] ), 
+										  new Point2D.Double( x, solY[1] ) };
 		}
 		
 		double u = de2 + dd2;
@@ -364,18 +373,25 @@ public class JDMath
 			return null;
 
 		if ( solX[0] == solX[1] )  // tangent circles
-			return new Point2D.Double[] { new Point2D.Double( solX[0], ( dd * solX[0] - df ) / de ) };
+			return new Point2D.Double[] { 
+										new Point2D.Double( solX[0], ( dd * solX[0] - df ) / de ) };
 
 		// secant circles
-		return new Point2D.Double[] { new Point2D.Double( solX[0], ( dd * solX[0] - df ) / de ), new Point2D.Double( solX[1], ( dd * solX[1] - df ) / de ) };
+		return new Point2D.Double[] { new Point2D.Double( solX[0], ( dd * solX[0] - df ) / de ), 
+									  new Point2D.Double( solX[1], ( dd * solX[1] - df ) / de ) };
 	}
 		
-	public static Point2D.Double[] circlesIntersection( Point2D.Double center1, double radius1, Point2D.Double center2, double radius2 )
+	public static Point2D.Double[] circlesIntersection( Point2D.Double center1, double radius1, 
+														Point2D.Double center2, double radius2 )
 	{
-		return circlesIntersection( -2 * center1.x, -2 * center1.y, center1.distanceSq( 0, 0 ) - radius1 * radius1, -2 * center2.x, -2 * center2.y, center2.distanceSq( 0, 0 ) - radius2 * radius2 );
+		return circlesIntersection( -2 * center1.x, -2 * center1.y, 
+									center1.distanceSq( 0, 0 ) - radius1 * radius1, -2 * center2.x, 
+									-2 * center2.y, 
+									center2.distanceSq( 0, 0 ) - radius2 * radius2 );
 	}
 		
-	public static Point2D.Double[] circleLineIntersection( double a, double b, double c, double d, double e, double f )
+	public static Point2D.Double[] circleLineIntersection( double a, double b, double c, double d, 
+														   double e, double f )
 	{
 		if ( b == 0 )  // vertical line
 		{
@@ -390,10 +406,12 @@ public class JDMath
 				return new Point2D.Double[] { new Point2D.Double( x, solY[0] ) };
 			
 			// line and circle are secants 
-			return new Point2D.Double[] { new Point2D.Double( x, solY[0] ), new Point2D.Double( x, solY[1] ) };
+			return new Point2D.Double[] { new Point2D.Double( x, solY[0] ), 
+										  new Point2D.Double( x, solY[1] ) };
 		}
 		
-		double[] solX = solveQuadratic( a * a + b * b, 2 * a * c + b * ( b * d - a * e ), c * c + b * ( b * f - e * c ) );
+		double[] solX = solveQuadratic( a * a + b * b, 2 * a * c + b * ( b * d - a * e ), 
+										c * c + b * ( b * f - e * c ) );
 		
 		if ( isNaN( solX[0] ) )  // line and circle are external
 			return null;
@@ -402,12 +420,16 @@ public class JDMath
 			return new Point2D.Double[] { new Point2D.Double( solX[0], ( -c - a * solX[0] ) / b ) };
 
 		// line and circle are secants
-		return new Point2D.Double[] { new Point2D.Double( solX[0], ( -c - a * solX[0] ) / b ), new Point2D.Double( solX[1], ( -c - a * solX[1] ) / b ) };
+		return new Point2D.Double[] { new Point2D.Double( solX[0], ( -c - a * solX[0] ) / b ), 
+									  new Point2D.Double( solX[1], ( -c - a * solX[1] ) / b ) };
 	}
 	
-	public static Point2D.Double[] circleLineIntersection( Point2D.Double p1, Point2D.Double p2, Point2D.Double center, double radius )
+	public static Point2D.Double[] circleLineIntersection( Point2D.Double p1, Point2D.Double p2, 
+														   Point2D.Double center, double radius )
 	{
-		return circleLineIntersection( p2.y - p1.y, p1.x - p2.x, p2.x * p1.y - p1.x * p2.y, -2 * center.x, -2 * center.y, center.distanceSq( 0, 0 ) - radius * radius );
+		return circleLineIntersection( p2.y - p1.y, p1.x - p2.x, p2.x * p1.y - p1.x * p2.y, 
+									   -2 * center.x, -2 * center.y, 
+									   center.distanceSq( 0, 0 ) - radius * radius );
 	}
 	
 	/**

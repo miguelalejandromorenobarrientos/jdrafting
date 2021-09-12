@@ -4,10 +4,22 @@ import static java.lang.String.format;
 
 import java.awt.geom.Rectangle2D;
 
+/**
+ * Logic viewport
+ * @author Miguel Alejandro Moreno Barrientos
+ * @since 0.1.0
+ */
 public class Viewport
 {
 	private double xmin, ymin, xmax, ymax;
 	
+	/**
+	 * Viewport from x extremes and y extremes
+	 * @param xmin min x
+	 * @param xmax max x
+	 * @param ymin min y
+	 * @param ymax max y
+	 */
 	public Viewport( double xmin, double xmax, double ymin, double ymax )
 	{
 		this.xmin = xmin;
@@ -16,11 +28,18 @@ public class Viewport
 		this.ymax = ymax;
 	}
 
+	/**
+	 * Default viewport [-1000,1000]x[-1000,1000]
+	 */
 	public Viewport()
 	{
 		this( -1000., 1000., -1000., 1000. );
 	}
 	
+	/**
+	 * Viewport from Rectangle2D
+	 * @param r rectangle
+	 */
 	public Viewport( Rectangle2D r )
 	{
 		this( r.getMinX(), r.getMaxX(), r.getMinY(), r.getMaxY() );
@@ -36,6 +55,13 @@ public class Viewport
 	public double getCenterX() { return ( getMinX() + getMaxX() ) / 2; }
 	public double getCenterY() { return ( getMinY() + getMaxY() ) / 2; }
 	
+	/**
+	 * Zoom over viewport in {@code (x,y)} point
+	 * @param x coord x
+	 * @param y coord y
+	 * @param factor zoom factor; &gt;1 for zoom out, &lt;1 for zoom in
+	 * @return this viewport zoomed
+	 */
 	public Viewport zoom( double x, double y, double factor )
 	{
 		double oldwidth = getWidth();
@@ -48,6 +74,12 @@ public class Viewport
 		return this;
 	}
 	
+	/**
+	 * Translate viewport
+	 * @param dx delta x
+	 * @param dy delta y
+	 * @return this viewport translated
+	 */
 	public Viewport move( double dx, double dy )
 	{
 		xmin += dx;
@@ -58,6 +90,13 @@ public class Viewport
 		return this;
 	}
 	
+	/**
+	 * Coordinates at this viewport from coordinates in other viewport
+	 * @param x old x
+	 * @param y old y
+	 * @param other old viewport
+	 * @return [x,y] at this viewport
+	 */
 	public double[] toThisViewport( double x, double y, Viewport other )
 	{
 		double nx = getMinX() + ( ( x - other.getMinX() ) / other.getWidth() )
@@ -68,10 +107,13 @@ public class Viewport
 		return new double[] { nx, ny };
 	}
 	
+	/**
+	 * Get viewport as java.awt.geom.Rectangle2D (Double)
+	 * @return rectangle
+	 */
 	public Rectangle2D getAsRectangle()
 	{
-		return new Rectangle2D.Double( 
-								getMinX(), getMaxY(), getWidth(), getHeight() );
+		return new Rectangle2D.Double( getMinX(), getMaxY(), getWidth(), getHeight() );
 	}
 	
 	@Override
@@ -81,4 +123,5 @@ public class Viewport
 					   getMinX(), getMaxX(), getMinY(), getMaxY(), 
 					   getWidth(), getHeight() );
 	}
+	
 }

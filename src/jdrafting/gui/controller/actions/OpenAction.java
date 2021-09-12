@@ -57,8 +57,7 @@ public class OpenAction extends AbstractAction
 		fileChooser = new JFileChooser();
 		// add accesory panel for preview to file chooser
 		JPanel accesoryPanel = new JPanel();
-		accesoryPanel.setBorder( 
-								BorderFactory.createTitledBorder( "Preview" ) );
+		accesoryPanel.setBorder( BorderFactory.createTitledBorder( "Preview" ) );
 		PreviewPanel previewPanel = new PreviewPanel(); 
 		accesoryPanel.add( previewPanel );
 		fileChooser.setAccessory( accesoryPanel );
@@ -89,8 +88,7 @@ public class OpenAction extends AbstractAction
 										"JDrafting exercise (.jd)", "jd" ) );
 		// reset preview
 		fileChooser.setSelectedFile( null ); // ensure property change trigger
-		PreviewPanel prev = 
-					(PreviewPanel) fileChooser.getAccessory().getComponent( 0 ); 
+		PreviewPanel prev = (PreviewPanel) fileChooser.getAccessory().getComponent( 0 ); 
 		prev.exercise = null;
 		
 		// Open dialog

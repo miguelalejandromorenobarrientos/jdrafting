@@ -20,12 +20,18 @@ import jdrafting.geom.JDMath;
 /**
  * Helper methods for JDrafting
  */
-public class JDUtils
+final public class JDUtils
 {
 	/**
 	 * Avoid instantiation
 	 */
 	private JDUtils() {}
+	
+	@Override
+	protected Object clone() throws CloneNotSupportedException 
+	{
+		throw new CloneNotSupportedException();
+	}
 
 	public static int smallIconSize = 16;
 	public static int largeIconSize = 24;
@@ -34,11 +40,11 @@ public class JDUtils
 	 * Get screen size, multiplied by factor
 	 * @param ratioX factor width (value 1 for screen width)
 	 * @param ratioY factor height (value 1 for screen height)
-	 * @return
+	 * @return rounded scaled screen size
 	 */
 	public static Dimension getScreenSize( float ratioX, float ratioY )
 	{
-		Dimension ssize = Toolkit.getDefaultToolkit().getScreenSize();
+		final Dimension ssize = Toolkit.getDefaultToolkit().getScreenSize();
 		
 		return new Dimension( JDMath.nearInt( ssize.getWidth() * ratioX ), 
 							  JDMath.nearInt( ssize.getHeight() * ratioY ) );
@@ -141,13 +147,16 @@ public class JDUtils
 	{
 		String[] words = text.split( "[^\\w]+" );  // split into words
 		words =	Stream.of( words )
-			.map( 
-				s -> Character.toUpperCase( s.charAt( 0 ) ) + s.substring( 1 ) )
-			.toArray( String[]::new );  // to versals
+					  .map( s -> Character.toUpperCase( s.charAt( 0 ) ) + s.substring( 1 ) )
+					  .toArray( String[]::new );  // to versals
 
 		return String.join( "", words );
 	}
 	
+	/**
+	 * Improve quality render hints
+	 * @param g2 graphics
+	 */
 	public static void setHighQualityRender( Graphics2D g2 )
 	{
 		g2.setRenderingHint( RenderingHints.KEY_TEXT_ANTIALIASING,
@@ -165,4 +174,5 @@ public class JDUtils
 		g2.setRenderingHint( RenderingHints.KEY_INTERPOLATION,
 		   			 		 RenderingHints.VALUE_INTERPOLATION_BILINEAR);		
 	}
+	
 }

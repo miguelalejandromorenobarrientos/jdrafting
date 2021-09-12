@@ -49,8 +49,8 @@ public class SaveAction extends AbstractAction
 		}
 		else
 			putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_save_as" ) );
-		putValue( SMALL_ICON, getSmallIcon( "save.png" ) );
-		putValue( LARGE_ICON_KEY, getLargeIcon( "save.png" ) );
+		putValue( SMALL_ICON, getSmallIcon( as ? "save_as.png": "save.png" ) );
+		putValue( LARGE_ICON_KEY, getLargeIcon( as ? "save_as.png" : "save.png" ) );
 		
 		// create static file chooser dialog
 		fileChooser = new JFileChooser();
@@ -59,6 +59,15 @@ public class SaveAction extends AbstractAction
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
+		if ( app.getExercise().isEmpty() )
+		{
+			JOptionPane.showMessageDialog( app, 
+										   getLocaleText( "save_error2" ),
+										   getLocaleText( "save_error1" ),
+										   JOptionPane.ERROR_MESSAGE );
+			return;
+		}
+		
 		// update file chooser L&F
 		SwingUtilities.updateComponentTreeUI( fileChooser );
 

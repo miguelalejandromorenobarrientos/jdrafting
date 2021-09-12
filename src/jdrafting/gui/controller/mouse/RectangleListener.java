@@ -18,8 +18,7 @@ import jdrafting.gui.JDUtils;
  */
 public class RectangleListener extends AbstractCanvasMouseListener
 {
-	private static final Cursor CURSOR = 
-							JDUtils.getCustomCursor( "rectangle_cursor.png" );
+	private static final Cursor CURSOR = JDUtils.getCustomCursor( "rectangle_cursor.png" );
 	private CanvasPanel canvas;
 	private Application app;
 	
@@ -126,8 +125,7 @@ public class RectangleListener extends AbstractCanvasMouseListener
 		double maxY = Math.max( start.getY(), logicMouse.getY() );
 		
 		// create rectangle
-		Rectangle2D rect = 
-				new Rectangle2D.Double( minX, minY, maxX - minX, maxY - minY );
+		Rectangle2D rect = new Rectangle2D.Double( minX, minY, maxX - minX, maxY - minY );
 		if ( isSquare() )  // create square
 		{
 			double size = Math.min( rect.getWidth(), rect.getHeight() );

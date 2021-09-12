@@ -26,10 +26,8 @@ public class ExerciseMetadataAction extends AbstractAction
 		
 		putValue( NAME, getLocaleText( "fileinfo" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "fileinfo_des" ) );
-		putValue( MNEMONIC_KEY, 
-							JDUtils.getLocaleMnemonic( "mne_ex_metadata" ) );
-		putValue( ACCELERATOR_KEY, 
-			KeyStroke.getKeyStroke( KeyEvent.VK_I, InputEvent.SHIFT_MASK ) );
+		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_ex_metadata" ) );
+		putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( KeyEvent.VK_I, InputEvent.SHIFT_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "fileinfo.png" ) );
 		putValue( LARGE_ICON_KEY, getLargeIcon( "fileinfo.png" ) );
 	}

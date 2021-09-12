@@ -56,7 +56,7 @@ public class PrintAction extends AbstractAction
 		job.setPrintable( (g, pageFormat, pageIndex) -> {
 			
 	    	final double pageWidth = pageFormat.getImageableWidth(),
-			  	 	 pageHeight = pageFormat.getImageableHeight();	    
+	    				 pageHeight = pageFormat.getImageableHeight();	    
 
 	    	Rectangle2D bounds = app.getExercise().getBounds();
 			final double marginX = bounds.getWidth() / 16., marginY = bounds.getHeight() / 16.;
@@ -81,7 +81,8 @@ public class PrintAction extends AbstractAction
 			CanvasPanel.drawExercise( g2, CanvasPanel.getTransform(
 									new Viewport( bounds ),
 									new Viewport( 0, img.getWidth() - 1, 0, img.getHeight() - 1 ) ),
-									app.getExercise(), new HashSet<>(), true );			
+									app.getExercise(), 
+									new HashSet<>(), true );			
 			
 			g.translate( (int) (pageFormat.getImageableX()), (int) (pageFormat.getImageableY()) );
 		    if ( pageIndex == 0 ) 

@@ -60,9 +60,9 @@ public class PasteStyleListener extends AbstractCanvasMouseListener
 		{
 			jdshape.setColor( newColor = app.getPointColor() );
 			jdshape.setStroke( newStroke = isPoint 
-				? app.getPointStroke() 
-				: JDStrokes.getStroke( JDStrokes.PLAIN_ROUND.getStroke(),
-									   app.getPointStroke().getLineWidth() ) );
+							   ? app.getPointStroke() 
+							   : JDStrokes.getStroke( JDStrokes.PLAIN_ROUND.getStroke(),
+													  app.getPointStroke().getLineWidth() ) );
 		}
 		else
 		{

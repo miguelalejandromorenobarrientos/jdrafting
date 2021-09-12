@@ -23,9 +23,6 @@ import javax.swing.JLabel;
 import javax.swing.JWindow;
 import javax.swing.Timer;
 
-import com.sun.istack.internal.NotNull;
-import com.sun.istack.internal.Nullable;
-
 /**
  * Customizable Toast for Swing.<br>
  * <br>
@@ -62,7 +59,7 @@ public class Toast extends JWindow
 	 * @param msg message to show
 	 * @param time time for hiding (milliseconds)
 	 */
-	public Toast( @NotNull String msg, int time )
+	public Toast( String msg, int time )
 	{
 		this.msg = msg;
 		this.time = time;		
@@ -86,7 +83,7 @@ public class Toast extends JWindow
 	 * @param point screen position (left-upper corner)
 	 * @param time time for hiding (milliseconds)
 	 */
-	public Toast( @NotNull String msg, @Nullable Point point, int time ) 
+	public Toast( String msg, Point point, int time ) 
 	{
 		this( msg, time );
 		
@@ -131,7 +128,7 @@ public class Toast extends JWindow
 	 */
 	public int getTime() { return time; }
 	
-	public @Nullable Timer getClosingTimer() { return closingTimer; }
+	public Timer getClosingTimer() { return closingTimer; }
 	
 	/**
 	 * Show toast. Can be called several times
@@ -189,8 +186,7 @@ public class Toast extends JWindow
 	 * @param sufix string at the end (as \u2026)
 	 * @return cut string
 	 */
-	protected static @Nullable String cutString( @Nullable String s, 
-										   int limit, @NotNull String sufix )
+	protected static String cutString( String s, int limit, String sufix )
 	{
 		return s == null || limit >= s.length()
 			   ? s

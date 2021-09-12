@@ -37,19 +37,21 @@ public class RewindAction extends AbstractAction
 	@Override
 	public void actionPerformed( ActionEvent e )
 	{
-		// update frame
-		app.getExercise().setFrameIndex( app.getExercise().isEmpty() ? 0 : 1 );
 		if ( !app.getExercise().isEmpty() )
 		{
+			// update frame
+			app.getExercise().setFrameIndex( app.getExercise().getStartIndex() );
 			// create step description toast 
-			final JDraftingShape shape = app.shapeList.getModel().get(0);
+			final JDraftingShape shape = 
+							  app.shapeList.getModel().get( app.getExercise().getStartIndex() - 1 );
 			if ( app.currentToast != null )
 			{
 				if ( app.currentToast.getClosingTimer() != null )
 					app.currentToast.getClosingTimer().stop();
 				app.currentToast.dispose();
 			}
-			app.currentToast = new ToastCanvasStep( shape, 1, app.canvas.getLocationOnScreen() )
+			app.currentToast = new ToastCanvasStep( shape, app.getExercise().getFrameIndex(), 
+													app.canvas.getLocationOnScreen() )
 							   .showToast();
 			
 			// refresh

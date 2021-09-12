@@ -48,14 +48,14 @@ public abstract class AbstractCanvasMouseListener extends MouseInputAdapter
 		// zoom over canvas
 		if ( e.getSource() instanceof CanvasPanel )
 		{
-			CanvasPanel canvas = (CanvasPanel) e.getSource();
+			final CanvasPanel canvas = (CanvasPanel) e.getSource();
 			
 			// mouse logic viewport position
-			Point2D logicMouse = canvas.adjustToPoint( e.getPoint() );
+			final Point2D logicMouse = canvas.adjustToPoint( e.getPoint() );
 			
 			// zoom in mouse position
-			double factor = Math.pow( 2, 1. / 4 );  // zoom factor
-			Viewport oldView = canvas.getViewport();
+			final double factor = Math.pow( 2, 1. / 4 );  // zoom factor
+			final Viewport oldView = canvas.getViewport();
 			// (avoid very small viewports due to accuracy bugs)
 			if ( e.getPreciseWheelRotation() < 0 )
 				if ( oldView.getWidth() < 1. || oldView.getHeight() < 1. )

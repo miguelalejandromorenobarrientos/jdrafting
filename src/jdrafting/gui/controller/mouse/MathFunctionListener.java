@@ -1,5 +1,7 @@
 package jdrafting.gui.controller.mouse;
 
+import static jdrafting.gui.JDUtils.getLocaleText;
+
 import java.awt.BasicStroke;
 import java.awt.Cursor;
 import java.awt.Graphics2D;
@@ -42,8 +44,7 @@ public class MathFunctionListener extends AbstractCanvasMouseListener
 		
 		canvas.setCursor( CURSOR );
 		
-		app.setStatusText( "Select start position" );
-		
+		app.setStatusText( getLocaleText( "txt_jme1" ) );		
 		
 		// calculate graph
 		Expresion exp = (Expresion) jmeParams.get( "expression" );		
@@ -107,7 +108,7 @@ public class MathFunctionListener extends AbstractCanvasMouseListener
 		if ( start == null )
 		{
 			start = logicMouse;
-			app.setStatusText( "Select end" );
+			app.setStatusText( getLocaleText( "txt_jme2" ) );
 			canvas.repaint();
 		}
 		// finish bounds

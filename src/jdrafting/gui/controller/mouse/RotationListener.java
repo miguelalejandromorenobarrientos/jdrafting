@@ -23,8 +23,6 @@ import javax.swing.undo.AbstractUndoableEdit;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 
-import com.sun.istack.internal.NotNull;
-
 import jdrafting.geom.JDraftingShape;
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
@@ -163,8 +161,7 @@ public class RotationListener extends AbstractCanvasMouseListener
 	 * @param logicMouse mouse logic position
 	 * @return a list of new shapes
 	 */
-	private Shape[] getRotated(@NotNull Set<JDraftingShape> selected, 
-							   double ang )
+	private Shape[] getRotated( Set<JDraftingShape> selected, double ang )
 	{
 		AffineTransform rotation = AffineTransform.getRotateInstance( 
 											ang, center.getX(), center.getY() );

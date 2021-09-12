@@ -21,8 +21,6 @@ import javax.swing.undo.AbstractUndoableEdit;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 
-import com.sun.istack.internal.NotNull;
-
 import jdrafting.geom.JDraftingShape;
 import jdrafting.gui.Application;
 import jdrafting.gui.CanvasPanel;
@@ -143,8 +141,7 @@ public class TranslationListener extends AbstractCanvasMouseListener
 	 * @param logicMouse mouse logic position
 	 * @return a list of new shapes
 	 */
-	private Shape[] getTranslated(@NotNull Set<JDraftingShape> selected, 
-								  double tx, double ty )
+	private Shape[] getTranslated( Set<JDraftingShape> selected, double tx, double ty )
 	{
 		AffineTransform translation = 
 								AffineTransform.getTranslateInstance( tx, ty );

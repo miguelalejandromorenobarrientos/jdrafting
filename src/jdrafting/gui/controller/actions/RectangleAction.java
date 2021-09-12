@@ -36,7 +36,6 @@ public class RectangleAction extends AbstractAction
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		app.getCanvas().setCanvasListener(
-									new RectangleListener( app.getCanvas() ) );
+		app.getCanvas().setCanvasListener( new RectangleListener( app.getCanvas() ) );
 	}
 }

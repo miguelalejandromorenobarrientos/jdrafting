@@ -7,6 +7,7 @@ import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -46,7 +47,7 @@ public class MathFunctionAction extends AbstractAction
 		putValue( NAME, getLocaleText( "func" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "func_des" ) );
 		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_jme" ) );
-		putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( "typed ¡" ) );
+		putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( KeyEvent.VK_J, InputEvent.CTRL_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "jme.png" ) );
 		putValue( LARGE_ICON_KEY, getLargeIcon( "jme.png" ) );
 	}
@@ -54,6 +55,9 @@ public class MathFunctionAction extends AbstractAction
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
+		if ( !Application.jmeEnabled )
+			return;
+		
 		JMEDialog dialog = new JMEDialog();
 		jmeParams = null;
 		dialog.setVisible( true );

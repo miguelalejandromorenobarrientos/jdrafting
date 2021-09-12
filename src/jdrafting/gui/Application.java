@@ -82,8 +82,6 @@ import javax.swing.undo.UndoManager;
 import javax.swing.undo.UndoableEdit;
 import javax.swing.undo.UndoableEditSupport;
 
-import com.sun.istack.internal.NotNull;
-
 import cla.ParsedParameterMap;
 import jdrafting.Exercise;
 import jdrafting.geom.JDStrokes;
@@ -125,6 +123,7 @@ import jdrafting.gui.controller.actions.ModifySegmentAction;
 import jdrafting.gui.controller.actions.MoveZBufferAction;
 import jdrafting.gui.controller.actions.NewAction;
 import jdrafting.gui.controller.actions.OpenAction;
+import jdrafting.gui.controller.actions.PaintAction;
 import jdrafting.gui.controller.actions.ParabolaAction;
 import jdrafting.gui.controller.actions.ParallelAction;
 import jdrafting.gui.controller.actions.PasteStyleAction;
@@ -148,6 +147,7 @@ import jdrafting.gui.controller.actions.SelectAllAction;
 import jdrafting.gui.controller.actions.SelectionAction;
 import jdrafting.gui.controller.actions.ShapeColorAction;
 import jdrafting.gui.controller.actions.SplineAction;
+import jdrafting.gui.controller.actions.TextBoxAction;
 import jdrafting.gui.controller.actions.TextVisibleAction;
 import jdrafting.gui.controller.actions.TranslationAction;
 import jdrafting.gui.controller.actions.TriangleAction;
@@ -173,15 +173,13 @@ public class Application extends JFrame
 	//////////////////////
 	// metainfo
 	public static final String APPNAME = "JDrafting";
-	public static final String VERSION = "0.1.10.2";
+	public static final String VERSION = "0.1.11";
 	public static final String AUTHOR = "Miguel Alejandro Moreno Barrientos";
-	public static final String COPYLEFT = "2016,2020";
+	public static final String COPYLEFT = "2016,2020,2021";
 	public static final String PROJECT_PAGE = 
 									"http://miguelalejandromorenobarrientos.github.io/jdrafting";
 	public static final String GITHUB_REPOSITORY =	
 						"https://github.com/miguelalejandromorenobarrientos/jdrafting/tree/master";
-	// colors
-	public static Color toolMainColor = Color.BLUE;
 	// separators
 	private static final Dimension HSEP = new Dimension( 12, 0 ); 
 	private static final Dimension VSEP = new Dimension( 0, 12 ); 
@@ -190,6 +188,7 @@ public class Application extends JFrame
 	/////////////////
 	// STATIC VARS //
 	/////////////////
+	public static Color toolMainColor = Color.BLUE;
 	public static Locale locale = Locale.getDefault(); 
 	public static String lookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
 	public static boolean jmeEnabled = true;
@@ -494,13 +493,11 @@ public class Application extends JFrame
 		rulerProtToolbar.add( buttonRuler = new JButton() );
 		rulerProtToolbar.add( Box.createHorizontalStrut( 3 ) );
 		// checkbox fixed distance
-		rulerProtToolbar.add( checkRuler = 
-								new JCheckBox( getLocaleText( "fix_dist" ) ) );
+		rulerProtToolbar.add( checkRuler = new JCheckBox( getLocaleText( "fix_dist" ) ) );
 		checkRuler.setSelected( isUsingRuler() );
 		checkRuler.setMaximumSize( checkRuler.getPreferredSize() );
 		checkRuler.setMinimumSize( checkRuler.getPreferredSize() );
-		checkRuler.addActionListener( 
-							evt -> setUseDistance( checkRuler.isSelected() ) );
+		checkRuler.addActionListener( evt -> setUseDistance( checkRuler.isSelected() ) );
 		// multiplier button
 		rulerProtToolbar.add( buttonMultiplier = 
 			new JButton( "<html><font color=blue size=2>xN</font></html>" ) );
@@ -526,7 +523,7 @@ public class Application extends JFrame
 		rulerProtToolbar.add( buttonProtactor = new JButton() );
 		// spinner angle
 		rulerProtToolbar.add( spinAngle = new JSpinner( new SpinnerNumberModel( 
-								getAngle(), 0., Math.nextDown( 360. ), 1. ) ) );
+													getAngle(), 0., Math.nextDown( 360. ), 1. ) ) );
 		spinAngle.setPreferredSize( new Dimension( 70, 30 ) );
 		spinAngle.setMaximumSize( spinAngle.getPreferredSize() );
 		spinAngle.setMinimumSize( spinAngle.getPreferredSize() );
@@ -544,8 +541,7 @@ public class Application extends JFrame
 				setAngle( (double) spinAngle.getModel().getValue() );
 			}
 		});
-		spinAngle.addChangeListener( 
-				evt -> setAngle( (double) spinAngle.getModel().getValue() ) );
+		spinAngle.addChangeListener( evt -> setAngle( (double) spinAngle.getModel().getValue() ) );
 		rulerProtToolbar.add( new JLabel( getLocaleText( "degrees" ) ) );
 		// final glue
 		northPanel.add( Box.createHorizontalGlue() );
@@ -591,71 +587,51 @@ public class Application extends JFrame
 		Action action;
 		
 		// New exercise
-		menuFile.add( action = new NewAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuFile.add( registerAction( new NewAction( this ) ) );
 		// Open exercise
-		menuFile.add( action = new OpenAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuFile.add( registerAction( new OpenAction( this ) ) );
 		menuFile.addSeparator();
 		// Save exercise
-		menuFile.add( action = new SaveAction( this, false ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuFile.add( registerAction( new SaveAction( this, false ) ) );
 		// Save as ...
-		menuFile.add( action = new SaveAction( this, true ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuFile.add( registerAction( new SaveAction( this, true ) ) );
 		// Save exercise as image
-		menuFile.add( action = new SaveImageAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuFile.add( registerAction( new SaveImageAction( this ) ) );
 		menuFile.addSeparator();
 		// Print as image
-		menuFile.add( action = new PrintAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuFile.add( registerAction( new PrintAction( this ) ) );
 		menuFile.addSeparator();
 		// Exit
-		menuFile.add( action = new ExitAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuFile.add( registerAction( new ExitAction( this ) ) );
 		// Undo/Redo
-		menuEdit.add( action = new UndoAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
-		menuEdit.add( action = new RedoAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuEdit.add( registerAction( new UndoAction( this ) ) );
+		menuEdit.add( registerAction( new RedoAction( this ) ) );
 		menuEdit.addSeparator();
 		// Rectangular selection
-		menuEdit.add( action = new SelectionAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuEdit.add( registerAction( new SelectionAction( this ) ) );
 		// Invert selection
-		menuEdit.add( action = new SelectAllAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuEdit.add( registerAction( new SelectAllAction( this ) ) );
 		// Invert selection
-		menuEdit.add( action = new InvertSelectionAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuEdit.add( registerAction( new InvertSelectionAction( this ) ) );
 		menuEdit.addSeparator();
 		// Up shape
-		menuEdit.add( action = new MoveZBufferAction( this, true ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuEdit.add( registerAction( new MoveZBufferAction( this, true ) ) );
 		// Down shape
-		menuEdit.add( action = new MoveZBufferAction( this, false ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuEdit.add( registerAction( new MoveZBufferAction( this, false ) ) );
 		menuEdit.addSeparator();
 		// Copy
-		menuEdit.add( action = new CopySelectedAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuEdit.add( registerAction( new CopySelectedAction( this ) ) );
 		// Delete
-		menuEdit.add( action = new DeleteSelectedAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuEdit.add( registerAction( new DeleteSelectedAction( this ) ) );
 		// Zoom all
-		menuView.add( action = new ZoomAllAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuView.add( registerAction( new ZoomAllAction( this ) ) );
 		// Zoom in
-		menuView.add( action = new ZoomInOutAction( this, true ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuView.add( registerAction( new ZoomInOutAction( this, true ) ) );
 		// Zoom out
-		menuView.add( action = new ZoomInOutAction( this, false ) );
-		actionMap.put( action.getValue( Action.NAME ), action );		
+		menuView.add( registerAction( new ZoomInOutAction( this, false ) ) );
 		menuView.addSeparator();
 		// Visible names
-		menuView.add( action = new TextVisibleAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuView.add( registerAction( new TextVisibleAction( this ) ) );
 		menuView.addSeparator();
 		// See/Hide toolbars
 		List<AbstractButton> buttonList = new LinkedList<>();
@@ -764,63 +740,46 @@ public class Application extends JFrame
 			}
 		});		
 		// Point shape
-		menuShapes.add( action = new PointAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuShapes.add( registerAction( new PointAction( this ) ) );
 		// Segment shape
-		menuShapes.add( action = new SegmentAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuShapes.add( registerAction( new SegmentAction( this ) ) );
 		// Arc shape
-		menuShapes.add( action = new ArcAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuShapes.add( registerAction( new ArcAction( this ) ) );
 		// Circumference shape
-		menuShapes.add( action = new CircumferenceAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuShapes.add( registerAction( new CircumferenceAction( this ) ) );
 		// Angle shape
-		menuShapes.add( action = new AngleAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuShapes.add( registerAction( new AngleAction( this ) ) );
 		// Arrow shape
-		menuShapes.add( action = new ArrowAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuShapes.add( registerAction( new ArrowAction( this ) ) );
 		menuShapes.addSeparator();
 		// Triangle notable points menu
-		menuShapes.add(	menuTrianglePoints = 
-							new JMenu( getLocaleText( "triangle_tools" ) ) );
+		menuShapes.add(	menuTrianglePoints = new JMenu( getLocaleText( "triangle_tools" ) ) );
 		menuTrianglePoints.setMnemonic( getLocaleMnemonic( "mne_menu_trian" ) );
 		menuTrianglePoints.setIcon( getSmallIcon( "triangle_popup.png" ) );
 		// Triangle shape
-		menuTrianglePoints.add( action = new TriangleAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuTrianglePoints.add( registerAction( new TriangleAction( this ) ) );
 		menuTrianglePoints.addSeparator();
 		// Triangle notable points
-		menuTrianglePoints.add( action = new TrianglePointsAction( 
-								this, TrianglePointsListener.BARICENTER ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
-		menuTrianglePoints.add( action = new TrianglePointsAction( 
-								this, TrianglePointsListener.CIRCUMCENTER ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
-		menuTrianglePoints.add( action = new TrianglePointsAction( 
-								this, TrianglePointsListener.INCENTER ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
-		menuTrianglePoints.add( action = new TrianglePointsAction( 
-								this, TrianglePointsListener.ORTOCENTER ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuTrianglePoints.add( registerAction( new TrianglePointsAction( 
+													this, TrianglePointsListener.BARICENTER ) ) );
+		menuTrianglePoints.add( registerAction( new TrianglePointsAction( 
+													this, TrianglePointsListener.CIRCUMCENTER ) ) );
+		menuTrianglePoints.add( registerAction( new TrianglePointsAction( 
+													this, TrianglePointsListener.INCENTER ) ) );
+		menuTrianglePoints.add( registerAction( new TrianglePointsAction( 
+													this, TrianglePointsListener.ORTOCENTER ) ) );
 		// Rectangle shape
-		menuShapes.add( action = new RectangleAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuShapes.add( registerAction( new RectangleAction( this ) ) );
 		// Polygon menu
-		menuShapes.add( 
-				menuPolygon = new JMenu( getLocaleText( "polygon_tools" ) ) );
+		menuShapes.add( menuPolygon = new JMenu( getLocaleText( "polygon_tools" ) ) );
 		menuPolygon.setMnemonic( getLocaleMnemonic( "mne_menu_poly" ) );
 		menuPolygon.setIcon( getSmallIcon( "polygon_popup.png" ) );
 		// Regular polygon shape
-		menuPolygon.add( action = new RegularPolygonAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuPolygon.add( registerAction( new RegularPolygonAction( this ) ) );
 		// Polygon shape
-		menuPolygon.add( action = new PolygonAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuPolygon.add( registerAction( new PolygonAction( this ) ) );
 		// Polyline shape
-		menuPolygon.add( action = new PolyLineAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuPolygon.add( registerAction( new PolyLineAction( this ) ) );
 		// Conics menu
 		menuShapes.add( menuConics = new JMenu( getLocaleText( "conics" ) ) );
 		menuConics.setMnemonic( getLocaleMnemonic( "mne_menu_conics" ) );
@@ -828,90 +787,72 @@ public class Application extends JFrame
 		// Circumference shape (repeated)
 		menuConics.add( new CircumferenceAction( this ) );
 		// Ellipse shape
-		menuConics.add( action = new EllipseAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuConics.add( registerAction( new EllipseAction( this ) ) );
 		// Parabola shape
-		menuConics.add( action = new ParabolaAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuConics.add( registerAction( new ParabolaAction( this ) ) );
 		// Hyperbola shape
-		menuConics.add( action = new HyperbolaAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuConics.add( registerAction( new HyperbolaAction( this ) ) );
 		menuShapes.addSeparator();
 		// Spline shape
-		menuShapes.add( action = new SplineAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuShapes.add( registerAction( new SplineAction( this ) ) );
 		// Free hand shape
-		menuShapes.add( action = new FreeHandAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuShapes.add( registerAction( new FreeHandAction( this ) ) );
+		menuShapes.addSeparator();
+		// Text box
+		menuShapes.add( registerAction( new TextBoxAction( this ) ) );
 		// Function shape
 		if ( jmeEnabled )
 		{
-			menuShapes.add( action = new MathFunctionAction( this ) );
-			actionMap.put( action.getValue( Action.NAME ), action );
+			menuShapes.addSeparator();
+			menuShapes.add( registerAction( new MathFunctionAction( this ) ) );
 		}
 		// Translation transform
-		menuTransform.add( action = new TranslationAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuTransform.add( registerAction( new TranslationAction( this ) ) );
 		// Rotation transform
-		menuTransform.add( action = new RotationAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuTransform.add( registerAction( new RotationAction( this ) ) );
 		// Homothety transform
-		menuTransform.add( action = new HomothetyAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuTransform.add( registerAction( new HomothetyAction( this ) ) );
 		// Central symmetry transform
-		menuTransform.add( action = new CentralSymmetryAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuTransform.add( registerAction( new CentralSymmetryAction( this ) ) );
 		// Axial symmetry transform
-		menuTransform.add( action = new AxialSymmetryAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuTransform.add( registerAction( new AxialSymmetryAction( this ) ) );
 		// Perpendicular tool
-		menuTools.add( action = new PerpendicularAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuTools.add( registerAction( new PerpendicularAction( this ) ) );
 		// Parallel tool
-		menuTools.add( action = new ParallelAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuTools.add( registerAction( new ParallelAction( this ) ) );
 		menuTools.addSeparator();
 		// Mediatrix tool
-		menuTools.add( action = new MediatrixAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuTools.add( registerAction( new MediatrixAction( this ) ) );
 		// Bisectrix tool
-		menuTools.add( action = new BisectrixAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuTools.add( registerAction( new BisectrixAction( this ) ) );
 		// Capable arc tool
-		menuTools.add( action = new CapableArcAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuTools.add( registerAction( new CapableArcAction( this ) ) );
 		menuTools.addSeparator();
 		// Modify segment tool
-		menuTools.add( action = new ModifySegmentAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuTools.add( registerAction( new ModifySegmentAction( this ) ) );
 		menuTools.addSeparator();
 		// Midpoint tool
-		menuTools.add( action = new MidpointAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuTools.add( registerAction( new MidpointAction( this ) ) );
 		// Vertex tool
-		menuTools.add( action = new VertexAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuTools.add( registerAction( new VertexAction( this ) ) );
 		// Extremes tool
-		menuTools.add( action = new ExtremesAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuTools.add( registerAction( new ExtremesAction( this ) ) );
 		// Divisions points tool
-		menuTools.add( action = new DivisionPointsAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuTools.add( registerAction( new DivisionPointsAction( this ) ) );
 		// Intersections tool
-		menuTools.add( action = new IntersectionsAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuTools.add( registerAction( new IntersectionsAction( this ) ) );
 		// Rectangle bounds tool
-		menuTools.add( action = new BoundsAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuTools.add( registerAction( new BoundsAction( this ) ) );
 		menuTools.addSeparator();
 		// Fragment shape tool
-		menuTools.add( action = new FragmentAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuTools.add( registerAction( new FragmentAction( this ) ) );
 		// Fusion shape tool
-		menuTools.add( action = new FusionAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuTools.add( registerAction( new FusionAction( this ) ) );
+		menuTools.addSeparator();
+		// Paint shape tool
+		menuTools.add( registerAction( new PaintAction( this ) ) );
 		// Select shape color
-		menuStyle.add( action = new ShapeColorAction( this ) );
+		menuStyle.add( action = registerAction( new ShapeColorAction( this ) ) );
 		buttonColor.setAction( action );
 		buttonColor.setIcon( null );
 		buttonColor.setText( "" );
@@ -919,9 +860,8 @@ public class Application extends JFrame
 		buttonColor.setBorderPainted( false );
 		buttonColor.setFocusPainted( true );
 		buttonColor.setOpaque( true );
-		actionMap.put( action.getValue( Action.NAME ), action );
 		// Select point color
-		menuStyle.add( action = new PointColorAction( this ) );
+		menuStyle.add( action = registerAction( new PointColorAction( this ) ) );
 		buttonPointColor.setAction( action );
 		buttonPointColor.setIcon( null );
 		buttonPointColor.setText( "" );
@@ -929,23 +869,19 @@ public class Application extends JFrame
 		buttonPointColor.setBorderPainted( false );
 		buttonPointColor.setFocusPainted( true );
 		buttonPointColor.setOpaque( true );
-		actionMap.put( action.getValue( Action.NAME ), action );
 		// Canvas background color
-		menuStyle.add( action = new CanvasColorAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuStyle.add( registerAction( new CanvasColorAction( this ) ) );
 		// Eyedropper
-		buttonEyedropper.setAction( action = new EyedropperAction( this ) );
+		buttonEyedropper.setAction( action = registerAction( new EyedropperAction( this ) ) );
 		buttonEyedropper.setText( "" );
 		menuStyle.addSeparator();
 		menuStyle.add( action );
-		actionMap.put( action.getValue( Action.NAME ), action );
 		// Paste style
-		buttonPasteStyle.setAction( action = new PasteStyleAction( this ) );
+		buttonPasteStyle.setAction( action = registerAction( new PasteStyleAction( this ) ) );
 		buttonPasteStyle.setText( "" );
 		menuStyle.add( action );
-		actionMap.put( action.getValue( Action.NAME ), action );
 		// Ruler
-		buttonRuler.setAction( action = new RulerAction( this ) );
+		buttonRuler.setAction( action = registerAction( new RulerAction( this ) ) );
 		//buttonRuler.setPreferredSize( new Dimension( 36, 30 ) );
 		buttonRuler.setContentAreaFilled( true );
 		buttonRuler.setBorderPainted( false );
@@ -954,9 +890,8 @@ public class Application extends JFrame
 		buttonRuler.setText( "" );
 		menuTools.addSeparator();
 		menuTools.add( action );
-		actionMap.put( action.getValue( Action.NAME ), action );
 		// Protractor
-		buttonProtactor.setAction( action = new ProtractorAction( this ) );
+		buttonProtactor.setAction( action = registerAction( new ProtractorAction( this ) ) );
 		//buttonProtactor.setPreferredSize( new Dimension( 48, 30 ) );
 		buttonProtactor.setContentAreaFilled( true );
 		buttonProtactor.setBorderPainted( false );
@@ -964,26 +899,19 @@ public class Application extends JFrame
 		buttonProtactor.setOpaque( false );
 		buttonProtactor.setText( "" );
 		menuTools.add( action );
-		actionMap.put( action.getValue( Action.NAME ), action );
 		// Rewind exercise
-		menuExercise.add( action = new RewindAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuExercise.add( registerAction( new RewindAction( this ) ) );
 		// Backward exercise
-		menuExercise.add( action = new BackwardAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuExercise.add( registerAction( new BackwardAction( this ) ) );
 		// Forward exercise
-		menuExercise.add( action = new ForwardAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuExercise.add( registerAction( new ForwardAction( this ) ) );
 		// End exercise
-		menuExercise.add( action = new EndAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
-		// Exercise metadata
+		menuExercise.add( registerAction( new EndAction( this ) ) );
 		menuExercise.addSeparator();
-		menuExercise.add( action = new ExerciseMetadataAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		// Exercise metadata
+		menuExercise.add( registerAction( new ExerciseMetadataAction( this ) ) );
 		// Look & Feel
-		action = new LookFeelAction( this, menuAppearance );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		action = registerAction( new LookFeelAction( this, menuAppearance ) );
 		LookAndFeelInfo[] laf = UIManager.getInstalledLookAndFeels();
 		ButtonGroup group = new ButtonGroup();
 		for ( LookAndFeelInfo lafi : laf )
@@ -1053,14 +981,14 @@ public class Application extends JFrame
 		} );
 		menuHelp.addSeparator();
 		// About...
-		menuHelp.add( action = new AboutAction( this ) );
-		actionMap.put( action.getValue( Action.NAME ), action );
+		menuHelp.add( registerAction( new AboutAction( this ) ) );
 		
 		// --- TOOLBARS ACTIONS
 		// actionbar
 		actionbar.add( actionMap.get( getLocaleText( "new" ) ) );
 		actionbar.add( actionMap.get( getLocaleText( "open" ) ) );
 		actionbar.add( actionMap.get( getLocaleText( "save" ) ) );
+		actionbar.add( actionMap.get( getLocaleText( "save_as" ) ) );
 		actionbar.add( actionMap.get( getLocaleText( "save_image" ) ) );
 		actionbar.add( actionMap.get( getLocaleText( "print" ) ) );
 		actionbar.addSeparator( HSEP );
@@ -1104,8 +1032,8 @@ public class Application extends JFrame
 		actionbar.addSeparator();
 		actionbar.add( actionMap.get( getLocaleText( "select_all" ) ) );
 		actionbar.add( actionMap.get( getLocaleText( "invert" ) ) );
-		/*actionbar.addSeparator();
-		actionbar.add( actionMap.get( getLocaleText( "exit" ) ) );*/
+		actionbar.addSeparator();
+		actionbar.add( actionMap.get( getLocaleText( "exit" ) ) );
 		// shapebar
 		shapebar.add( actionMap.get( getLocaleText( "selection" ) ) );
 		shapebar.addSeparator( VSEP );
@@ -1115,7 +1043,6 @@ public class Application extends JFrame
 		shapebar.add( actionMap.get( getLocaleText( "circumference" ) ) );
 		shapebar.add( actionMap.get( getLocaleText( "angle" ) ) );
 		shapebar.add( actionMap.get( getLocaleText( "arrow" ) ) );
-		shapebar.addSeparator( VSEP );
 		JButton trianglePopup = new JButton( new AbstractAction() {
 			@Override
 			public void actionPerformed( ActionEvent e )
@@ -1178,11 +1105,14 @@ public class Application extends JFrame
 		conicsPopup.setToolTipText( getLocaleText( "conics" ) );
 		conicsPopup.setIcon( getLargeIcon( "conics.png" ) );
 		shapebar.add( conicsPopup );
-		shapebar.addSeparator( VSEP );
 		shapebar.add( actionMap.get( getLocaleText( "spline" ) ) );
 		shapebar.add( actionMap.get( getLocaleText( "free_hand" ) ) );
+		shapebar.add( actionMap.get( getLocaleText( "comment" ) ) );
 		if ( jmeEnabled )
+		{
+			shapebar.addSeparator( VSEP );
 			shapebar.add( actionMap.get( getLocaleText( "func" ) ) );
+		}
 		// toolbar
 		toolbar.add( actionMap.get(	getLocaleText( "perp" ) ) );
 		toolbar.add( actionMap.get(	getLocaleText( "para" ) ) );
@@ -1208,8 +1138,16 @@ public class Application extends JFrame
 		toolbar.add( actionMap.get(	getLocaleText( "homothety" ) ) );
 		toolbar.add( actionMap.get(	getLocaleText( "central_sym" ) ) );
 		toolbar.add( actionMap.get(	getLocaleText( "axial_sym" ) ) );
+		toolbar.addSeparator( HSEP );
+		toolbar.add( actionMap.get(	getLocaleText( "paint" ) ) );
 	}
 
+	private Action registerAction( Action action )
+	{
+		actionMap.put( action.getValue( Action.NAME ), action );
+		return action;
+	}	
+	
 	/**
 	 * Set automatic title bar text
 	 */
@@ -1306,9 +1244,8 @@ public class Application extends JFrame
 	public ActionMap getActionMap() { return actionMap; }
 	
 	// exercise
-	@NotNull
 	public Exercise getExercise() { return exercise; }	
-	public void setExercise(@NotNull Exercise exercise, String filename )
+	public void setExercise( Exercise exercise, String filename )
 	{ 
 		this.exercise = exercise;
 		exercise.setFrameAtEnd();
@@ -1330,7 +1267,7 @@ public class Application extends JFrame
 
 		canvas.setCanvasListener( new HandListener( canvas ) );
 	}
-	public void setExercise(@NotNull Exercise exercise )
+	public void setExercise( Exercise exercise )
 	{
 		setExercise( exercise, null );
 	}
@@ -1383,16 +1320,18 @@ public class Application extends JFrame
 		// load exercise
 		try ( FileInputStream is = new FileInputStream( file ) )
 		{
-			ObjectInputStream ois = new ObjectInputStream( is );
+			final ObjectInputStream ois = new ObjectInputStream( is );
 			setExercise( (Exercise) ois.readObject(), file.getAbsolutePath() );
+			if ( getExercise().getStartIndex() < 1 )  // v0.1.11 (compatibility with previous ver.)
+				getExercise().setStartIndex(1);
 		}
 		catch ( IOException | ClassNotFoundException ex )
 		{
 			JOptionPane.showMessageDialog( this, 
-				"<html>Can't open " + file.getName() 
-				+ ":<br/><font color='red'>" + ex + "</font></html>", 
-				"Error while open " + file.getAbsolutePath(), 
-				JOptionPane.ERROR_MESSAGE );
+										   "<html>Can't open " + file.getName() 
+										   + ":<br/><font color='red'>" + ex + "</font></html>", 
+										   "Error while open " + file.getAbsolutePath(), 
+										   JOptionPane.ERROR_MESSAGE );
 		}
 	}
 	
@@ -1410,20 +1349,19 @@ public class Application extends JFrame
 	 * launch listeners 
 	 * @return the inserted new shape
 	 */
-	public JDraftingShape addShapeFromIterator( PathIterator pit, String name,
-		String description, Color color, BasicStroke stroke,
-		CompoundEdit transaction )
+	public JDraftingShape addShapeFromIterator( PathIterator pit, String name, String description, 
+										 Color color, BasicStroke stroke, CompoundEdit transaction )
 	{
 		// create shape from iterator
-		JDraftingShape jdshape = JDraftingShape.createFromIterator(
-										pit, name, description, color, stroke );
+		final JDraftingShape jdshape = JDraftingShape.createFromIterator(
+															pit, name, description, color, stroke );
 		
 		// add new JDrafting shape
-		int index = getExercise().addShape( jdshape );
+		final int index = getExercise().addShape( jdshape );
 		shapeList.getModel().add( index, jdshape );
 		
 		// undo/redo system
-		UndoableEdit addEdit = new EditAddShapeToExercise( jdshape, index );
+		final UndoableEdit addEdit = new EditAddShapeToExercise( jdshape, index );
 		if ( transaction == null )
 			undoSupport.postEdit( addEdit );
 		else
@@ -1440,13 +1378,12 @@ public class Application extends JFrame
 	public JDraftingShape addShapeFromIterator( PathIterator pit, String name,
 			String description, Color color, BasicStroke stroke )
 	{
-		return 
-			addShapeFromIterator( pit, name, description, color, stroke, null );
+		return addShapeFromIterator( pit, name, description, color, stroke, null );
 	}
 		
 	/**
-	 * 
-	 * @param jdshape
+	 * Remove shape from exercise
+	 * @param jdshape shape to remove
 	 */
 	public int removeShape( JDraftingShape jdshape, CompoundEdit transaction )
 	{
@@ -1553,7 +1490,7 @@ public class Application extends JFrame
 		private JDraftingShape jdshape;
 		private int index;
 		
-		public EditAddShapeToExercise( @NotNull JDraftingShape jdshape, int index )
+		public EditAddShapeToExercise( JDraftingShape jdshape, int index )
 		{
 			this.jdshape = jdshape;
 			this.index = index;
@@ -1594,8 +1531,7 @@ public class Application extends JFrame
 		private JDraftingShape jdshape;
 		private int index;
 		
-		public EditRemoveShapeFromExercise(@NotNull JDraftingShape jdsShape, 
-										   int index )
+		public EditRemoveShapeFromExercise(  JDraftingShape jdsShape, int index )
 		{
 			this.jdshape = jdsShape;
 			this.index = index;

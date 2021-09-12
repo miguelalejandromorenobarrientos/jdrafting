@@ -32,7 +32,7 @@ import jdrafting.gui.controller.mouse.AbstractCanvasMouseListener;
 import jdrafting.gui.controller.mouse.HandListener;
 
 /**
- * Panel to draw application exercises 
+ * Panel to draw exercises 
  */
 @SuppressWarnings("serial")
 public class CanvasPanel extends JPanel
@@ -42,23 +42,21 @@ public class CanvasPanel extends JPanel
 	
 	// this comparator order points at the beginning, and the other
 	// shapes using the reverse order in the exercise
-	private final Comparator<JDraftingShape> zBufferComparator =
-											new Comparator<JDraftingShape>() {
+	private final Comparator<JDraftingShape> zBufferComparator = new Comparator<JDraftingShape>() {
 		@Override
-		public int compare( JDraftingShape s1, JDraftingShape s2 )
+		public int compare( JDraftingShape shape1, JDraftingShape shape2 )
 		{
-			boolean s1isPoint = s1.isPoint( s1.getVertex() );
-			boolean s2isPoint = s2.isPoint( s2.getVertex() );
-			if ( s1isPoint && s2isPoint )
+			final boolean shape1isPoint = shape1.isPoint( shape1.getVertex() ),
+						  shape2isPoint = shape2.isPoint( shape2.getVertex() );
+			if ( shape1isPoint && shape2isPoint )
 				return 0;
-			else if ( s1isPoint )
+			else if ( shape1isPoint )
 				return -1;
-			else if ( s2isPoint )
+			else if ( shape2isPoint )
 				return 1;
 			
-			return -Integer.compare( 
-				getApplication().getExercise().getShapes().indexOf( s1 ),
-				getApplication().getExercise().getShapes().indexOf( s2 ) );
+			return -Integer.compare( getApplication().getExercise().getShapes().indexOf( shape1 ),
+									 getApplication().getExercise().getShapes().indexOf( shape2 ) );
 		}		
 	};	
 	
@@ -103,7 +101,7 @@ public class CanvasPanel extends JPanel
 	
 	/**
 	 * Logic viewport of the canvas
-	 * @return logiv viewport
+	 * @return logic viewport
 	 */
 	public Viewport getViewport() { return viewport; }
 	
@@ -119,23 +117,30 @@ public class CanvasPanel extends JPanel
 	 */
 	public MoveCanvasThread getMovementThread() { return movementThread; }
 	
-	
-	
-	
+	/**
+	 * Get transform from current logical viewport to canvas viewport
+	 * @return transform logical->canvas
+	 */
 	public AffineTransform getTransform()
 	{
 		return getTransform( getViewport(), getCanvasViewport() );
 	}
 
+	/**
+	 * Transform an original viewport to destiny viewport (like canvas to logic or logic to canvas)
+	 * @param orig original viewport
+	 * @param dest destiny viewport
+	 * @return change transform
+	 */
 	public static AffineTransform getTransform( Viewport orig, Viewport dest )
 	{
-		AffineTransform transform = new AffineTransform();
+		final AffineTransform transform = new AffineTransform();
 		// invert Y-axis
 		transform.scale( 1, -1 );
 		// put origin in left-lower corner
 		transform.translate( 0, -dest.getHeight() );
 		
-		// transform from logic viewport to canvas viewport
+		// transform from original viewport to destiny viewport
 		double sx = dest.getWidth() / orig.getWidth();
 		double sy = dest.getHeight() / orig.getHeight();
 		double tx = dest.getMinX() - orig.getMinX();
@@ -146,6 +151,11 @@ public class CanvasPanel extends JPanel
 		return transform;
 	}
 	
+	/**
+	 * Inverts a transform (inverse matrix)
+	 * @param at transfrom
+	 * @return inverse transform or null if it is singular
+	 */
 	public static AffineTransform getInverseTransform( AffineTransform at )
 	{
 		try
@@ -155,6 +165,10 @@ public class CanvasPanel extends JPanel
 		catch ( NoninvertibleTransformException ex ) { return null; }
 	}
 
+	/**
+	 * Get transform from canvas viewport to current logical viewport
+	 * @return transform canvas->logical
+	 */
 	public AffineTransform getInverseTransform()
 	{
 		return getInverseTransform( getTransform() );
@@ -168,13 +182,13 @@ public class CanvasPanel extends JPanel
 		if ( app.getExercise() == null )
 			return;
 		
-		Graphics2D g2 = (Graphics2D) g;
+		final Graphics2D g2 = (Graphics2D) g;
 		
 		// High quality render
 		JDUtils.setHighQualityRender( g2 );
 		
 		// draw exercise shapes
-		drawExercise( g2, getTransform(), app.getExercise(),
+		drawExercise( g2, getTransform(), app.getExercise(), 
 					  app.getSelectedShapes(), app.isVisibleNames() );
 		
 		// draw frame info
@@ -197,7 +211,7 @@ public class CanvasPanel extends JPanel
 		canvasListener.paintTool( g2 );
 	}
 
-	public static void drawExercise( Graphics2D g2, AffineTransform transform, 
+	public static void drawExercise( Graphics2D g2, AffineTransform transform,
 									 Exercise exercise, Set<JDraftingShape> selected, boolean text )
 	{
 		// draw non-selected shapes
@@ -205,15 +219,25 @@ public class CanvasPanel extends JPanel
 		{
 			if ( selected.contains( jdshape ) )
 				continue;
+			
 			// transform shape to canvas
-			Shape transShape = transform.createTransformedShape(
-														jdshape.getShape() );
+			final Shape transShape = transform.createTransformedShape( jdshape.getShape() );
 			// set style
 			g2.setStroke( jdshape.getStroke() );
+
+			// fill shape if has fill color
+			if ( jdshape.getFill() != null )
+			{
+				g2.setColor( jdshape.getFill() );
+				g2.fill( transShape );
+			}
+			// draw shape
 			g2.setColor( jdshape.getColor() );
 
-			// draw shape
-			g2.draw( transShape );
+			if ( jdshape.isText() )
+				drawText( jdshape, transShape, g2, transform );
+			else
+				g2.draw( transShape );
 		}
 		// draw selected shapes
 		for ( JDraftingShape jdshape: selected )
@@ -227,10 +251,13 @@ public class CanvasPanel extends JPanel
 				g2.setStroke( new BasicStroke( 8f, stroke.getEndCap(), stroke.getLineJoin() ) );
 			else
 				g2.setStroke( stroke );
-			g2.setColor( new Color( 200, 32, 32, 222 ) );
 			
-			// draw shape
+			// draw selected shape
+			g2.setColor( new Color( 200, 32, 32, 222 ) );
 			g2.draw( transShape );
+
+			if ( jdshape.isText() )
+				drawText( jdshape, transShape, g2, transform );
 		}
 		// draw identifiers
 		if ( text )
@@ -261,6 +288,16 @@ public class CanvasPanel extends JPanel
 				}
 			}
 		}
+	}
+	
+	private static void drawText( JDraftingShape jdshape, Shape transShape, Graphics2D g2, 
+								  AffineTransform transform )
+	{
+		final Font font = jdshape.adjustFontSizeToBounds( g2, transform );
+		g2.setFont( font );
+		final Rectangle2D bounds = transShape.getBounds2D();
+		drawMultilineText( g2, jdshape.getDescription(), 
+						  (float) bounds.getX(), (float) bounds.getY() );		
 	}
 	
 	public Viewport getCanvasViewport()
@@ -585,6 +622,16 @@ public class CanvasPanel extends JPanel
 		
 		repaint();  // (needed to refresh all tools graphs)
 	}	
+	
+	private static void drawMultilineText( Graphics2D g2, String txt, float x, float y )
+	{
+		final FontMetrics fm = g2.getFontMetrics();
+		
+		final String[] lines = txt.split( "\n" );
+		int fila = 0;
+		for ( final String line : lines )
+			g2.drawString( line, x, y + (++fila)*g2.getFont().getSize() - fm.getDescent() );
+	}
 	
 	/**
 	 * Move viewport when mouse near of the canvas bounds 

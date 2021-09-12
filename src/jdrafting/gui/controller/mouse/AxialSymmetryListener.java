@@ -18,8 +18,6 @@ import javax.swing.undo.AbstractUndoableEdit;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 
-import com.sun.istack.internal.NotNull;
-
 import jdrafting.geom.JDMath;
 import jdrafting.geom.JDraftingShape;
 import jdrafting.gui.Application;
@@ -128,8 +126,7 @@ public class AxialSymmetryListener extends AbstractCanvasMouseListener
 	 * @param logicMouse mouse logic position
 	 * @return a list of new shapes
 	 */
-	private Shape[] getSymmetric(
-		@NotNull Set<JDraftingShape> selected, Point2D vector, Point2D anchor )
+	private Shape[] getSymmetric( Set<JDraftingShape> selected, Point2D vector, Point2D anchor )
 	{
 		/* Axial symmetry matrix
 		 * [cos(2a),sin(2a),-tx(cos(2a)-1)-ty*sin(2a);
