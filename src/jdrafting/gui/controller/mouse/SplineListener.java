@@ -25,11 +25,11 @@ import jdrafting.gui.JDUtils;
 
 /**
  * Creates a cubic spline using mouse control
+ * @version 0.1.11.1
  */
 public class SplineListener extends AbstractCanvasMouseListener
 {
-	private static final Cursor CURSOR =
-								JDUtils.getCustomCursor( "spline_cursor.png" ); 
+	private static final Cursor CURSOR = JDUtils.getCustomCursor( "spline_cursor.png" ); 
 	private CanvasPanel canvas;
 	private Application app;
 
@@ -61,7 +61,7 @@ public class SplineListener extends AbstractCanvasMouseListener
 		super.mouseReleased( e );
 		
 		// mouse position in logic viewport
-		Point2D logicMouse = canvas.adjustToPoint( e.getPoint() );
+		final Point2D logicMouse = canvas.adjustToPoint( e.getPoint() );
 
 		// finish curve capture
 		if ( e.getClickCount() == 2 )
@@ -148,11 +148,12 @@ public class SplineListener extends AbstractCanvasMouseListener
 	 */
 	private Object[] getSpline( List<Point2D> points )
 	{
-		Path2D path = new Path2D.Double();
-		CubicCurve2D arc = new CubicCurve2D.Double();
-		double ratio = 3.;
-		int n = points.size();		
-		Point2D[][] ctrlPoints = new Point2D[ n ][2];
+		final Path2D path = new Path2D.Double();
+		final CubicCurve2D arc = new CubicCurve2D.Double();
+		final double ratio = 3.;
+		final int n = points.size();		
+		final Point2D[][] ctrlPoints = new Point2D[n][2];
+		
 		ctrlPoints[0] = new Point2D[] { 
 			null, 
 			sumVectors(	points.get( 0 ), mulVector( 
@@ -187,12 +188,12 @@ public class SplineListener extends AbstractCanvasMouseListener
 			// add cubic arc to path
 			arc.setCurve( 
 					p[0], ctrlPoints[ i - 1 ][1], ctrlPoints[ i ][0], p[1] );
-			path.append( arc, false );
+			path.append( arc.getPathIterator(null), true );
 		}
 		// add last cubic arc
 		arc.setCurve( points.get( n - 2 ), ctrlPoints[ n - 2 ][1], 
 					  ctrlPoints[ n - 1 ][0], points.get( n - 1 ) );
-		path.append( arc, false );
+		path.append( arc.getPathIterator(null), true );
 		
 		return new Object[] { path, ctrlPoints };
 	}

@@ -28,8 +28,8 @@ import javax.swing.Timer;
  * <br>
  * Toast doesn't block EDT (Event Dispatch Thread).
  * 
- * @author Miguel Alejandro Moreno Barrientos, (C) 2019-2020
- * @version 0.1.2 (modified for JDrafting)
+ * @author Miguel Alejandro Moreno Barrientos, (C) 2019-2020,2021
+ * @version 0.1.11.1 (modified for JDrafting) 
  */
 public class Toast extends JWindow 
 {
@@ -51,7 +51,7 @@ public class Toast extends JWindow
 	/** toast location (when developer gives the coordinates) */
 	protected Point point = null;
 	/** max message length shown */
-	protected int maxLength = 80;
+	protected int maxLength = 200;
 
 	/**
 	 * Create toast x-centered and y-south
@@ -179,8 +179,7 @@ public class Toast extends JWindow
 	}
 
 	/**
-	 * Cut string from limit
-	 * 
+	 * Cut string from limit (not including HTML tags) 
 	 * @param s message to cut
 	 * @param limit max length of the original string (must be >= 0)
 	 * @param sufix string at the end (as \u2026)
@@ -188,8 +187,12 @@ public class Toast extends JWindow
 	 */
 	protected static String cutString( String s, int limit, String sufix )
 	{
-		return s == null || limit >= s.length()
+		int lengthHTML = s.length(),
+			lengthNoHTML = s.replaceAll("\\<[^>]*>","").length();  // not perfect way
+		
+		return lengthNoHTML <= limit || s == null
 			   ? s
-			   : s.substring( 0, limit ) + sufix;
+			   : s.substring(0, limit + lengthHTML - lengthNoHTML - "<html>".length() - 1) + sufix;
 	}
+	
 }

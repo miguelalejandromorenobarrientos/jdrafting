@@ -19,6 +19,11 @@ import javax.swing.undo.CompoundEdit;
 import jdrafting.gui.Application;
 import jdrafting.gui.JDUtils;
 
+/**
+ * Fusion the PathIterator o several shapes on one shape
+ * @author Miguel Alejandro Moreno Barrientos, (C)?-2021
+ * @version 0.1.11.1
+ */
 @SuppressWarnings("serial")
 public class FusionAction extends AbstractAction
 {
@@ -59,7 +64,7 @@ public class FusionAction extends AbstractAction
 	  			.collect( Collectors.toList() ) );
 
 		// create undo/redo transaction
-		CompoundEdit transaction = new CompoundEdit() {
+		final CompoundEdit transaction = new CompoundEdit() {
 			@Override
 			public boolean canRedo() { return true; };
 			@Override
@@ -79,15 +84,18 @@ public class FusionAction extends AbstractAction
 		};
 
 		// remove shapes from exercise and create merged path
-		Path2D path = new Path2D.Double();
-		boolean connect = ( e.getModifiers() & ActionEvent.SHIFT_MASK )
-				 == ActionEvent.SHIFT_MASK;
+		final Path2D path = new Path2D.Double();
+		final boolean connect = ( e.getModifiers() & ActionEvent.SHIFT_MASK )
+								== ActionEvent.SHIFT_MASK;
 		app.getSelectedShapes()
-		.stream()
-		.forEach( jdshape -> {
-			app.removeShape( jdshape, transaction );
-			path.append( jdshape.getShape().getPathIterator( null ), connect );
-		});
+		   .stream()
+		   .sorted( (jds1,jds2) -> Integer.compare( app.getExercise().getShapes().indexOf(jds1),
+			   									    app.getExercise().getShapes().indexOf(jds2) ) )  // improve filling
+		   .forEach( jdshape -> {
+			   app.removeShape( jdshape, transaction );
+			   path.append( jdshape.getShape().getPathIterator( null ), connect );
+			}
+		);
 		
 		// add new shape to exercise
 		app.addShapeFromIterator( path.getPathIterator( null ),	"", 

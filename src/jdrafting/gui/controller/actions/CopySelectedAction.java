@@ -31,8 +31,7 @@ public class CopySelectedAction extends AbstractAction
 		putValue( NAME, getLocaleText( "copy" ) );
 		putValue( SHORT_DESCRIPTION, getLocaleText( "copy_des" ) );
 		putValue( MNEMONIC_KEY, JDUtils.getLocaleMnemonic( "mne_copy" ) );
-		putValue( ACCELERATOR_KEY, 
-			KeyStroke.getKeyStroke( KeyEvent.VK_C, InputEvent.CTRL_MASK )  );
+		putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( KeyEvent.VK_C, InputEvent.CTRL_MASK ) );
 		putValue( SMALL_ICON, getSmallIcon( "copy.png" ) );
 		putValue( LARGE_ICON_KEY, getLargeIcon( "copy.png" ) );
 	}
@@ -42,8 +41,10 @@ public class CopySelectedAction extends AbstractAction
 	{
 		if ( !app.getSelectedShapes().isEmpty() )
 		{
+			// instant copy&paste
+			
 			// create undo/redo transaction
-			CompoundEdit transaction = new CompoundEdit() {
+			final CompoundEdit transaction = new CompoundEdit() {
 				@Override
 				public boolean canRedo() { return true; };
 				@Override
@@ -61,18 +62,17 @@ public class CopySelectedAction extends AbstractAction
 			};
 			
 			// move copies relative to originals and add them to exercise
-			double tx = app.getCanvas().getViewport().getWidth() / 30.;
-			double ty = app.getCanvas().getViewport().getHeight() / 30.;
-			AffineTransform transform =
-								AffineTransform.getTranslateInstance( tx, -ty );
+			final double tx = app.getCanvas().getViewport().getWidth() / 30.,
+						 ty = app.getCanvas().getViewport().getHeight() / 30.;
+			final AffineTransform transform = AffineTransform.getTranslateInstance( tx, -ty );
 			
-			Set<JDraftingShape> copySet = app.getSelectedShapes()
-			.stream()
-			.map( jdshape -> app.addShapeFromIterator( 
-					jdshape.getShape().getPathIterator( transform ), 
-					"copy of " + jdshape.getName(), jdshape.getDescription(), 
-					jdshape.getColor(), jdshape.getStroke(), transaction ) )
-			.collect( Collectors.toSet() );
+			final Set<JDraftingShape> copySet = app.getSelectedShapes()
+								.stream()
+								.map( jdshape -> app.addShapeFromIterator( 
+										jdshape.getShape().getPathIterator( transform ), 
+										"copy of " + jdshape.getName(), jdshape.getDescription(), 
+										jdshape.getColor(), jdshape.getStroke(), transaction ) )
+								.collect( Collectors.toSet() );
 
 			transaction.end();
 			app.undoSupport.postEdit( transaction );

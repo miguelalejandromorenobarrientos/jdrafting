@@ -173,7 +173,7 @@ public class Application extends JFrame
 	//////////////////////
 	// metainfo
 	public static final String APPNAME = "JDrafting";
-	public static final String VERSION = "0.1.11";
+	public static final String VERSION = "0.1.11.1";
 	public static final String AUTHOR = "Miguel Alejandro Moreno Barrientos";
 	public static final String COPYLEFT = "2016,2020,2021";
 	public static final String PROJECT_PAGE = 
