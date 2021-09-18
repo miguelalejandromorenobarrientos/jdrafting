@@ -1,7 +1,7 @@
 
 html
 {
-	background: linear-gradient( 
+	/*background: linear-gradient( 
 		to bottom, 
 		#d8e0de 0%,
 		#aebfbc 22%,
@@ -10,6 +10,17 @@ html
 		#829d98 67%,
 		#4e5c5a 82%,
 		#0e0e0e 100% );
+	background-size: cover;*/
+
+	background: linear-gradient( 
+		to bottom, 
+		#c8e0de 0%,
+		#aebfcc 22%,
+		#99afab 33%,
+		#8ea6c2 50%,
+		#828da8 67%,
+		#6e6c8a 82%,
+		#4e4e8e 100% );
 	background-size: cover;
 }
 
@@ -102,6 +113,7 @@ img.centered
 	padding: 8px 30px 20px 8px;
 	border-radius: 20px;
 	margin: 10px;
+	vertical-align: 100%;
 }
 #div_requirements
 {
